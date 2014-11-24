@@ -34,7 +34,9 @@ class Welcome extends REST_Controller
 
             $nombre   ="Jose";
             $apellido = "Suarez";
+            
         } else {
+
             $nombre   = "Prueba";
             $apellido = " sin id";
         }
@@ -56,11 +58,12 @@ class Welcome extends REST_Controller
 
             $nombre   ="Jose";
             $apellido = "Suarez";
+
         } else {
+
             $nombre   = "Prueba";
             $apellido = " sin id";
         }
-        echo $this->post('id');
 
         $this->response(array('nombre'=>$nombre,'apellido'=>$apellido), 200);
     }
