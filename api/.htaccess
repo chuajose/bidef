@@ -1,0 +1,21 @@
+AddType text/x-component .htc
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /emailjs/api/
+
+#RewriteRule ^(.*)lib/(.+)$ libe/$2 [R=301,L]
+
+#RewriteCond $1 !^(libe)
+
+#RewriteRule ^(.*)img/(.+)$ images/$2 [R=301,L]
+
+#RewriteCond $1 !^(libe)
+
+#RewriteRule ^(.*)js/(.+)$ jscript/$2 [R=301,L]
+#hacemos el tracking del mail enviado 
+RewriteRule ^track-([0-9]+)-([0-9]+).png$ web/contador/$1/$2 [R=301,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?/$1 [L]
+</IfModule>
