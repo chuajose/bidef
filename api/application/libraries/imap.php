@@ -333,15 +333,15 @@ class Imap {
 		return imap_clearflag_full($this->imap_stream, implode(',', $mailsIds), $flag, ST_UID);
 	}
 
-	public function paginate_mails($pagina=1,$por_pagina=10)
+	public function paginate_mails($page=1,$per_page=10)
 	{
 		$this->info= $this->count_mails();//cuento
 
 		$mailsIds = $this->sort_mails(SORTDATE,true);
 
-		$mailsIds = array_chunk($mailsIds, $por_pagina);
+		$mailsIds = array_chunk($mailsIds, $per_page);
 
-		$mailsIds = $mailsIds[$pagina-1];
+		$mailsIds = $mailsIds[$page-1];
 
 		return $this->get_mails_info($mailsIds);
 	}
@@ -626,6 +626,8 @@ class Imap {
 				$this->init_mail_part($mail, $partStructure, $partNum + 1);
 			}
 		}
+
+		$mail->replace_internal_links(base_url());
 		return $mail;
 	}
 
@@ -792,7 +794,8 @@ class Incoming_mail {
 	 * @return array attachmentId => link 
 	 */
 	public function get_internal_links_placeholders() {
-		return preg_match_all('/=["\'](ci?d:(\w+))["\']/i', $this->textHtml, $matches) ? array_combine($matches[2], $matches[1]) : array();
+		//return preg_match_all('/=["\'](ci?d:(\w+))["\']/i', $this->textHtml, $matches) ? array_combine($matches[2], $matches[1]) : array();
+		return  preg_match_all('/src="cid:(.*)"/Uims', $this->textHtml, $matches)? array_combine($matches[0], $matches[1]) : array();
 	}
 
 	public function replace_internal_links($baseUri) {
@@ -800,7 +803,10 @@ class Incoming_mail {
 		$placeholder = base_url();
 		$fetchedHtml = $this->textHtml;
 		foreach($this->get_internal_links_placeholders() as $attachmentId => $placeholder) {
-			$fetchedHtml = str_replace($placeholder, $baseUri . basename($this->attachments[$attachmentId]->filePath), $fetchedHtml);
+
+			$fetchedHtml = str_replace($attachmentId, " src='". $baseUri . basename($this->attachments[$placeholder]->filePath)."' ", $fetchedHtml);
+			//$fetchedHtml = str_replace($placeholder, $baseUri . basename($this->attachments[$attachmentId]->filePath), $fetchedHtml);
+
 		}
 		return $fetchedHtml;
 	}
