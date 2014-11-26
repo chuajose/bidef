@@ -263,7 +263,7 @@ class Imap {
 	 *
 	 * @return array Mails ids
 	 */
-	public function search_mailbox($criteria = 'ALL',$page=1,$per_page=5) {
+	public function search_mails($criteria = 'ALL',$page=1,$per_page=5) {
 
 		$mailsIds = imap_search($this->imap_stream, $criteria, SE_UID, $this->server_encoding);
 
