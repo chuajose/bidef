@@ -180,15 +180,53 @@ class Imap {
 	 * @return array listing the folders
 	 */
 
+	function recorrer_array($array) {
+		echo "<pre>";var_dump($array);echo "</pre>";
+				return $array && count($array)>1 ? array(array_shift($array) => $this->recorrer_array($array)) : array();
+	}
+
+	function anadir_folder($nombre,&$array,$data){
+
+    $nombres=explode('.',$nombre);
+
+    if(count($nombres)>1){
+
+        $name=array_shift($nombres);
+
+        $sub=$this->anadir_folder(implode('.',$nombres),$array[$name],$data);
+
+    }else{
+
+    	$sub=array();
+
+    	$name=array_shift($nombres);
+    }
+
+    if(!isset($array[$name]))
+    $array[$name]=array('name'=>$name,'data'=>$data,'folders'=>$sub);
+
+    return $array;
+}
+
+
 	public function get_listing_folders() {
+		$this->mailboxes = array();
+		
 		$folders = imap_list($this->imap_stream, "{".$this->server."}", "*");
+
 		foreach ($folders as $key => $folder)
 		{
 			$folder = str_replace("{".$this->server."}", "", imap_utf7_decode($folder));
-			$this->change_imap_stream($folder);
-			$folders[ $key  ] = array('name'=>$folder,'data'=>$this->get_mailbox_info());
+			
+			$subfolder = explode('.', $folder);
+			//echo $folder
+			$this->change_imap_stream($folder);;
+
+			$this->anadir_folder($folder,$this->mailboxes,$this->get_mailbox_info());
+
 		}
-		return $folders;
+
+		return $this->mailboxes;
 	}
 
 
@@ -795,7 +833,8 @@ class Incoming_mail {
 	 */
 	public function get_internal_links_placeholders() {
 		//return preg_match_all('/=["\'](ci?d:(\w+))["\']/i', $this->textHtml, $matches) ? array_combine($matches[2], $matches[1]) : array();
-		return  preg_match_all('/src="cid:(.*)"/Uims', $this->textHtml, $matches)? array_combine($matches[0], $matches[1]) : array();
+		return preg_match_all('/=["\'](cid:([\w\.%*@-]+))["\']/i', $this->textHtml, $matches) ? array_combine($matches[2], $matches[1]) : array();
+		//return  preg_match_all('/src="cid:(.*)"/Uims', $this->textHtml, $matches)? array_combine($matches[0], $matches[1]) : array();
 	}
 
 	public function replace_internal_links($baseUri) {
@@ -804,8 +843,10 @@ class Incoming_mail {
 		$fetchedHtml = $this->textHtml;
 		foreach($this->get_internal_links_placeholders() as $attachmentId => $placeholder) {
 
-			$fetchedHtml = str_replace($attachmentId, " src='". $baseUri . basename($this->attachments[$placeholder]->filePath)."' ", $fetchedHtml);
+			//$fetchedHtml = str_replace($attachmentId, " src='". $baseUri . basename($this->attachments[$placeholder]->filePath)."' ", $fetchedHtml);
 			//$fetchedHtml = str_replace($placeholder, $baseUri . basename($this->attachments[$attachmentId]->filePath), $fetchedHtml);
+			if(isset($this->attachments[$attachmentId]))
+                $fetchedHtml = str_replace($placeholder, $baseUri . basename($this->attachments[$attachmentId]->filePath), $fetchedHtml);
 
 		}
 		return $fetchedHtml;
