@@ -180,12 +180,7 @@ class Imap {
 	 * @return array listing the folders
 	 */
 
-	function recorrer_array($array) {
-		echo "<pre>";var_dump($array);echo "</pre>";
-				return $array && count($array)>1 ? array(array_shift($array) => $this->recorrer_array($array)) : array();
-	}
-
-	function anadir_folder($nombre,&$array,$data){
+	protected function init_folder($nombre,&$array,$data,$key){
 
     $nombres=explode('.',$nombre);
 
@@ -193,7 +188,9 @@ class Imap {
 
         $name=array_shift($nombres);
 
-        $sub=$this->anadir_folder(implode('.',$nombres),$array[$name],$data);
+        $sub = $this->init_folder(implode('.',$nombres),$array[$name],$data,$key);
+
+
 
     }else{
 
@@ -202,9 +199,12 @@ class Imap {
     	$name=array_shift($nombres);
     }
 
+
+
     if(!isset($array[$name]))
     $array[$name]=array('name'=>$name,'data'=>$data,'folders'=>$sub);
-
+    
+   
     return $array;
 }
 
@@ -222,7 +222,7 @@ class Imap {
 			//echo $folder
 			$this->change_imap_stream($folder);;
 
-			$this->anadir_folder($folder,$this->mailboxes,$this->get_mailbox_info());
+			$this->init_folder($folder,$this->mailboxes,$this->get_mailbox_info(),$key);
 
 		}
 
@@ -263,9 +263,22 @@ class Imap {
 	 *
 	 * @return array Mails ids
 	 */
-	public function search_mailbox($criteria = 'ALL') {
+	public function search_mailbox($criteria = 'ALL',$page=1,$per_page=5) {
+
 		$mailsIds = imap_search($this->imap_stream, $criteria, SE_UID, $this->server_encoding);
-		return $mailsIds ? $mailsIds : array();
+
+		$this->total = count($mailsIds);
+
+		$mailsIds = array_chunk($mailsIds, $per_page);
+
+		$mailsIds = $mailsIds[$page-1];
+
+		if(!$mailsIds) return false;
+		//return $mailsIds ? $mailsIds : array();
+	    $res = $this->get_mails_info($mailsIds);
+
+	    return array($res,$this->total);
+
 	}
 
 	/**
@@ -373,7 +386,7 @@ class Imap {
 
 	public function paginate_mails($page=1,$per_page=10)
 	{
-		$this->info= $this->count_mails();//cuento
+		$this->total= $this->count_mails();//cuento
 
 		$mailsIds = $this->sort_mails(SORTDATE,true);
 
@@ -381,7 +394,10 @@ class Imap {
 
 		$mailsIds = $mailsIds[$page-1];
 
-		return $this->get_mails_info($mailsIds);
+		$res = $this->get_mails_info($mailsIds);
+
+	    return array($res,$this->total);
+
 	}
 	/**
 	 * Deveulve las cabeceras de email de la lista de emails
