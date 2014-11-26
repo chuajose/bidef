@@ -1,4 +1,5 @@
 <?php
+
 $lang['required']           = '1';
 $lang['isset']              = '2';
 $lang['valid_email']        = '3';
@@ -23,6 +24,8 @@ $lang['decimal']            = '21';
 $lang['less_than']          = '22';
 $lang['greater_than']       = '23';
 $lang['dni']                = '24';
+$lang['no_data']            = '25';
+$lang['insufficient data']  = "26";
 
 
 
