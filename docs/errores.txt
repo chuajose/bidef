@@ -1,37 +1,4 @@
-1 - (required) = "El campo %s es obligatorio.";
-2 - (isset) = "El campo %s debe contener un valor.";
-3 - (valid_email) = "El campo %s debe contener un email válido.";
-4 - (valid_emails) = "El campo %s debe contener emails válidos.";
-5 - (valid_url) = "El campo %s debe contener una URL válida.";
-6 - (valid_ip) = "El campo %s debe contener una IP válida.";
-7 - (min_length) = "El campo %s debe tener como mínimo %s caracteres.";
-8 - (max_length) = "El campo %s no puede exceder de %s caracteres.";
-9 - (exact_length) = "El campo %s debe tener exactamente %s caracteres.";
-10 - (alpha) = "El campo %s solo puede contener caracteres alfabéticos.";
-11 - (alpha_numeric) = "El campo %s solo puede contener caracteres alfa-numéricos.";
-12 - (alpha_dash) = "El campo %s solo puede contener caracteres alfa-numericos, subrayados y guiones.";
-13 - (numeric) = "El campo %s solo puede contener números.";
-14 - (is_numeric) = "El campo %s solo puede contener caracteres numéricos.";
-15 - (integer) = "El campo %s debe contener un entero.";
-16 - (regex_match) = "El campo %s no está en el formato correcto.";
-17 - (matches) = "El campo %s no coincide con el campo %s.";
-18 - (is_natural) = "El campo %s solo puede contener números positivos.";
-19 - (is_natural_no_zero) = "El campo %s debe contener un número mayor que cero.";
-20 - (decimal) = "El campo %s debe contener un número decimal.";
-21 - (less_than) = "El campo %s debe contener un número menor que %s.";
-22 - (greater_than) = "El campo %s debe contener un número mayor que %s.";
-23 - (select_check) = "Debes seleccionar un valor en el campo %s";
-24 - (comprobar_cif) = "El campo %s no está en el formato correcto.";
-25 - (cif_correcto) = "El campo %s no está en el formato correcto.";
-26 - (select_check_usuario) = "Debes seleccionar un %s válido.";
-27 - (select_check_usuario_pais) = "No puedes acceder al mercado del %s.";
-28 - (comprobar_email) = "Ese email ya se encuentra dado de alta.";
-29 - (comprobar_existe_cif) = "Ese CIF ya se encuentra dado de alta.";
-30 - (valid_importe) = "Debes introducir un importe válido";
-31 - (hay_saldo) = "El saldo a transferir debe ser menor su capacidad de pago (max %s &ro;)";
-32 - (sin datos) = "Esta consulta no ha devuelto datos";
-33 - (faltan datos) = "Faltan datos para realizar correctamente la consulta";
-34 - (dni incorrecto) = "El campo %s no es correcto";
+los errores se encuentran en: application/language/english/form_validation_lang.php
 
 ##########
     HTTP CODGIOS
