@@ -159,6 +159,17 @@ class Imap {
 	}
 
 	/**
+	 * Elimina la bandeja.
+	 *
+	 * @param  $mailbox nombre de la carpeta a borrar
+	 * @return bool
+	 */
+	public function delete_mailbox($mailbox)
+	{
+		return imap_deletemailbox ( $this->imap_stream, $this->mailbox.$mailbox );
+	}
+
+	/**
 	 * Renombra la bandeja
 	 *
 	 * @param  $mailbox Nombre de la bandeja de la que queremos cambiar el nombre
@@ -288,6 +299,39 @@ class Imap {
 	}
 
 	/**
+	 * Devuelve la composicion en formato mime
+	 *
+	 * Enelope Un array asociativo de campos de cabecers. Las claves válidas son: 
+	 * "remail", "return_path", "date", "from", "reply_to", "in_reply_to", "subject", "to", "cc", "bcc", "message_id" y "custom_headers" (que contiene un array asociativo de otras cabeceras). 
+	 *
+	 * Body Un array asociativo que puede consistir en las siguientes claves: 
+	 * "type", "encoding", "charset", "type.parameters", "subtype", "id", "description", "disposition.type", "disposition", "contents.data", "lines", "bytes" y "md5". 
+	 * 
+	 * @param  $envelope array
+	 * @param  $body array
+	 * 
+	 * @return bool
+	 */
+	public function create_mail($envelope, $body)
+	{
+		 return imap_mail_compose ($envelope , $body );
+	}
+
+	/**
+	 * Envia el email
+	 *
+	 * @param  $to destinatario del emaill
+	 * @param  $subject asunto del email
+	 * @param  $message cuerpo del mensaje con formato devuelto  por create_mail
+	 * 
+	 * @return bool
+	 */
+	public function send_mail($to, $subject, $message)
+	{
+		return imap_mail ($to, $subject ,$message);
+	}
+
+	/**
 	 * Guarda el cuerpo del mensaje.
 	 * @return bool
 	 */
@@ -308,7 +352,6 @@ class Imap {
 	 * @return bool
 	 */
 	public function move_mail($mailId, $mailBox) {
-		echo $this->mailbox.$mailBox;
 		return imap_mail_move($this->imap_stream, $mailId, $mailBox, CP_UID) && $this->expunge_deleted_mails();
 	}
 
