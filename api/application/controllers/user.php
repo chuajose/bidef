@@ -28,7 +28,7 @@ class User extends REST_Controller
     }
 
 	function get_user_get() {
-        $user_id = $this->get('user');
+        $user_id = $this->form_validation->required($this->get('user'));
         if(!$user_id) $this->response(array('respuesta' => 33), 200);
         if($user = $this->user_library->get_user($user_id))	$this->response($user, 200);
         else $this->response(array('respuesta' => 32), 204);
