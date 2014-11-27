@@ -3,9 +3,9 @@
 /**
  * Welcome
  *
- * Este es un documento de ejemplo para ver como conectarse con 
- * la libreria rest. 
- * 
+ * Este es un documento de ejemplo para ver como conectarse con
+ * la libreria rest.
+ *
  * Puesdes utlizar el addon https://addons.mozilla.org/es/firefox/addon/restclient/ para las pruebas
  *
  * @package		CodeIgniter
@@ -26,20 +26,20 @@ class User extends REST_Controller
         $this->load->library('user_library');
         $this->form_validation->set_error_delimiters('', '');
     }
-    
-	function get_user_get($user_id = FALSE) {
+
+	function get_user_get() {
+        $user_id = $this->get('user');
         if(!$user_id) $this->response(array('respuesta' => 33), 200);
         if($user = $this->user_library->get_user($user_id))	$this->response($user, 200);
         else $this->response(array('respuesta' => 32), 204);
 	}
 
     function insert_user_post()
-    {   
-        $full_name = $this->input->post('first_name').$this->input->post('last_name');
+    {
         $this->form_validation->set_rules('dni', 'dni', 'dni');
         $this->form_validation->set_rules('name', 'name', 'trim|required');
         $this->form_validation->set_rules('first_name', 'first_name', 'trim|required');
-        $this->form_validation->set_rules('last_name', 'last_name', 'trim|required');        
+        $this->form_validation->set_rules('last_name', 'last_name', 'trim|required');
         $this->form_validation->set_rules('email', 'email', 'trim|valid_email|required|is_unique[user.email]|');
         $this->form_validation->set_rules('bank_acount', 'bank_acount', 'trim|is_unique[user.bank_acount]');
         if ($this->form_validation->run() === FALSE)
@@ -62,7 +62,7 @@ class User extends REST_Controller
     function list_users_get()
     {
         if($user_list = $this->user_library->list_users()) $this->response($user_list, 200);
-        else  $this->response(array('respuesta'=>1), 200);   
+        else  $this->response(array('respuesta'=>1), 200);
     }
 
 }
