@@ -26,9 +26,9 @@ class Email extends REST_Controller
 
         $this->load->library('imap');
 
-        $this->login = $this->imap->connect();//usuario y password
-
-        $this->data['error']=0;
+        $this->login         = $this->imap->connect();//usuario y password
+        
+        $this->data['error'] = 0;
         
     }
 
@@ -39,9 +39,9 @@ class Email extends REST_Controller
      */
     function mailbox_get()
     {
-        $bandejas = $this->imap->get_listing_folders();
-
-        $this->data['bandejas']=$bandejas;
+        $bandejas               = $this->imap->get_listing_folders();
+        
+        $this->data['bandejas'] =$bandejas;
 
         $this->response($this->data, 200);
 
@@ -58,10 +58,10 @@ class Email extends REST_Controller
             if ($this->form_validation->run() === TRUE)
             {
 
-                $mailbox = $this->post( 'mailbox' );
-
-                $mailbox_new = $this->post( 'mailbox_new' );
-
+                $mailbox               = $this->post( 'mailbox' );
+                
+                $mailbox_new           = $this->post( 'mailbox_new' );
+                
                 $this->data['mailbox'] = $this->imap->rename_mailbox($mailbox, $mailbox_new);
 
             }
@@ -92,8 +92,8 @@ class Email extends REST_Controller
             $page = 1;
         }
 
-        $emails = $this->imap->paginate_mails($page,10);
-
+        $emails               = $this->imap->paginate_mails($page,10);
+        
         $this->data['emails'] = $emails;
 
 		$this->response($this->data, 200);
@@ -110,7 +110,7 @@ class Email extends REST_Controller
 
         if($this->post('page')) {
 
-            $page   = $this->post('page');
+            $page = $this->post('page');
             
         } else {
 
@@ -119,20 +119,20 @@ class Email extends REST_Controller
 
         if($this->post('search')) {
 
-            $criteria   = $this->post('search');
+            $criteria = $this->post('search');
             
         } else {
-
+            
             $criteria = 'ALL';
         }
 
-        $emails = $this->imap->search_mails($criteria,$page,10);
-
+        $emails                = $this->imap->search_mails($criteria,$page,10);
+        
         list($messages,$total) = $emails;
-
-        $this->data['emails'] = $messages;
-
-        $this->data['total'] = $total;
+        
+        $this->data['emails']  = $messages;
+        
+        $this->data['total']   = $total;
 
         $this->response($this->data, 200);
     }

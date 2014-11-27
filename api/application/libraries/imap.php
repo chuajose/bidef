@@ -27,6 +27,12 @@ class Imap {
 	public $imap_path;
 
 	/**
+     * Registros a cargar en cada pagina
+     *
+     * @var string
+     **/
+	public $per_page = 10;
+	/**
      * CodeIgniter global
      *
      * @var string
@@ -152,6 +158,14 @@ class Imap {
 		return imap_createmailbox($this->imap_stream, imap_utf7_encode($this->imap_path));
 	}
 
+	/**
+	 * Renombra la bandeja
+	 *
+	 * @param  $mailbox Nombre de la bandeja de la que queremos cambiar el nombre
+	 * @param  $mailbox_new Nombre definitivo de la banejta
+	 * 
+	 * @return bool
+	 */
 	public function rename_mailbox($mailbox, $new_mailbox)
 	{
 		return imap_renamemailbox ( $this->imap_stream, $this->mailbox.$mailbox , $this->mailbox.$new_mailbox );
@@ -180,33 +194,28 @@ class Imap {
 	 * @return array listing the folders
 	 */
 
-	protected function init_folder($nombre,&$array,$data,$key){
+	protected function init_folder($folder,&$array,$data,$key){
 
-    $nombres=explode('.',$nombre);
+	    $folders=explode('.',$folder);
 
-    if(count($nombres)>1){
+	    if(count($folders)>1){
 
-        $name=array_shift($nombres);
+	        $name=array_shift($folders);
 
-        $sub = $this->init_folder(implode('.',$nombres),$array[$name],$data,$key);
+	        $sub = $this->init_folder(implode('.',$folders),$array[$name],$data,$key);
 
+	    }else{
 
+	    	$sub=array();
 
-    }else{
+	    	$name=array_shift($folders);
+	    }
 
-    	$sub=array();
-
-    	$name=array_shift($nombres);
-    }
-
-
-
-    if(!isset($array[$name]))
-    $array[$name]=array('name'=>$name,'data'=>$data,'folders'=>$sub);
-    
-   
-    return $array;
-}
+	    if(!isset($array[$name]))
+	    $array[$name]=array('name'=>$name,'data'=>$data,'folders'=>$sub);
+	   
+	    return $array;
+	}
 
 
 	public function get_listing_folders() {
@@ -217,11 +226,8 @@ class Imap {
 		foreach ($folders as $key => $folder)
 		{
 			$folder = str_replace("{".$this->server."}", "", imap_utf7_decode($folder));
-			
 			$subfolder = explode('.', $folder);
-			//echo $folder
 			$this->change_imap_stream($folder);;
-
 			$this->init_folder($folder,$this->mailboxes,$this->get_mailbox_info(),$key);
 
 		}
@@ -263,13 +269,13 @@ class Imap {
 	 *
 	 * @return array Mails ids
 	 */
-	public function search_mails($criteria = 'ALL',$page=1,$per_page=5) {
+	public function search_mails($criteria = 'ALL') {
 
 		$mailsIds = imap_search($this->imap_stream, $criteria, SE_UID, $this->server_encoding);
 
 		$this->total = count($mailsIds);
 
-		$mailsIds = array_chunk($mailsIds, $per_page);
+		$mailsIds = array_chunk($mailsIds, $this->per_page);
 
 		$mailsIds = $mailsIds[$page-1];
 
@@ -384,13 +390,19 @@ class Imap {
 		return imap_clearflag_full($this->imap_stream, implode(',', $mailsIds), $flag, ST_UID);
 	}
 
-	public function paginate_mails($page=1,$per_page=10)
+	/**
+	 * Paginal los resultados de la bandeja referida en el imap_strema
+	 *
+	 * @param array $page pagina a cargar
+	 * @return array que incluye el array de mensajes y el total de mensajes
+	 */
+	public function paginate_mails($page=1)
 	{
 		$this->total= $this->count_mails();//cuento
 
 		$mailsIds = $this->sort_mails(SORTDATE,true);
 
-		$mailsIds = array_chunk($mailsIds, $per_page);
+		$mailsIds = array_chunk($mailsIds, $this->per_page);
 
 		$mailsIds = $mailsIds[$page-1];
 
