@@ -1,18 +1,17 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Welcome
+ * Email
  *
- * Este es un documento de ejemplo para ver como conectarse con 
- * la libreria rest. 
+ * Conexión al buzon imap
  * 
  * Puesdes utlizar el addon https://addons.mozilla.org/es/firefox/addon/restclient/ para las pruebas
  *
- * @package		CodeIgniter
- * @subpackage	Rest Server
+ * @package		Imap
+ * @subpackage	Email
  * @category	Controller
- * @author		Phil Sturgeon
- * @link		http://philsturgeon.co.uk/code/
+ * @author		Jose Manuel Súarez Bravo
+ * @see         https://github.com/chuajose
 */
 
 // This can be removed if you use __autoload() in config.php OR use Modular Extensions
@@ -38,13 +37,42 @@ class Email extends REST_Controller
      *
      * @return array
      */
-    function bandejas_get()
+    function mailbox_get()
     {
         $bandejas = $this->imap->get_listing_folders();
 
         $this->data['bandejas']=$bandejas;
 
         $this->response($this->data, 200);
+
+    }
+
+    function mailbox_rename_post()
+    {
+        if( $this->post( 'mailbox' ) && $this->post( 'mailbox_new') ) {
+
+            $this->form_validation->set_rules('mailbox_new', 'mailbox_new', 'trim|require');
+
+            $this->form_validation->set_rules('mailbox', 'mailbox', 'trim|require');
+
+            if ($this->form_validation->run() === TRUE)
+            {
+
+                $mailbox = $this->post( 'mailbox' );
+
+                $mailbox_new = $this->post( 'mailbox_new' );
+
+                $this->data['mailbox'] = $this->imap->rename_mailbox($mailbox, $mailbox_new);
+
+            }
+
+            $this->response($this->data, 200);
+
+        } else {
+
+            $this->response($this->data, 403);
+
+        }
 
     }
     /**
