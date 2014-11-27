@@ -26,7 +26,11 @@ class Email extends REST_Controller
 
         $this->load->library('imap');
 
-        $this->login         = $this->imap->connect();//usuario y password
+        $this->load->model('imap_model');
+
+        $user = $this->imap_model->get(1);
+
+        $this->login         = $this->imap->connect( $user->user, $user->password);//usuario y password
         
         $this->data['error'] = 0;
         
