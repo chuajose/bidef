@@ -36,11 +36,11 @@ class User extends REST_Controller
 
     function insert_user_post()
     {
-        $this->form_validation->set_rules('dni', 'dni', 'dni');
+        $this->form_validation->set_rules('dni', 'dni', 'trim|dni');
         $this->form_validation->set_rules('name', 'name', 'trim|required');
         $this->form_validation->set_rules('first_name', 'first_name', 'trim|required');
         $this->form_validation->set_rules('last_name', 'last_name', 'trim|required');
-        $this->form_validation->set_rules('email', 'email', 'trim|valid_email|required|is_unique[user.email]|');
+        $this->form_validation->set_rules('email', 'email', 'trim|valid_email|required|is_unique[user.email]');
         $this->form_validation->set_rules('bank_acount', 'bank_acount', 'trim|is_unique[user.bank_acount]');
         if ($this->form_validation->run() === FALSE)
         {
