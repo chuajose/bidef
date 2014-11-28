@@ -92,7 +92,14 @@ function MainCtrl() {
         'Wisconsin',
         'Wyoming'
     ];
-
+    this.delegations = [
+        'Noroeste',
+        'Centro',
+        'Levante',
+        'Norte',
+        'Sur',
+        'CGO'
+    ];
     /**
      * persons - Data used in Tables view for Data Tables plugin
      */
