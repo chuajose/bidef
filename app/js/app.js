@@ -22,5 +22,6 @@
         'localytics.directives',
         'angles',
         'bidef.webmail',
+        'bidef.crm',
     ])
 })();
