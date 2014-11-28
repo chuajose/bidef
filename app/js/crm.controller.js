@@ -1,17 +1,13 @@
-var InsertClient = function($scope, $http, $state, $stateParams,utilsWebmail){
-	console.log($scope.newClient);
-	console.log($scope.billingData);
-	// $scope.mensajes = "";
-	// utilsWebmail.ListarWebmail('').success(function (response) {
-
-	// 	$scope.bandejas = response.bandejas;
-	// 	$scope.mensajes = response.mensajes;
-	// 	console.log(response);
-	// });
+function crmCtrl($scope, $http, $state, $stateParams){
+    $scope.insertClient = function(){
+        console.log('sdf');
+        utilsCrm.InsertClient($scope.newClient,$scope.billingData);
+        return true;
+    }
 
 }
 
 //Definimos los controladores
 angular
-    .module('crm')
-    .controller('InsertClient ', InsertClient)
+    .module('bidef')
+    .controller('crmCtrl ', crmCtrl)
