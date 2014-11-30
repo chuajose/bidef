@@ -96,9 +96,23 @@ class Email extends REST_Controller
             $page = 1;
         }
 
-        $emails               = $this->imap->paginate_mails($page,10);
+        if($this->get('mailbox')) {
+
+            $mailbox = $this->get('mailbox');
+            
+        } else {
+
+            $mailbox = 'inbox';
+        }
+        $this->imap->change_imap_stream($mailbox);
+
+        list($list,$total) = $this->imap->paginate_mails($page,10);
+
+
         
-        $this->data['emails'] = $emails;
+        $this->data['emails'] = $list;
+
+        $this->data['total'] = $total;
 
 		$this->response($this->data, 200);
 	}
@@ -121,6 +135,8 @@ class Email extends REST_Controller
             $page = 1;
         }
 
+
+
         if($this->post('search')) {
 
             $criteria = $this->post('search');
@@ -139,6 +155,35 @@ class Email extends REST_Controller
         $this->data['total']   = $total;
 
         $this->response($this->data, 200);
+    }
+
+    function mail_get()
+    {
+
+        if(!$this->get('id'))
+        {
+            $this->response($this->data, 400);
+        }
+
+        $email = $this->imap->get_mail($this->get('id')); 
+
+        $this->data['header'] = $email;
+
+       
+
+        $this->data['adjuntos'] = $email->get_attachments();
+
+
+        if(!is_null($this->data['header']->textHtml)){
+
+            $this->data['view'] = $email->replace_internal_links(base_url().'adjuntos');
+        } else {
+
+            $this->data['view'] = "<pre>".$this->data['header']->textPlain."</pre>";
+        }
+
+        $this->response($this->data, 200);
+
     }
 
 }
