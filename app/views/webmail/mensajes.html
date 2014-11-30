@@ -19,9 +19,9 @@
         <div class="btn-group pull-right">
            <!-- <button class="btn btn-white btn-sm" ui-sref="webmail.bandeja({bandejaId:bandeja, pagina:paginaanterior})"><i class="fa fa-arrow-left"></i></button>
             <button class="btn btn-white btn-sm" ui-sref="webmail.bandeja({bandejaId:bandeja, pagina:paginasiguiente})"><i class="fa fa-arrow-right"></i></button>-->
-            <pagination style="margin:0" ng-change="pageChanged()" total-items="bigTotalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
-        </div>
-        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh</button>
+           <pagination style="margin:0" ng-change="pageChanged(currentPage)" total-items="bigTotalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+    </div>
+        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox" ui-sref="webmail"><i class="fa fa-refresh"></i> Refresh</button>
         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i></button>
         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as important"><i class="fa fa-exclamation"></i></button>
         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i></button>
@@ -33,14 +33,14 @@
 <progressbar ng-show="hasPendingRequests()" value="loading" type="danger" class="progress-striped active"><b>Cargando {{loading}}%</b></progressbar>
     <table class="table table-hover table-mail">
         <tbody>
-        <tr  ng-repeat="mensaje in mensajes" class="read">
+        <tr  ng-repeat="mensaje in mensajes"   ng-class="{'read': mensaje.seen, 'unread': !mensaje.seen}">
             <td class="check-mail">
                 <input icheck type="checkbox" ng-model="check19">
             </td>
-            <td class="mail-ontact"><a ui-sref="email_view">{{mensaje.from}}</a></td>
-            <td class="mail-subject"><a ui-sref="email_view">{{mensaje.asunto}}.</a></td>
-            <td class=""><i class="fa fa-paperclip"></i></td>
-            <td class="text-right mail-date">{{mensaje.fecha}}</td>
+            <td class="mail-ontact"><a ui-sref="webmail.ver({id:mensaje.uid})">{{mensaje.from}}</a></td>
+            <td class="mail-subject"><a ui-sref="webmail.ver({id:mensaje.uid})">{{mensaje.subject}}.</a></td>
+            <td class=""><i ng-show="mensaje.attachments" class="fa fa-paperclip"></i></td>
+            <td class="text-right mail-date">{{mensaje.date}}</td>
         </tr>
         <!--<tr class="unread">
             <td class="check-mail">
