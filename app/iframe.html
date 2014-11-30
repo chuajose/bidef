@@ -1,0 +1,50 @@
+<div ng-app="miIframe" ng-controller="IframeCtrl" ng-bind-html="renderHtml(mensaje)"></div>
+
+<script src="js/angular/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular-sanitize.js"></script>
+
+    <script type="text/javascript">
+		var app = angular.module("miIframe", ['ngSanitize']);
+
+
+      function IframeCtrl($scope,$sce) {
+        //$scope.mensaje = "";
+
+        window.updatedata = function(data) {
+        	//console.log(data);
+          $scope.$apply(function(){
+            //$scope.mensaje = data;
+            $scope.renderHtml = function () {
+		            	return $sce.trustAsHtml(data);
+		        	};
+          });
+        };
+        
+      }
+      
+    </script>
+
+<!--
+    <div ng-app="miIframe" ng-controller="IframeCtrl" ng-bind-html="renderHtml(mensaje)"></div>
+
+<script src="js/angular/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular-sanitize.js"></script>
+
+    <script type="text/javascript">
+		var app = angular.module("miIframe", ['ngSanitize']);
+		app.controller('IframeCtrl',IframeCtrl);
+
+		var IframeCtrl = function($scope,$http, $sce){
+			window.updatedata = function(data) {
+			        	//console.log(data);
+			    $scope.$apply(function(){
+
+			        $scope.mensaje = data;
+			    	$scope.renderHtml = function (data) {
+		            	return $sce.trustAsHtml(data);
+		        	};
+			    });
+			}
+		}
+		
+    </script>-->
