@@ -443,7 +443,7 @@ class Imap {
 	{
 		$this->total= $this->count_mails();//cuento
 
-		$mailsIds = $this->sort_mails(SORTDATE,true);
+		$mailsIds = $this->sort_mails(SORTARRIVAL,true);
 
 		$mailsIds = array_chunk($mailsIds, $this->per_page);
 
@@ -481,7 +481,7 @@ class Imap {
 	public function get_mails_info(array $mailsIds) {
 
 		$mails = imap_fetch_overview($this->imap_stream, implode(',', $mailsIds), FT_UID);
-		//krsort($mails );
+		rsort($mails );
 		if(is_array($mails) && count($mails))
 		{
 			foreach($mails as &$mail)
@@ -803,8 +803,9 @@ class Imap {
 				$fileSysName = preg_replace('~[\\\\/]~', '', $mail->id . '_' . $attachmentId . '_' . preg_replace(array_keys($replace), $replace, $fileName));
 				//$this->attachments_dir="http://localhost/php-imap-master/example/attachments";//cambio para que use la de web
 				$attachment->filePath = $this->attachments_dir . DIRECTORY_SEPARATOR . $fileSysName;
+				//$attachment->size = filesize($this->attachments_dir . DIRECTORY_SEPARATOR . $fileSysName);
 				file_put_contents($attachment->filePath, $data);
-				//$attachment->filePath = "http://localhost/php-imap-master/example/attachments". DIRECTORY_SEPARATOR . $fileSysName;
+				$attachment->filePath = "http://localhost/teslabide/api/adjuntos". DIRECTORY_SEPARATOR . $fileSysName;
 			}
 
 			$mail->add_attachment($attachment);
@@ -816,6 +817,7 @@ class Imap {
 				$mail->textPlain .= $data;
 			}
 			else {
+				//$data = htmlspecialchars($data, ENT_QUOTES);
 				$mail->textHtml .= $data;
 			}
 		}
@@ -929,6 +931,7 @@ class Incoming_mail_attachment {
 	public $id;
 	public $name;
 	public $filePath;
+	public $size;
 }
 
 class Imap_mailbox_exception extends Exception {
