@@ -1,6 +1,8 @@
 angular.module('bidef.webmail', [
   'ui.router',
-  'bidef.webmail.services'
+  'ui.bootstrap',
+  'bidef.webmail.services',
+  'ngSanitize'
 ])
 .config(
   [          '$stateProvider', '$urlRouterProvider',
@@ -39,6 +41,20 @@ angular.module('bidef.webmail', [
             'mensajes@webmail': {
               templateUrl: 'views/webmail/mensajes.html',
               controller: 'WebmailBandejaCtrl'
+            },
+
+          }
+
+        })
+        .state('webmail.ver', {
+
+          url: '/ver/:id',
+
+         views: {
+
+            'mensajes@webmail': {
+              templateUrl: 'views/webmail/mail_detail.html',
+              controller: 'WebmailMensajeCtrl'
             },
 
           }

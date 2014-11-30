@@ -1,11 +1,26 @@
 var WebmailCtrl = function($scope, $http, $state, $stateParams,utilsWebmail){
 	$scope.mensajes = "";
-	utilsWebmail.ListarWebmail('').success(function (response) { 
+	$scope.maxSize = 5;
+  	$scope.bigCurrentPage = 1;
+  	console.log('entro en WebmailCtrl');
+	utilsWebmail.ListarWebmail(1,'inbox').success(function (response) { 
 
 		$scope.bandejas = response.bandejas;
-		$scope.mensajes = response.mensajes;
+		$scope.mensajes = response.emails;
+		$scope.bigTotalItems = response.total
+
 		console.log(response);
 	});
+
+  	$scope.pageChanged = function(page) {
+	  	$scope.currentPage = page;
+	    utilsWebmail.ListarWebmail(page,'inbox').success(function (response) { 
+
+			$scope.bandejas = response.bandejas;
+			$scope.mensajes = response.emails;
+			$scope.bigTotalItems = response.total
+		});
+    };
 
 }
 
@@ -13,9 +28,9 @@ var WebmailBandejaCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 	$scope.mensajes      = "";
 	$scope.currentPage   = $stateParams.pagina;
 	$scope.bigTotalItems = 0;
-	$scope.palabra       = "";
-	utilsWebmail.ListarMensajes($stateParams.bandejaId, $scope.currentPage,$scope.palabra).success(function (response) { 
-		$scope.mensajes      = response.mensajes;
+	$scope.palabraListarWebmail= "";
+	utilsWebmail.ListarWebmail( $scope.currentPage,$stateParams.bandejaId,$scope.palabra).success(function (response) { 
+		$scope.mensajes      = response.emails;
 		$scope.bandeja       = $stateParams.bandejaId;
 		$scope.bigTotalItems = response.total
 		
@@ -59,7 +74,29 @@ var WebmailBandejaCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 
 }
 
+var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebmail){
+	$scope.mensaje="";
+	utilsWebmail.verMail($stateParams.id).success(function (response) { 
+		console.log(response);
+		
+			$scope.mensaje      = response.view;
+			$scope.subject	= response.header.subject;
+			$scope.from	= response.header.fromAddress;
+			$scope.fecha	= response.header.date;
+			$scope.adjuntos	= response.adjuntos;
+			$scope.adjuntoslength = response.adjuntos.length;
+		
+		var ficheros = response.adjuntos;
+ //console.log(ficheros.length());
+
+		document.getElementById('iframe').contentWindow.updatedata($scope.mensaje);
+
+		
+	});
+
+}
 //Definimos los controladores
 angular
     .module('bidef')
     .controller('WebmailCtrl ', WebmailCtrl)
+    .controller('WebmailMensajeCtrl',WebmailMensajeCtrl)
