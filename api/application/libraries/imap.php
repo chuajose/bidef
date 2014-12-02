@@ -154,8 +154,8 @@ class Imap {
 	 * @return bool
 	 */
 
-	public function create_mailbox() {
-		return imap_createmailbox($this->imap_stream, imap_utf7_encode($this->imap_path));
+	public function create_mailbox($mailbox) {
+		return imap_createmailbox($this->imap_stream, imap_utf7_encode($this->mailbox.$mailbox));
 	}
 
 	/**
