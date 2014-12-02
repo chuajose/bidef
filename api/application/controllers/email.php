@@ -33,6 +33,10 @@ class Email extends REST_Controller
         $this->login         = $this->imap->connect( $user->user, $user->password);//usuario y password
         
         $this->data['error'] = 0;
+
+        $this->load->helper(array('form', 'url'));
+
+        $this->load->library('form_validation');
         
     }
 
@@ -51,9 +55,15 @@ class Email extends REST_Controller
 
     }
 
-    function mailbox_rename_post()
+    function mailbox_put()
     {
-        if( $this->post( 'mailbox' ) && $this->post( 'mailbox_new') ) {
+        if( $this->put( 'mailbox' ) && $this->put( 'mailbox_new') ) {   
+
+            echo $this->put('mailbox');
+
+            $_POST['mailbox'] = $this->put('mailbox');
+
+            $_POST['mailbox_new'] = $this->put('mailbox_new');
 
             $this->form_validation->set_rules('mailbox_new', 'mailbox_new', 'trim|require');
 
@@ -62,21 +72,73 @@ class Email extends REST_Controller
             if ($this->form_validation->run() === TRUE)
             {
 
-                $mailbox               = $this->post( 'mailbox' );
+                $mailbox               = $this->put( 'mailbox' );
                 
-                $mailbox_new           = $this->post( 'mailbox_new' );
+                $mailbox_new           = $this->put( 'mailbox_new' );
                 
                 $this->data['mailbox'] = $this->imap->rename_mailbox($mailbox, $mailbox_new);
 
+                $this->response($this->data, 200);
+
+            } else {
+
+                 echo  validation_errors();
+                 //echo "errprrrr".form_error('mailbox_new');
+                $this->data['error'] = validation_errors();
+                $this->response($this->data, 200);
+
             }
 
-            $this->response($this->data, 200);
+            
+
+
 
         } else {
 
             $this->response($this->data, 403);
 
         }
+
+    }
+
+
+    function mailbox_delete()
+    {
+        if( $this->delete( 'mailbox' ) ) {
+
+            $this->data['mailbox'] = $this->imap->delete_mailbox($this->delete('mailbox'));
+
+        }
+
+        $this->response($this->data, 200);
+
+
+    }
+
+    function mailbox_post()
+    {
+        if( $this->post( 'mailbox' ) ) {
+
+            $this->form_validation->set_rules('mailbox', 'mailbox', 'trim|require');
+
+            if ($this->form_validation->run() === TRUE)
+            {
+
+                $mailbox               = $this->post( 'mailbox' );
+                                
+                if( $this->imap->create_mailbox($mailbox) ) {
+
+                    $this->response($this->data, 200);
+
+                }
+
+            }
+
+        }
+        $this->data['error'] = 1;
+
+        $this->response($this->data, 200);
+
 
     }
     /**
@@ -184,6 +246,22 @@ class Email extends REST_Controller
 
         $this->response($this->data, 200);
 
+    }
+
+    function mail_update()
+    {
+        if(!$this->get('id'))
+        {
+            $this->response($this->data, 400);
+        }
+        if(!$this->get('action'))
+        {
+            $this->response($this->data, 400);
+        }
+        if($this->get('action')==="read")$this->imap->mark_mail_as_read($this->get('id'));
+        if($this->get('action')==="unread")$this->imap->mark_mail_as_unread($this->get('id'));
+        if($this->get('action')==="important")$this->imap->mark_mail_as_important($this->get('id'));
+        
     }
 
 }
