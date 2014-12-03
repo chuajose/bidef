@@ -224,7 +224,7 @@ class Imap {
 
 	    if(!isset($array[$name]))
 	    $array[$name]=array('name'=>$name,'data'=>$data,'folders'=>$sub);
-	   
+
 	    return $array;
 	}
 
