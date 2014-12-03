@@ -55,6 +55,14 @@ class Email extends REST_Controller
 
     }
 
+     /**
+     * Actualiza el nombre la las carpetas
+     * 
+     * @param string $mailbox Nombre de la carpeta que se desea cambiar
+     * @param string $mailbox_new Nombre nuevo para la carpeta
+     *
+     * @return response
+     */
     function mailbox_put()
     {
         if( $this->put( 'mailbox' ) && $this->put( 'mailbox_new') ) {   
@@ -78,30 +86,30 @@ class Email extends REST_Controller
                 
                 $this->data['mailbox'] = $this->imap->rename_mailbox($mailbox, $mailbox_new);
 
-                $this->response($this->data, 200);
 
             } else {
 
-                 echo  validation_errors();
-                 //echo "errprrrr".form_error('mailbox_new');
                 $this->data['error'] = validation_errors();
-                $this->response($this->data, 200);
 
             }
 
-            
-
-
-
         } else {
 
-            $this->response($this->data, 403);
-
+            $this->data['error']=1; //No existen datos
         }
+
+        $this->response($this->data, 200);
+
 
     }
 
-
+    /**
+     * Borra la carpeta
+     * 
+     * @param string $mailbox Nombre de la carpeta que se desea borrar
+     *
+     * @return response
+     */
     function mailbox_delete()
     {
         if( $this->delete( 'mailbox' ) ) {
@@ -115,6 +123,13 @@ class Email extends REST_Controller
 
     }
 
+    /**
+     * Crear la carpeta
+     * 
+     * @param string $mailbox Nombre de la carpeta que se desea crear
+     *
+     * @return response
+     */
     function mailbox_post()
     {
         if( $this->post( 'mailbox' ) ) {
@@ -169,8 +184,6 @@ class Email extends REST_Controller
         $this->imap->change_imap_stream($mailbox);
 
         list($list,$total) = $this->imap->paginate_mails($page,10);
-
-
         
         $this->data['emails'] = $list;
 
@@ -219,6 +232,13 @@ class Email extends REST_Controller
         $this->response($this->data, 200);
     }
 
+    /**
+     * Devuelve los datos de un email
+     * 
+     * @param string $id uid del mensaje a cargar
+     *
+     * @return response
+     */
     function mail_get()
     {
 
@@ -229,13 +249,11 @@ class Email extends REST_Controller
 
         $email = $this->imap->get_mail($this->get('id')); 
 
-        $this->data['header'] = $email;
+        $this->data['header'] = $email; //Datos del email
 
-       
+        $this->data['adjuntos'] = $email->get_attachments(); //Datos de los adjuntos
 
-        $this->data['adjuntos'] = $email->get_attachments();
-
-
+        //Mostramos la vista
         if(!is_null($this->data['header']->textHtml)){
 
             $this->data['view'] = $email->replace_internal_links(base_url().'adjuntos');
@@ -248,20 +266,72 @@ class Email extends REST_Controller
 
     }
 
-    function mail_update()
+    /**
+     * Actualiza los datos de un email
+     * 
+     * @param int $id uid del mensaje a modificar
+     * @param string $action tipo de accion a realizar sobre el mensaje (read, unread, important)
+     * @param string $mailbox nombre de la carpeta a la que mover el mensaje. Opcional, solo necestario con la accion move
+     * @return response
+     */
+    function mail_put()
     {
-        if(!$this->get('id'))
+        if(!$this->put('id') && !$this->put('action'))
         {
             $this->response($this->data, 400);
         }
-        if(!$this->get('action'))
-        {
-            $this->response($this->data, 400);
-        }
-        if($this->get('action')==="read")$this->imap->mark_mail_as_read($this->get('id'));
-        if($this->get('action')==="unread")$this->imap->mark_mail_as_unread($this->get('id'));
-        if($this->get('action')==="important")$this->imap->mark_mail_as_important($this->get('id'));
         
+        if($this->put('action') === "read") {
+
+            if(!$this->imap->mark_mail_as_read($this->put('id'))){
+                $this->data['error']=2;
+            }
+
+        } elseif($this->put('action') === "unread") {
+
+            if(!$this->imap->mark_mail_as_unread($this->put('id'))){
+                $this->data['error']=2;
+            }
+
+        } elseif($this->put('action') === "important") {
+
+            if(!$this->imap->mark_mail_as_important($this->put('id'))){
+                $this->data['error']=2;
+            }
+
+        } elseif ($this->put('action')==="move" && $this->put('mailbox')) {
+
+            if(!$this->imap->move_mail($this->put('id'),$this->put('mailbox'))){
+                $this->data['error']=3;
+            }
+            
+        }
+
+       
+        $this->response($this->data, 200);
+        
+    }
+
+    /**
+     * Elimina  un email
+     * 
+     * @param string $id uid del mensaje a eliminar
+     *
+     * @return response
+     */
+    function mail_delete()
+    {
+        if(!$this->delete('id'))
+        {
+            $this->response($this->data, 400);
+        }
+
+        if(!$this->imap->delete_mail($this->delete('id')))
+        {
+            $this->data['error']=2;
+        }
+
+        $this->response($this->data, 200);
     }
 
 }
