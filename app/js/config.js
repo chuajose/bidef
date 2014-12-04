@@ -54,11 +54,6 @@ function config($stateProvider, $urlRouterProvider) {
             templateUrl: "views/chartjs.html",
             data: { pageTitle: 'Chart.js' }
         })
-        .state('inbox', {
-            url: "/inbox",
-            templateUrl: "views/mailbox.html",
-            data: { pageTitle: 'Mail Inbox' }
-        })
         .state('email_view', {
             url: "/email_view",
             templateUrl: "views/mail_detail.html",

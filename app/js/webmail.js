@@ -2,7 +2,6 @@ angular.module('bidef.webmail', [
   'ui.router',
   'ui.bootstrap',
   'bidef.webmail.services',
-  'ngSanitize'
 ])
 .config(
   [          '$stateProvider', '$urlRouterProvider',

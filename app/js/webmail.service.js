@@ -11,7 +11,16 @@ var utilsWebmail = function ($http) {
          }); 
     },   
 
-    verMail: function ListarWebmail(id) {
+    UpdateMail: function UpdateMail(id,action,mailbox) {
+    //  console.log(id);
+      return $http({ 
+        method: 'PUT', 
+        url: '../api/index.php/email/mail',
+        data: {id: id, action:action, mailbox:mailbox}
+         }); 
+    },   
+
+    VerMail: function VerMail(id) {
     //  console.log(id);
       return $http({ 
         method: 'GET', 
@@ -20,7 +29,7 @@ var utilsWebmail = function ($http) {
          }); 
     },   
 
-    ListarMensajes: function ListarMensajes(bandeja,pagina,busqueda){
+    VerMails: function VerMails(bandeja,pagina,busqueda){
 
       return $http({
                 url     : "index.php/api/email/mails",

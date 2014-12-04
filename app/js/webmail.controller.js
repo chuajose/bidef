@@ -2,6 +2,7 @@ var WebmailCtrl = function($scope, $http, $state, $stateParams,utilsWebmail){
 	$scope.mensajes = "";
 	$scope.maxSize = 5;
   	$scope.bigCurrentPage = 1;
+  	$scope.select = {};//almaceno los uids de los mensaje checkeados
   	console.log('entro en WebmailCtrl');
 	utilsWebmail.ListarWebmail(1,'inbox').success(function (response) { 
 
@@ -21,6 +22,19 @@ var WebmailCtrl = function($scope, $http, $state, $stateParams,utilsWebmail){
 			$scope.bigTotalItems = response.total
 		});
     };
+
+    $scope.check_important = function() {
+
+    	var id=[];
+    	$.each($scope.select, function(index, val) {
+    		id.push(index);
+    	});
+
+    	utilsWebmail.UpdateMail(id,'important','asd').success(function (response) { 
+
+			
+		});
+    }
 
 }
 
@@ -76,7 +90,7 @@ var WebmailBandejaCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 
 var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebmail){
 	$scope.mensaje="";
-	utilsWebmail.verMail($stateParams.id).success(function (response) { 
+	utilsWebmail.VerMail($stateParams.id).success(function (response) { 
 		console.log(response);
 		
 			$scope.mensaje      = response.view;
@@ -86,7 +100,7 @@ var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 			$scope.adjuntos	= response.adjuntos;
 			$scope.adjuntoslength = response.adjuntos.length;
 		
-		var ficheros = response.adjuntos;
+	//	var ficheros = response.adjuntos;
  //console.log(ficheros.length());
 
 		document.getElementById('iframe').contentWindow.updatedata($scope.mensaje);

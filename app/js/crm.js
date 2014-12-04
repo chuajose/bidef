@@ -1,5 +1,4 @@
 angular.module('bidef.crm', [
-  'ui.router',
   'bidef.crm.services'
 ]).config(
   ['$stateProvider', '$urlRouterProvider',
@@ -8,6 +7,7 @@ angular.module('bidef.crm', [
         .state('client_form', {
             url: "/client_form",
             templateUrl: "views/form_client.html",
+            controller : InsertClient,
             data: { pageTitle: 'Crear ayuntamiento' }
         })
         ;

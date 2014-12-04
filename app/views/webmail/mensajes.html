@@ -23,19 +23,18 @@
     </div>
         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox" ui-sref="webmail"><i class="fa fa-refresh"></i> Refresh</button>
         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i></button>
-        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as important"><i class="fa fa-exclamation"></i></button>
+        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as important" ng-click="check_important()"><i class="fa fa-exclamation"></i></button>
         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i></button>
 
     </div>
 </div>
-    
 <div class="mail-box">
 <progressbar ng-show="hasPendingRequests()" value="loading" type="danger" class="progress-striped active"><b>Cargando {{loading}}%</b></progressbar>
     <table class="table table-hover table-mail">
         <tbody>
         <tr  ng-repeat="mensaje in mensajes"   ng-class="{'read': mensaje.seen, 'unread': !mensaje.seen}">
             <td class="check-mail">
-                <input icheck type="checkbox" ng-model="check19">
+                <input icheck type="checkbox" ng-model="select[mensaje.uid]">
             </td>
             <td class="mail-ontact"><a ui-sref="webmail.ver({id:mensaje.uid})">{{mensaje.from}}</a></td>
             <td class="mail-subject"><a ui-sref="webmail.ver({id:mensaje.uid})">{{mensaje.subject}}.</a></td>
