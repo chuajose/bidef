@@ -183,7 +183,7 @@ class Email extends REST_Controller
         }
         $this->imap->change_imap_stream($mailbox);
 
-        list($list,$total) = $this->imap->paginate_mails($page,10);
+        list($list,$total) = $this->imap->paginate_mails($page);
         
         $this->data['emails'] = $list;
 
@@ -196,7 +196,7 @@ class Email extends REST_Controller
      * Devuelve los email solicitados
      *
      * @param int $page parametro post con el valor de la pagina a cargar
-     * @param int $search parametro post con el valor de la busqueda a realizar
+     * @param array $search parametro post con el indice del nombre del campo a buscar y  el valor de la busqueda a realizar
      * @return array
      */
     function mails_post() {
@@ -215,13 +215,14 @@ class Email extends REST_Controller
         if($this->post('search')) {
 
             $criteria = $this->post('search');
+            $criteria = 'SUBJECT "'.$criteria.'"';
             
         } else {
             
             $criteria = 'ALL';
         }
 
-        $emails                = $this->imap->search_mails($criteria,$page,10);
+        $emails                = $this->imap->search_mails($criteria,$page);
         
         list($messages,$total) = $emails;
         
@@ -276,6 +277,7 @@ class Email extends REST_Controller
      */
     function mail_put()
     {
+
         if(!$this->put('id') && !$this->put('action'))
         {
             $this->response($this->data, 400);
@@ -295,7 +297,7 @@ class Email extends REST_Controller
 
         } elseif($this->put('action') === "important") {
 
-            if(!$this->imap->mark_mail_as_important($this->put('id'))){
+            if(!$this->imap->mark_mails_as_important($this->put('id'))){
                 $this->data['error']=2;
             }
 
