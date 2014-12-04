@@ -280,17 +280,20 @@ class Imap {
 	 *
 	 * @return array Mails ids
 	 */
-	public function search_mails($criteria = 'ALL') {
+	public function search_mails($criteria = 'ALL',$page=0) {
 
+		echo $criteria;
 		$mailsIds = imap_search($this->imap_stream, $criteria, SE_UID, $this->server_encoding);
+
+		var_dump($mailsIds);
+		if(!$mailsIds) return false;
 
 		$this->total = count($mailsIds);
 
 		$mailsIds = array_chunk($mailsIds, $this->per_page);
 
 		$mailsIds = $mailsIds[$page-1];
-
-		if(!$mailsIds) return false;
+		
 		//return $mailsIds ? $mailsIds : array();
 	    $res = $this->get_mails_info($mailsIds);
 
@@ -805,7 +808,7 @@ class Imap {
 				$attachment->filePath = $this->attachments_dir . DIRECTORY_SEPARATOR . $fileSysName;
 				//$attachment->size = filesize($this->attachments_dir . DIRECTORY_SEPARATOR . $fileSysName);
 				file_put_contents($attachment->filePath, $data);
-				$attachment->filePath = "http://localhost/teslabide/api/adjuntos". DIRECTORY_SEPARATOR . $fileSysName;
+				$attachment->filePath = base_url()."api/adjuntos". DIRECTORY_SEPARATOR . $fileSysName;
 			}
 
 			$mail->add_attachment($attachment);
@@ -813,11 +816,30 @@ class Imap {
 
 		}
 		elseif($partStructure->type == 0 && $data) {
+
+
+
 			if(strtolower($partStructure->subtype) == 'plain') {
 				$mail->textPlain .= $data;
 			}
 			else {
-				//$data = htmlspecialchars($data, ENT_QUOTES);
+				/*
+				 * if data is html checked all links and add target="_blank"
+				 */
+				libxml_use_internal_errors(true);//user ignore errors  in data
+				$dom = new DOMDocument();
+				$dom->loadHTML($data);
+
+				$links = array();
+				$arr = $dom->getElementsByTagName("a"); // DOMNodeList Object 
+				foreach($arr as $item) { 
+				    $item->setAttribute('target','_blank');
+				}
+				$data=$dom->saveHTML();
+				/*
+				 * fin check html
+				 */
+
 				$mail->textHtml .= $data;
 			}
 		}
