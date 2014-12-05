@@ -785,6 +785,7 @@ class Imap {
 			? trim($partStructure->id, " <>")
 			: (isset($params['filename']) || isset($params['name']) ? mt_rand() . mt_rand() : null);
 		if($attachmentId) {
+			
 			if(empty($params['filename']) && empty($params['name'])) {
 				$fileName = $attachmentId . '.' . strtolower($partStructure->subtype);
 			}
@@ -817,10 +818,12 @@ class Imap {
 		}
 		elseif($partStructure->type == 0 && $data) {
 
-
+			
 
 			if(strtolower($partStructure->subtype) == 'plain') {
 				$mail->textPlain .= $data;
+
+
 			}
 			else {
 				/*
@@ -833,20 +836,21 @@ class Imap {
 				$links = array();
 				$arr = $dom->getElementsByTagName("a"); // DOMNodeList Object 
 				foreach($arr as $item) { 
-				    $item->setAttribute('target','_blank');
+				    if(!$item->getAttribute('target'))$item->setAttribute('target','_blank');
 				}
 				$data=$dom->saveHTML();
 				/*
 				 * fin check html
 				 */
-
-				$mail->textHtml .= $data;
+				//echo $data;
+				$mail->textHtml .= utf8_encode($data);
 			}
 		}
 		elseif($partStructure->type == 2 && $data) {
 			$mail->textPlain .= trim($data);
 		}
 		if(!empty($partStructure->parts)) {
+			die('si parte type');
 			foreach($partStructure->parts as $subPartNum => $subPartStructure) {
 				if($partStructure->type == 2 && $partStructure->subtype == 'RFC822') {
 					$this->init_mail_part($mail, $subPartStructure, $partNum);
