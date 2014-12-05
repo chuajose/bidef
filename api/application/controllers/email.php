@@ -285,13 +285,13 @@ class Email extends REST_Controller
         
         if($this->put('action') === "read") {
 
-            if(!$this->imap->mark_mail_as_read($this->put('id'))){
+            if(!$this->imap->mark_mails_as_read($this->put('id'))){
                 $this->data['error']=2;
             }
 
         } elseif($this->put('action') === "unread") {
 
-            if(!$this->imap->mark_mail_as_unread($this->put('id'))){
+            if(!$this->imap->mark_mails_as_unread($this->put('id'))){
                 $this->data['error']=2;
             }
 
