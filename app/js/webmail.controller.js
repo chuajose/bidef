@@ -23,18 +23,102 @@ var WebmailCtrl = function($scope, $http, $state, $stateParams,utilsWebmail){
 		});
     };
 
+    	$scope.hasPendingRequests = function () {
+ 			$scope.loading = parseInt(100)-($http.pendingRequests.length*parseInt(10));
+ 			console.log($scope.loading);
+            return $http.pendingRequests.length > 0;
+        };
     $scope.check_important = function() {
-
+    	//console.log($scope.mensajes);
     	var id=[];
+    	var indices=[];
     	$.each($scope.select, function(index, val) {
-    		id.push(index);
+    		//
+    		//console.log(val);
+    		if(val===true) {
+
+    			//console.log($scope.mensajes[index]);
+    		//	console.log($scope.mensajes[index].uid);
+    			id.push($scope.mensajes[index].uid);
+    			console.log(index);
+    			indices.push(index);
+    			
+    		}
+    		//$scope.mensajes[index].data.push({flagged : true});   
     	});
 
-    	utilsWebmail.UpdateMail(id,'important','asd').success(function (response) { 
 
+    	utilsWebmail.UpdateMail(id,'important','asd').success(function (response) { 
+    	
+			$.each(indices, function(key, indice) {
+				//console.log(indice);
+			   $scope.mensajes[indice].flagged=true;
+			});
 			
 		});
     }
+
+
+    $scope.check_read = function() {
+    	//console.log($scope.mensajes);
+    	var id=[];
+    	var indices=[];
+    	$.each($scope.select, function(index, val) {
+    		//
+    		//console.log(val);
+    		if(val===true) {
+
+    			//console.log($scope.mensajes[index]);
+    		//	console.log($scope.mensajes[index].uid);
+    			id.push($scope.mensajes[index].uid);
+    			console.log(index);
+    			indices.push(index);
+    			
+    		}
+    		//$scope.mensajes[index].data.push({flagged : true});   
+    	});
+
+
+    	utilsWebmail.UpdateMail(id,'unread','asd').success(function (response) { 
+    	
+			$.each(indices, function(key, indice) {
+				//console.log(indice);
+			   $scope.mensajes[indice].seen=false;
+			});
+			
+		});
+    }
+
+        $scope.check_unread = function() {
+    	//console.log($scope.mensajes);
+    	var id=[];
+    	var indices=[];
+    	$.each($scope.select, function(index, val) {
+    		//
+    		//console.log(val);
+    		if(val===true) {
+
+    			//console.log($scope.mensajes[index]);
+    		//	console.log($scope.mensajes[index].uid);
+    			id.push($scope.mensajes[index].uid);
+    			console.log(index);
+    			indices.push(index);
+    			
+    		}
+    		//$scope.mensajes[index].data.push({flagged : true});   
+    	});
+
+
+    	utilsWebmail.UpdateMail(id,'read','asd').success(function (response) { 
+    	
+			$.each(indices, function(key, indice) {
+				//console.log(indice);
+			   $scope.mensajes[indice].seen=true;
+			});
+			
+		});
+    }
+
 
 }
 
