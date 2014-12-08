@@ -79,7 +79,7 @@ class Imap {
 		$this->cert =  $this->ci->config->item('cert', 'imap');
 		$this->server_encoding =  $this->ci->config->item('server_encoding', 'imap');
 		$this->attachments_dir =  $this->ci->config->item('attachments_dir', 'imap');
-		$this->mailbox = "{" . $this->server . ":" . $this->port . "/" . $this->security . "/" . $this->cert . "}";
+		$this->mailbox = "{" . $this->server . ":" . $this->port . "}";
 		if($this->imap_stream && (!is_resource($this->imap_stream) || !imap_ping($this->imap_stream))) {
 				$this->disconnect();
 				$this->imap_stream = null;
@@ -91,7 +91,7 @@ class Imap {
 	public function connect($login, $password, $folder = 'inbox')
 	{
 		$this->folder = $folder;
-		$this->imap_path = "{" . $this->server . ":" . $this->port . "/" . $this->security . "/" . $this->cert . "}" . $this->folder;
+		$this->imap_path = "{" . $this->server . ":" . $this->port . "}" . $this->folder;
 		$this->login = $login;
 		$this->password = $password;
 		if($this->attachments_dir) {
@@ -128,7 +128,7 @@ class Imap {
 	public function change_imap_stream($folder)
 	{
 		$this->folder = $folder;
-		$this->imap_path = "{" . $this->server . ":" . $this->port . "/" . $this->security . "/" . $this->cert . "}" . $this->folder;
+		$this->imap_path = "{" . $this->server . ":" . $this->port . "}" . $this->folder;
 		imap_reopen($this->imap_stream, $this->imap_path) or die(implode(", ", imap_errors()));
 	}
 
@@ -446,7 +446,7 @@ class Imap {
 	{
 		$this->total= $this->count_mails();//cuento
 
-		$mailsIds = $this->sort_mails(SORTARRIVAL,true);
+		$mailsIds = $this->sort_mails(SORTDATE,true);
 
 		$mailsIds = array_chunk($mailsIds, $this->per_page);
 
@@ -484,7 +484,7 @@ class Imap {
 	public function get_mails_info(array $mailsIds) {
 
 		$mails = imap_fetch_overview($this->imap_stream, implode(',', $mailsIds), FT_UID);
-		rsort($mails );
+		ksort($mails );
 		if(is_array($mails) && count($mails))
 		{
 			foreach($mails as &$mail)
