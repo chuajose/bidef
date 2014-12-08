@@ -132,6 +132,7 @@ class Email extends REST_Controller
      */
     function mailbox_post()
     {
+
         if( $this->post( 'mailbox' ) ) {
 
             $this->form_validation->set_rules('mailbox', 'mailbox', 'trim|require');
@@ -143,14 +144,23 @@ class Email extends REST_Controller
                                 
                 if( $this->imap->create_mailbox($mailbox) ) {
 
-                    $this->response($this->data, 200);
 
+                } else {
+
+                    $this->data['msg'] = imap_last_error();
                 }
+
+            } else {
+
+                $this->data['error'] = 2;
 
             }
 
+        } else {
+
+            $this->data['error'] = 1;
         }
-        $this->data['error'] = 1;
+        
 
         $this->response($this->data, 200);
 
@@ -323,12 +333,14 @@ class Email extends REST_Controller
      */
     function mail_delete()
     {
+       // $this->delete('id')= $_GET['id'];
+
         if(!$this->delete('id'))
         {
-            $this->response($this->data, 400);
+            //$this->response($this->data, 400);
         }
 
-        if(!$this->imap->delete_mail($this->delete('id')))
+        if(!$this->imap->delete_mail($_GET['id']))
         {
             $this->data['error']=2;
         }
@@ -336,4 +348,23 @@ class Email extends REST_Controller
         $this->response($this->data, 200);
     }
 
+    /**
+     * Envia  un email
+     * 
+     *
+     * @return response
+     */
+    function mail_post()
+    {
+        $this->load->model('imap_model');
+        $datos = array(
+
+            'dest' => $this->post('to'),
+            'subject' => $this->post('subject'),
+            'message' => $this->post('message'),
+            'fid_usuario' => 1
+        );
+        $this->imap_model->add_draft($datos);
+        $this->response($this->data, 200);
+    }
 }
