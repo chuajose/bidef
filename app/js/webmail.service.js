@@ -20,6 +20,18 @@ var utilsWebmail = function ($http) {
          }); 
     },   
 
+
+    DeleteMail: function DeleteMail(id,action,mailbox) {
+    //  console.log(id);
+      return $http({ 
+        method: 'DELETE', 
+        url: '../api/index.php/email/mail',
+        //data: {id: id},
+        //headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+        params: {id: id}
+         }); 
+    },   
+
     VerMail: function VerMail(id) {
     //  console.log(id);
       return $http({ 
@@ -43,10 +55,78 @@ var utilsWebmail = function ($http) {
             .error(function(){
                 //$location.path("/")
         })
-    } 
+    }, 
 
-  };
+    EnviarMail: function EnviarMail(asunto,mensaje,destinatario){
 
+      return $http({
+                url     : "../api/index.php/email/mail",
+                method  : "POST",
+                data    : "subject="+asunto+"&message="+mensaje+"&to="+destinatario,
+                headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(data){
+            
+            })
+            .error(function(){
+                //$location.path("/")
+        })
+     
+    },
+
+    addMailbox: function addMailbox(mailbox){
+      console.log('add '+mailbox);
+      return $http({
+                url     : "../api/index.php/email/mailbox",
+                method  : "POST",
+                data    : "mailbox="+mailbox,
+                headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(data){
+            
+            })
+            .error(function(){
+                //$location.path("/")
+        })
+     
+    },
+
+    ListarMailbox: function ListarMailbox(){
+      return $http({
+                url     : "../api/index.php/email/mailbox",
+                method  : "GET",
+                //data    : 
+               // headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(data){
+            
+            })
+            .error(function(){
+                //$location.path("/")
+        })
+
+
+    },
+
+    DeleteMailbox: function DeleteMailbox(){
+      return $http({
+                url     : "../api/index.php/email/mailbox",
+                method  : "delete",
+                data    : "mailbox="+mailbox,
+                //data    : 
+               // headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(data){
+            
+            })
+            .error(function(){
+                //$location.path("/")
+        })
+
+
+    }
+
+  }
 }
 
 //Definimos los servicios

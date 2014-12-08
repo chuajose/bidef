@@ -67,6 +67,21 @@ angular.module('bidef.webmail', [
           templateUrl: "views/webmail/mensajes.html",
 
         })
+
+        .state('webmail.compose', {
+
+          url: '/compose/:id',
+
+         views: {
+
+            'mensajes@webmail': {
+              templateUrl: 'views/webmail/mail_compose.html',
+              controller: 'WebmailComposeCtrl'
+            },
+
+          }
+
+        })
         ;
     }
   ]

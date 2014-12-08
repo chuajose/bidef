@@ -6,7 +6,7 @@
 
             <div class="input-group-btn">
                 <button  ng-click="buscar()" type="submit" class="btn btn-sm btn-primary">
-                    Search
+                    Buscar
                 </button>
             </div>
         </div>
@@ -21,10 +21,10 @@
             <button class="btn btn-white btn-sm" ui-sref="webmail.bandeja({bandejaId:bandeja, pagina:paginasiguiente})"><i class="fa fa-arrow-right"></i></button>-->
            <pagination style="margin:0" ng-change="pageChanged(currentPage)" total-items="bigTotalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
     </div>
-        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox" ui-sref="webmail"><i class="fa fa-refresh"></i> Refresh</button>
+        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox" ng-click="refresh()"><i class="fa fa-refresh"></i> Comprobar</button>
         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read" ng-click="check_unread()"><i class="fa fa-eye"></i></button>
         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as unread" ng-click="check_read()"><i class="fa fa-eye-slash"></i></button>
-        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as important" ng-click="check_important()"><i class="fa fa-exclamation"></i></button>
+        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as important" ng-click="checkImportant()"><i class="fa fa-exclamation"></i></button>
         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i></button>
 
     </div>
@@ -39,6 +39,7 @@
             </td>
             <td class="mail-ontact"><a ui-sref="webmail.ver({id:mensaje.uid})">{{mensaje.from}}</a></td>
             <td class="mail-subject"><a ui-sref="webmail.ver({id:mensaje.uid})">{{mensaje.subject}}.</a></td>
+
             <td class=""><i ng-show="mensaje.attachments" class="fa fa-paperclip"></i><span ng-show="mensaje.flagged" class="label label-warning">Importante</span></td>
             <td class="text-right mail-date">{{mensaje.date}}</td>
         </tr>
