@@ -24,6 +24,13 @@ var utilsCrm = function ($http) {
             })
 
       },
+    Municipality: function Municipality(id){
+        return $http({
+                url     : "/crm/crm/municipality/"+id,
+                method  : "GET"
+            })
+
+      },
 
     ListarMensajes: function ListarMensajes(bandeja,pagina,busqueda){
 
