@@ -79,7 +79,7 @@ class Imap {
 		$this->cert =  $this->ci->config->item('cert', 'imap');
 		$this->server_encoding =  $this->ci->config->item('server_encoding', 'imap');
 		$this->attachments_dir =  $this->ci->config->item('attachments_dir', 'imap');
-		$this->mailbox = "{" . $this->server . ":" . $this->port . "}";
+		$this->mailbox = "{" . $this->server . ":" . $this->port . "/" . $this->security . "/" . $this->cert . "}";
 		if($this->imap_stream && (!is_resource($this->imap_stream) || !imap_ping($this->imap_stream))) {
 				$this->disconnect();
 				$this->imap_stream = null;
@@ -91,7 +91,7 @@ class Imap {
 	public function connect($login, $password, $folder = 'inbox')
 	{
 		$this->folder = $folder;
-		$this->imap_path = "{" . $this->server . ":" . $this->port . "}" . $this->folder;
+		$this->imap_path = "{" . $this->server . ":" . $this->port . "/" . $this->security . "/" . $this->cert . "}" . $this->folder;
 		$this->login = $login;
 		$this->password = $password;
 		if($this->attachments_dir) {
@@ -128,7 +128,7 @@ class Imap {
 	public function change_imap_stream($folder)
 	{
 		$this->folder = $folder;
-		$this->imap_path = "{" . $this->server . ":" . $this->port . "}" . $this->folder;
+		$this->imap_path = "{" . $this->server . ":" . $this->port . "/" . $this->security . "/" . $this->cert . "}" . $this->folder;
 		imap_reopen($this->imap_stream, $this->imap_path) or die(implode(", ", imap_errors()));
 	}
 
@@ -207,26 +207,26 @@ class Imap {
 
 	protected function init_folder($folder,&$array,$data,$key){
 
-	    $folders=explode('.',$folder);
+		$folders=explode('.',$folder);
 
-	    if(count($folders)>1){
+		if(count($folders)>1){
 
-	        $name=array_shift($folders);
+			$name=array_shift($folders);
+			$sub = $this->init_folder(implode('.',$folders),$array[$name],$data,$key);
 
-	        $sub = $this->init_folder(implode('.',$folders),$array[$name],$data,$key);
+		}else{
 
-	    }else{
+			$sub=array();
+			$name=array_shift($folders);
 
-	    	$sub=array();
+		}
 
-	    	$name=array_shift($folders);
-	    }
+		if(!isset($array[$name]))
+		$array[$name]=array('name'=>$name,'data'=>$data,'folders'=>$sub);
 
-	    if(!isset($array[$name]))
-	    $array[$name]=array('name'=>$name,'data'=>$data,'folders'=>$sub);
-
-	    return $array;
+		return $array;
 	}
+
 
 
 	public function get_listing_folders() {
@@ -237,9 +237,13 @@ class Imap {
 		foreach ($folders as $key => $folder)
 		{
 			$folder = str_replace("{".$this->server."}", "", imap_utf7_decode($folder));
-			$subfolder = explode('.', $folder);
-			$this->change_imap_stream($folder);;
-			$this->init_folder($folder,$this->mailboxes,$this->get_mailbox_info(),$key);
+
+			//echo $folder."-><br>";
+		//	$subfolder = explode('.', $folder);
+			$this->change_imap_stream($folder);
+			//$datos = $this->get_mailbox_info();
+			$datos ="";
+			$this->init_folder($folder,$this->mailboxes,$datos,$key);
 
 		}
 
@@ -282,10 +286,10 @@ class Imap {
 	 */
 	public function search_mails($criteria = 'ALL',$page=0) {
 
-		echo $criteria;
+		//echo $criteria;
 		$mailsIds = imap_search($this->imap_stream, $criteria, SE_UID, $this->server_encoding);
 
-		var_dump($mailsIds);
+		//var_dump($mailsIds);
 		if(!$mailsIds) return false;
 
 		$this->total = count($mailsIds);
@@ -446,7 +450,7 @@ class Imap {
 	{
 		$this->total= $this->count_mails();//cuento
 
-		$mailsIds = $this->sort_mails(SORTDATE,true);
+		$mailsIds = $this->sort_mails(SORTARRIVAL,true);
 
 		$mailsIds = array_chunk($mailsIds, $this->per_page);
 
@@ -484,7 +488,7 @@ class Imap {
 	public function get_mails_info(array $mailsIds) {
 
 		$mails = imap_fetch_overview($this->imap_stream, implode(',', $mailsIds), FT_UID);
-		ksort($mails );
+		rsort($mails );
 		if(is_array($mails) && count($mails))
 		{
 			foreach($mails as &$mail)
@@ -850,7 +854,7 @@ class Imap {
 			$mail->textPlain .= trim($data);
 		}
 		if(!empty($partStructure->parts)) {
-			die('si parte type');
+			//die('si parte type');
 			foreach($partStructure->parts as $subPartNum => $subPartStructure) {
 				if($partStructure->type == 2 && $partStructure->subtype == 'RFC822') {
 					$this->init_mail_part($mail, $subPartStructure, $partNum);
