@@ -33,13 +33,13 @@ angular.module('bidef.webmail', [
 
         .state('webmail.bandeja', {
 
-          url: '/:bandejaId?pagina',
+          url: '/:mailbox?pagina',
 
          views: {
 
             'mensajes@webmail': {
               templateUrl: 'views/webmail/mensajes.html',
-              controller: 'WebmailBandejaCtrl'
+              controller: 'WebmailCtrl'
             },
 
           }
@@ -47,7 +47,7 @@ angular.module('bidef.webmail', [
         })
         .state('webmail.ver', {
 
-          url: '/ver/:id',
+          url: '/ver/:mailbox/:id',
 
          views: {
 

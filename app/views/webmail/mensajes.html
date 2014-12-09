@@ -2,13 +2,23 @@
 
     <form class="pull-right mail-search">
         <div class="input-group">
-            <input type="text" class="form-control input-sm" ng-model="palabra" name="search" placeholder="Search email">
+            
+            <div class="input-group"><input type="text" ng-model="palabra" name="search"  class="form-control">
 
-            <div class="input-group-btn">
-                <button  ng-click="buscar()" type="submit" class="btn btn-sm btn-primary">
-                    Buscar
-                </button>
+
+                <div class="input-group-btn" dropdown>
+                    <button tabindex="-1" class="btn btn-primary" ng-click="buscar(palabra)" type="submit">Buscar</button>
+                    <button class="btn btn-white dropdown-toggle" type="button"><span class="caret"></span></button>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a href="">Busqueda avanzada</a></li>
+                        <li><a href="">Another action</a></li>
+                        <li><a href="">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="">Separated link</a></li>
+                    </ul>
+                </div>
             </div>
+          
         </div>
     </form>
     <h2>
@@ -26,7 +36,28 @@
         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as unread" ng-click="check_read()"><i class="fa fa-eye-slash"></i></button>
         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as important" ng-click="checkImportant()"><i class="fa fa-exclamation"></i></button>
         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i></button>
+        
+        <div class="btn-group" dropdown >
+            <button type="button" class="btn  btn-white btn-sm dropdown-toggle">
+                Acciones <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a ng-click="check_read()" href=""><i class="fa fa-eye-slash"></i> Marcar como leído</a></li>
+                <li><a ng-click="check_unread()" href=""><i class="fa fa-eye"></i> Marcar como no leído</a></li>
+                <li class="divider"></li>
+                <li><a ng-click="checkImportant()" href=""><i class="fa fa-exclamation"></i> Marcar como importante</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-submenu">
+                    <a  href=""><i class="fa fa-folder-open-o"></i> Mover a </a>
+                    <ul class="dropdown-menu">
+                        <li>Otro</li>
+                    </ul>
 
+                </li>
+                <li><a ng-click="checkImportant()" href=""><i class="fa fa-trash-o"></i> Eliminar </a></li>
+
+            </ul>
+        </div>
     </div>
 </div>
 <div class="mail-box">
@@ -37,9 +68,8 @@
             <td class="check-mail">
                 <input icheck type="checkbox" ng-model="select[key]" value="{{mensaje.uid}}">
             </td>
-            <td class="mail-ontact"><a ui-sref="webmail.ver({id:mensaje.uid})">{{mensaje.from}}</a></td>
-            <td class="mail-subject"><a ui-sref="webmail.ver({id:mensaje.uid})">{{mensaje.subject}}.</a></td>
-
+            <td class="mail-ontact"><a ui-sref="webmail.ver({id:mensaje.uid,mailbox:mailbox})"><span ng-show="mailbox == 'Sent'">{{mensaje.to}}</span><span ng-show="mailbox != 'Sent'"> {{mensaje.from}}</span></a></td>
+            <td class="mail-subject"><a ui-sref="webmail.ver({id:mensaje.uid,mailbox:mailbox})">{{mensaje.subject}}</a></td>
             <td class=""><i ng-show="mensaje.attachments" class="fa fa-paperclip"></i><span ng-show="mensaje.flagged" class="label label-warning">Importante</span></td>
             <td class="text-right mail-date">{{mensaje.date}}</td>
         </tr>

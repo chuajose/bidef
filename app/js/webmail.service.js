@@ -11,6 +11,16 @@ var utilsWebmail = function ($http) {
          }); 
     },   
 
+    SearchWebmail: function SearchWebmail(search ,page, mailbox) {
+    //  console.log(id);
+      return $http({ 
+        method: 'POST', 
+        url: '../api/index.php/email/mails',
+        data    : "search="+search+"&page="+page+"&mailbox="+mailbox,
+        headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+         }); 
+    },   
+
     UpdateMail: function UpdateMail(id,action,mailbox) {
     //  console.log(id);
       return $http({ 
@@ -32,12 +42,12 @@ var utilsWebmail = function ($http) {
          }); 
     },   
 
-    VerMail: function VerMail(id) {
+    VerMail: function VerMail(id,mailbox) {
     //  console.log(id);
       return $http({ 
         method: 'GET', 
         url: '../api/index.php/email/mail',
-        params: {id: id}
+        params: {id: id, mailbox:mailbox}
          }); 
     },   
 
@@ -57,12 +67,12 @@ var utilsWebmail = function ($http) {
         })
     }, 
 
-    EnviarMail: function EnviarMail(asunto,mensaje,destinatario){
+    EnviarMail: function EnviarMail(asunto,mensaje,destinatario,borrador,draft){
 
       return $http({
                 url     : "../api/index.php/email/mail",
                 method  : "POST",
-                data    : "subject="+asunto+"&message="+mensaje+"&to="+destinatario,
+                data    : "subject="+asunto+"&message="+mensaje+"&to="+destinatario+"&borrador="+borrador+"&draft="+draft,
                 headers : {'Content-Type': 'application/x-www-form-urlencoded'}
             })
             .success(function(data){
