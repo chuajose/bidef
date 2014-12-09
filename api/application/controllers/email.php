@@ -51,6 +51,16 @@ class Email extends REST_Controller
         
         $this->data['bandejas'] =$bandejas;
 
+        /*if($drafts = $this->imap_model->get_draft(1)) {
+
+            $this->data['borradores'] = $drafts->result();
+
+        } else {
+
+            $this->data['borradores'] = false;
+
+        }*/
+
         $this->response($this->data, 200);
 
     }
@@ -191,9 +201,27 @@ class Email extends REST_Controller
 
             $mailbox = 'inbox';
         }
-        $this->imap->change_imap_stream($mailbox);
 
-        list($list,$total) = $this->imap->paginate_mails($page);
+        if($mailbox=="borradores") {
+
+            $list=array();
+            $emails = $this->imap_model->get_draft(1);
+
+            if($emails) {
+                foreach ($emails as $value) {
+                   
+                   $list[]=array('date'=>$value->date, 'from'=>$value->dest,'subject'=>$value->subject,'uid'=>0);
+                }
+            }
+            $total = count($list);
+
+        } else {
+
+            $this->imap->change_imap_stream($mailbox);
+            list($list,$total) = $this->imap->paginate_mails($page);
+        }
+
+       
         
         $this->data['emails'] = $list;
 
@@ -232,13 +260,19 @@ class Email extends REST_Controller
             $criteria = 'ALL';
         }
 
-        $emails                = $this->imap->search_mails($criteria,$page);
+        if($this->post('mailbox'))
+            $mailbox = $this->post('mailbox');
+        else $mailbox = "INBOX";
+
+        $this->imap->change_imap_stream($mailbox);//Si exsite mailbox selecciono el mail de esa carpeta
+
+        $emails               = $this->imap->search_mails($criteria,$page);
         
-        list($messages,$total) = $emails;
+        list($list,$total)    = $emails;
         
-        $this->data['emails']  = $messages;
+        $this->data['emails'] = $list;
         
-        $this->data['total']   = $total;
+        $this->data['total']  = $total;
 
         $this->response($this->data, 200);
     }
@@ -257,6 +291,8 @@ class Email extends REST_Controller
         {
             $this->response($this->data, 400);
         }
+
+        if($this->get('mailbox'))$this->imap->change_imap_stream($this->get('mailbox'));//Si exsite mailbox selecciono el mail de esa carpeta
 
         $email = $this->imap->get_mail($this->get('id')); 
 
@@ -287,6 +323,8 @@ class Email extends REST_Controller
      */
     function mail_put()
     {
+
+        if($this->put('mailbox'))$this->imap->change_imap_stream($this->put('mailbox'));//Si exsite mailbox selecciono el mail de esa carpeta
 
         if(!$this->put('id') && !$this->put('action'))
         {
@@ -339,6 +377,7 @@ class Email extends REST_Controller
         {
             //$this->response($this->data, 400);
         }
+        if($this->delete('mailbox'))$this->imap->change_imap_stream($this->delete('mailbox'));//Si exsite mailbox selecciono el mail de esa carpeta
 
         if(!$this->imap->delete_mail($_GET['id']))
         {
@@ -357,14 +396,28 @@ class Email extends REST_Controller
     function mail_post()
     {
         $this->load->model('imap_model');
-        $datos = array(
+
+        if($this->post('borrador')==1) {
+
+            $datos = array(
 
             'dest' => $this->post('to'),
             'subject' => $this->post('subject'),
             'message' => $this->post('message'),
-            'fid_usuario' => 1
-        );
-        $this->imap_model->add_draft($datos);
+            'fid_usuario' => 1,
+            'date' => date('Y-m-d H:i:s')
+            );
+            if($this->post('draft') && $this->post('draft')>0){
+                $draft=$this->imap_model->update_draft($this->post('draft'),$datos);
+
+            } else {
+                $draft=$this->imap_model->add_draft($datos);
+            }
+
+            $this->data['draft']= $draft;
+
+        }
+        
         $this->response($this->data, 200);
     }
 }
