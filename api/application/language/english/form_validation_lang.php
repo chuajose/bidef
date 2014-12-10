@@ -25,7 +25,16 @@ $lang['less_than']          = '22';
 $lang['greater_than']       = '23';
 $lang['dni']                = '24';
 $lang['no_data']            = '25';
-$lang['insufficient data']  = "26";
+$lang['insufficient_data']  = '26';
+$lang['data_incorrect']     = '27';
+/*-user-*/
+$lang['activation_code_invalid'] = '28';
+$lang['user_no_exists'] = '29';
+$lang['delegation_not_found'] = '29';
+$lang['permission_denied']  = '203';
+$lang['need_login']         = '2031';
+/*--*/
+$lang['error_general']      = '500';
 
 
 
