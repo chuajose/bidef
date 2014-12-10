@@ -1,123 +1,296 @@
 <div class="row border-bottom">
     <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
-            <span minimaliza-sidebar></span>
-            <form role="search" class="navbar-form-custom" method="post" action="views/search_results.html">
-                <div class="form-group">
-                    <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
-                </div>
-            </form>
+            <span minimaliza-sidebar=""><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="" ng-click="minimalize()"><i class="fa fa-bars"></i></a></span>
+            <a class="btn btn-success minimalize-styl-2 compose_email_act">
+                <i class="fa fa-envelope"></i> Enviar email
+            </a>
+            <a class="btn btn-success minimalize-styl-2 compose_phone_act">
+                <i class="fa fa-phone"></i> Registrar Llamada
+            </a>
+            <a class="btn btn-success minimalize-styl-2 compose_cita_act">
+                <i class="fa fa-calendar"></i> Añadir cita
+            </a>
         </div>
-        <ul class="nav navbar-top-links navbar-right">
-            <li>
-                <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
+        <ul class="nav navbar-top-links navbar-right">            
+            <li class="dropdown">
+                <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle count-info" href="">
+                    <i class="fa fa-tasks"></i>  <span class="label label-danger">2</span>
+                </a>
+                <ul class="dropdown-menu dropdown-alerts alerts-proyectos">                 
+                    <li>
+                        <a href="javascript:void(0);">
+                            <div>
+                                Proyecto: <strong>Ayuntamiento Culleredo</strong>
+                               <div class="progress progress-bar-default">
+                                    <div style="width: 15%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="15" role="progressbar" class="progress-bar progress-bar-danger">
+                                        <span>15% Completado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="javascript:void(0);">
+                            <div>
+                                Proyecto: <strong>Diputación de Lugo</strong>
+                               <div class="progress progress-bar-default">
+                                    <div style="width: 25%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" class="progress-bar progress-bar-danger">
+                                        <span class="">25% Completado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="javascript:void(0);">
+                            <div>
+                                Proyecto: <strong>Ayuntamiento de Malpica</strong>
+                               <div class="progress progress-bar-default">
+                                    <div style="width: 40%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" class="progress-bar progress-bar-warning">
+                                        <span class="">40% Completado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="javascript:void(0);">
+                            <div>
+                                Proyecto: <strong>Consellería de Traballo</strong>
+                               <div class="progress progress-bar-default">
+                                    <div style="width: 65%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="65" role="progressbar" class="progress-bar progress-bar-success">
+                                        <span class="">65% Completado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>                    
+                    <li>
+                        <a href="javascript:void(0);">
+                            <div>
+                                Proyecto: <strong>Ayuntamiento de Oleiros</strong>
+                               <div class="progress progress-bar-default">
+                                    <div style="width: 95%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="95" role="progressbar" class="progress-bar">
+                                        <span class="">95% Completado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                     <li class="divider"></li>
+                    <li>
+                        <div class="text-center link-block">
+                            <a href="mailbox.html" class="btn btn-link">
+                                <strong>Ver todos los Proyecto:s</strong>
+                            </a>
+                        </div>
+                    </li>
+                    
+                </ul>
             </li>
             <li class="dropdown">
-                <a class="dropdown-toggle count-info" href>
-                    <i class="fa fa-envelope"></i> <span class="label label-warning">16</span>
+                <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle count-info" href="">
+                    <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
                 </a>
                 <ul class="dropdown-menu dropdown-messages">
                     <li>
                         <div class="dropdown-messages-box">
-                            <a ui-sref="profile" class="pull-left">
-                                <img alt="image" class="img-circle" src="img/a7.jpg">
-                            </a>
-
-                            <div>
-                                <small class="pull-right">46h ago</small>
-                                <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
-                                <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <div class="dropdown-messages-box">
-                            <a ui-sref="profile" class="pull-left">
+                            <a href="javascript:void(0);" class="pull-left">
                                 <img alt="image" class="img-circle" src="img/a4.jpg">
                             </a>
-
-                            <div>
-                                <small class="pull-right text-navy">5h ago</small>
-                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                            <div class="media-body">
+                                <small class="pull-right">hace 5h</small>
+                                <strong>Ángel Cámara Sanz</strong><br>
+                                Re: informes de situac...<br>
+                                <small class="text-muted">Hola Carlos te envío adjunto la documentación solicita...</small><br>                                
                             </div>
                         </div>
                     </li>
                     <li class="divider"></li>
                     <li>
                         <div class="dropdown-messages-box">
-                            <a ui-sref="profile" class="pull-left">
-                                <img alt="image" class="img-circle" src="img/profile.jpg">
+                            <p class="pull-left">
+                                <i alt="image" class="fa fa-university"></i>
+                            </p>
+                            <div class="media-body">
+                                <small class="pull-right">hace 46h</small>
+                                <strong>Ayuntamiento Lugo</strong><br>
+                                Inicio proyecto<br>
+                                <small class="text-muted">Ya hablé con el concejal y vamos para adelante con el...</small>
+                            </div>
+                        </div>
+                    </li>                    
+                    <li class="divider"></li>
+                    <li>
+                        <div class="dropdown-messages-box">
+                            <a href="javascript:void(0);" class="pull-left">
+                                <img alt="image" class="img-circle" src="http://2lcvgikr3ei5mzvzhonrz1cx.wpengine.netdna-cdn.com/wp-content/uploads/2008/12/magnificent-125x113.jpg">
                             </a>
-
-                            <div>
-                                <small class="pull-right">23h ago</small>
-                                <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
-                                <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+                            <div class="media-body ">
+                                <small class="pull-right">hace 2 días</small>
+                                <strong>Empresa Demo SA</strong><br>
+                                Aviso urgente<br>
+                                <small class="text-muted">Tras conversación telefónica paso a detallar...</small>
                             </div>
                         </div>
                     </li>
                     <li class="divider"></li>
                     <li>
                         <div class="text-center link-block">
-                            <a ui-sref="inbox">
-                                <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                            <a href="mailbox.html"  class="btn btn-link">
+                                <strong>Ver todos los mensajes</strong>
                             </a>
                         </div>
                     </li>
                 </ul>
             </li>
             <li class="dropdown">
-                <a class="dropdown-toggle count-info" href>
-                    <i class="fa fa-bell"></i> <span class="label label-primary">8</span>
+                <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle count-info" href="">
+                    <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
                 </a>
                 <ul class="dropdown-menu dropdown-alerts">
                     <li>
-                        <a ui-sref="inbox">
+                        <a href="mailbox.html">
                             <div>
-                                <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-                                <span class="pull-right text-muted small">4 minutes ago</span>
+                                <i class="fa fa-tasks fa-fw"></i> Tienes un proyecto
+                                <span class="pull-right text-muted small">hace 4 min.</span>
                             </div>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a ui-sref="profile">
+                        <a href="profile.html">
                             <div>
-                                <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                <span class="pull-right text-muted small">12 minutes ago</span>
+                                <i class="fa fa-phone fa-fw"></i> Llamada no realizada
+                                <span class="pull-right text-muted small">hace 12h</span>
                             </div>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a ui-sref="grid_options">
+                        <a href="grid_options.html">
                             <div>
-                                <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                <span class="pull-right text-muted small">4 minutes ago</span>
+                                <i class="fa fa-flag fa-fw"></i> Hito no realizado
+                                <span class="pull-right text-muted small">hace 2 días</span>
                             </div>
                         </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <div class="text-center link-block">
-                            <a ui-sref="notifications_tooltips">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </div>
                     </li>
                 </ul>
             </li>
-
-
             <li>
                 <a href="login.html">
-                    <i class="fa fa-sign-out"></i> Log out
+                    <i class="fa fa-sign-out"></i> Salir
                 </a>
             </li>
         </ul>
-
     </nav>
+    <div id="anadirCita">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Añadir una cita al calendario</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="get" class="form-horizontal">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Tipo de actividad</label>
+                                        <div class="col-sm-8">
+                                            <select chosen class="chosen-select" style="width:350px;" tabindex="4">
+                                                <option>Seleccionar...</option>
+                                                <option>Llamada</option>
+                                                <option>Mail</option>
+                                                <option>Reunión</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">¿Con quién?</label>
+                                        <div class="col-sm-8">
+                                            <select chosen class="chosen-select" style="width:350px;">
+                                                <option>Seleccionar...</option>
+                                                <option>Ana Ruíz - Ayuntamiento Lugo</option>
+                                                <option>Pablo Castro - Modeling SA</option>
+                                                <option>Carmen Rojo - Alumo</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group"><label class="col-sm-2 control-label">Título</label>
+                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group"><label class="col-sm-2 control-label">Comentario</label>
+                                <div class="col-sm-10"><textarea rows="4" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group" id="data_5">
+                                <div class="col-sm-9 col-sm-offset-2">
+                                    <label class="font-noraml">Especifica cuándo será la cita</label> <small class="text-success">(si no incluyes fecha se mostrará en el panel de citas por agendar)</small></label>                                    
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle btn btn-default btn-sm">
+                                            Seleccionar fechas
+                                        </a>
+                                        <span>
+                                            Fechas seleccionadas: {{(a|date)}} - {{(b|date)}}
+                                        </span>
+
+                                        <div class="dropdown-menu" ng-click="$event.preventDefault();$event.stopPropagation()">
+                                            <div date-range start="a" end="b"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-center"><a class="btn btn-success anadirCitaBtn" href="javascript:void(0)">Añadir cita</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){        
+        $('#anadirCita').hide();
+        
+        $('.compose_cita_act').click(function(){
+            $('#anadirCita').slideToggle('slow');
+        });
+        $('.anadirCitaBtn').click(function(){
+            $('#anadirCita').slideUp();
+        }); 
+        $('.compose_email_act').click(function(){
+            $('.composeEmail').fadeToggle('slow');
+        });
+        $('.compose_phone_act').click(function(){
+            $('.phoneFixed').fadeToggle('slow');
+        });        
+
+
+
+
+    });
+</script>
