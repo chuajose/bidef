@@ -25,5 +25,6 @@
         'bidef.delegation',
         'bidef.inicio',
         'bidef.crm',
+        'bidef.common',
     ])
 })();

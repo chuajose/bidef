@@ -23,10 +23,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams,utilsWebm
 		//console.log(response);
 	});
 
-	utilsWebmail.ListarMailbox().success(function (response) { 
-		$scope.bandejas= response.bandejas;
-		console.log(response.bandejas);
-	});
+	
 	
 
 
@@ -177,7 +174,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams,utilsWebm
 
 }
 
-var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebmail){
+var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebmail,utilsGeneral){
 
 	$scope.mensaje="";
 	
@@ -194,7 +191,17 @@ var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 			$scope.subject	= response.header.subject;
 			$scope.from	= response.header.fromAddress;
 			$scope.fecha	= response.header.date;
-			$scope.adjuntos	= response.adjuntos;
+			var adjuntos =[];
+			//recorro los adjuntos para añadirle los datos de icono
+			$.each(response.adjuntos, function(index, val) {	
+
+				ext = val.filePath.substr((~-val.filePath.lastIndexOf(".") >>> 0) + 2);
+				val.ext=utilsGeneral.GetTextIcon(ext);
+				
+				adjuntos.push(val);
+			});
+			console.log(adjuntos);
+			$scope.adjuntos = adjuntos;
 			$scope.adjuntoslength = response.adjuntos.length;
 			$scope.uid	= $stateParams.id;
 		
@@ -320,6 +327,14 @@ var WebmailCreateMailboxCtrl = function($scope, $http, $state, $stateParams,util
 		});
 	}
 }
+
+
+var WebmailMailboxes = function($scope, $http, $state, $stateParams,utilsWebmail){
+	utilsWebmail.ListarMailbox().success(function (response) { 
+		$scope.bandejas= response.bandejas;
+		console.log(response.bandejas);
+	});
+}
 //Definimos los controladores
 angular
     .module('bidef')
@@ -327,3 +342,4 @@ angular
     .controller('WebmailMensajeCtrl',WebmailMensajeCtrl)
     .controller('WebmailComposeCtrl',WebmailComposeCtrl)
     .controller('WebmailCreateMailboxCtrl',WebmailCreateMailboxCtrl)
+    .controller('WebmailMailboxes',WebmailMailboxes)

@@ -1,6 +1,7 @@
-<div class="ibox-content mailbox-content">
+<div class="ibox-content mailbox-content" ng-controller="WebmailMailboxes">
     <div class="file-manager">
-        <a class="btn btn-block btn-primary compose-mail" ui-sref="webmail.compose">Crear Mail</a>
+        <a class="btn btn-primary compose-mail" ui-sref="webmail.compose"><i class="fa fa-paper-plane-o"></i> Crear Mail</a>
+        <a ng-click="open()" class="btn btn-success compose-mail"><i class="fa fa-paste"></i> Crear Carpeta</a>
 
         <div class="space-25"></div>
         <h5>Bandejas</h5>
@@ -29,7 +30,7 @@
             <li><a ui-sref="webmail.bandeja({bandejaId:'borradores', pagina:0})"> <i class="fa fa-file-text-o"></i> Borradores <span class="label label-danger pull-right">2</span></a></li>
             <li><a ui-sref="webmail"> <i class="fa fa-trash-o"></i> Papelera</a></li>-->
         </ul>
-        <button ng-click="open()" class="btn btn-success " type="button"><i class="fa fa-paste"></i> Crear Carpeta</button>
+        <!--<button ng-click="open()" class="btn btn-success " type="button"><i class="fa fa-paste"></i> Crear Carpeta</button>-->
        <!-- <h5>Categories</h5>
         <ul class="category-list" style="padding: 0">
             <li><a href=""> <i class="fa fa-circle text-navy"></i> Work </a></li>

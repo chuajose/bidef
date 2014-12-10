@@ -44,8 +44,12 @@
                                 <a target="_blank" href="{{adjunto.filePath}}">
                                     <span class="corner"></span>
 
-                                    <div class="icon">
-                                        <i class="fa fa-file"></i>
+                                    <div ng-hide="adjunto.ext=='image'" class="icon">
+                                        <i class="fa fa-file-{{adjunto.ext}}-o"></i>
+                                    </div>
+
+                                    <div ng-show="adjunto.ext=='image'" class="imagen">
+                                    <img class="img-responsive" src="{{adjunto.filePath}}" alt="image">
                                     </div>
                                     <div class="file-name">
                                         {{adjunto.name}}
