@@ -40,11 +40,11 @@ li.borderD{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
 .skin-1 .navbar-default .nav > li > a:focus,
  .skin-1 .navbar-default .nav > li > a:hover{ background: #000}
 .skin-1 .navbar-default li.active .nav > li > a:focus,
- .skin-1 .navbar-default li.active .nav > li > a:hover{ 
+ .skin-1 .navbar-default li.active .nav > li > a:hover{
   background: #fff;
   color: #666666;
 }
-.navbar-default .special_link a{ 
+.navbar-default .special_link a{
   background: #0E9AEF;
   color: #ffffff;
 }
@@ -59,7 +59,7 @@ li.borderD{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
   height: 100px;
   overflow-y: scroll;
 }
-.alerts-proyectos a{  
+.alerts-proyectos a{
   margin:0;
   padding:0;
   line-height: auto;
@@ -70,7 +70,7 @@ li.borderD{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
   cursor: pointer;
   background: #eee;
 }
-.dropdown-messages-box > p:first-child{  
+.dropdown-messages-box > p:first-child{
   padding: 3px 20px;
   min-height: 0;
   margin: 0 auto;
@@ -87,21 +87,21 @@ li.borderD{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
 
 
 /*-footer-*/
-.fixed_phone_mail{   
+.fixed_phone_mail{
   position: fixed;
   z-index: 1050;
   bottom: 40px;
   right: 0;
 }
 .fixed_phone_mail{ width: 66%;}
-.fixed_phone_mail > div{ 
+.fixed_phone_mail > div{
   background: #fff;
   width: 50%;
   float: right;
   box-shadow: -2px -2px 5px rgba(0,0,0,0.1);
 }
-.fixed_phone_mail .mail-box{ 
-  margin-bottom: 0; 
+.fixed_phone_mail .mail-box{
+  margin-bottom: 0;
   font-size: 0.9em
 }
 .fixed_phone_mail .mail-box-header{
@@ -120,11 +120,11 @@ li.borderD{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
 .fixed_phone_mail .mail-box .input-group{ padding: 0 15px;}
 .fixed_phone_mail .adjuntar a{ font-size: 20px;}
 .fixed_phone_mail .phoneCompose h1{ font-weight: 500}
-.fixed_phone_mail .phoneCompose .mail-text{ 
+.fixed_phone_mail .phoneCompose .mail-text{
   padding: 10px 20px 10px 20px;
 }
 .fixed_phone_mail .phoneCompose .mail-text h1{ margin-top: 0;}
-.fixed_phone_mail .phoneCompose .date input{ 
+.fixed_phone_mail .phoneCompose .date input{
   margin-left: -15px;
   padding: 5px 0;
 }
@@ -140,3 +140,6 @@ li.borderD{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
 
 /*-calendar-*/
 .fc-event-time, .fc-event-title{ color: #fff}
+
+/*-webmail-*/
+.skin-1 .ibox-content:last-child { background: #fff; border-color: #E7EAEC;}
