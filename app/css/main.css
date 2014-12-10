@@ -1,0 +1,142 @@
+body{ background: #111!important; }
+.mTop15{ margin-top: 15px;}
+
+.borderA{ border-left: 5px solid #3498db;}
+.borderB{ border-left: 5px solid #2c3e50;}
+.borderC{ border-left: 5px solid #e67e22;}
+.borderD{ border-left: 5px solid #7f8c8d;}
+li.borderA{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
+li.borderB{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
+li.borderC{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
+li.borderD{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
+.overflow{ overflow: hidden}
+.opacity5{ opacity: 0.5}
+.paddLR20{ padding: 0 20px;}
+.contactos .contact-box:hover{ opacity: 1}
+.contactos .btn-primary,.contactos .btn-danger{ color: #fff}
+.margL15{ margin-left: 15px;}
+.black-bg{ color: #fff}
+.popover-title{ color: #fff; background: #34495e}
+.fc-agenda .fc-event-time, .fc-event, .fc-event a { border-color: transparent;}
+.skin-1 .img-circle { border-radius: 50%;}
+/*-main navigation-*/
+.navbar-default{ background: #111;}
+.skin-1 .nav > li.active{ background: #F4F6FA}
+.navbar-default .logo{
+  margin-left: 20px;
+  font-weight: 800;
+  color: #dddddd;
+}
+.mini-navbar .logo,
+ .mini-navbar .logo-element{
+  font-size: 12px;
+  margin-left: 0;
+  text-align: center;
+}
+.skin-1 .navbar-default li.active > a{ color: #0E9AEF;}
+.skin-1 .navbar-default ul{ background: #111!important;}
+.skin-1 .navbar-default ul li.active ul{ background: #F4F6FA!important;}
+.skin-1 .navbar-default li.active { border-left: 4px solid #0E9AEF;}
+.skin-1 .navbar-default .nav > li > a:focus,
+ .skin-1 .navbar-default .nav > li > a:hover{ background: #000}
+.skin-1 .navbar-default li.active .nav > li > a:focus,
+ .skin-1 .navbar-default li.active .nav > li > a:hover{ 
+  background: #fff;
+  color: #666666;
+}
+.navbar-default .special_link a{ 
+  background: #0E9AEF;
+  color: #ffffff;
+}
+.skin-1 .navbar-default .profile-element ul{ background: #fff!important}
+.skin-1 .navbar-default .profile-element ul a{ color: #555!important; line-height: 15px;}
+
+/*-topbar modulos-*/
+.skin-1 .navbar-minimalize { color: #ffffff!important;}
+.skin-1 .minimalize-styl-2{ margin: 14px 8px 14px 8px;}
+.note-editor{ height: auto;}
+.note-editable{
+  height: 100px;
+  overflow-y: scroll;
+}
+.alerts-proyectos a{  
+  margin:0;
+  padding:0;
+  line-height: auto;
+}
+.alerts-proyectos .progress{  margin-bottom:0}
+.alerts-proyectos .btn-link{ text-decoration: none}
+.dropdown-messages-box:hover{
+  cursor: pointer;
+  background: #eee;
+}
+.dropdown-messages-box > p:first-child{  
+  padding: 3px 20px;
+  min-height: 0;
+  margin: 0 auto;
+  text-align: center;
+}
+.dropdown-messages-box > p:first-child i{
+  width: 38px;
+  font-size: 24px;
+}
+
+
+/*-plugins-*/
+.chosen-container{ width: 100% !important;}
+
+
+/*-footer-*/
+.fixed_phone_mail{   
+  position: fixed;
+  z-index: 1050;
+  bottom: 40px;
+  right: 0;
+}
+.fixed_phone_mail{ width: 66%;}
+.fixed_phone_mail > div{ 
+  background: #fff;
+  width: 50%;
+  float: right;
+  box-shadow: -2px -2px 5px rgba(0,0,0,0.1);
+}
+.fixed_phone_mail .mail-box{ 
+  margin-bottom: 0; 
+  font-size: 0.9em
+}
+.fixed_phone_mail .mail-box-header{
+  background: #111;
+  color: #fff;
+  padding: 2px 10px;
+}
+
+.fixed_phone_mail .mail-box-header .btn{ padding: 2px;}
+.fixed_phone_mail .form-control,
+.fixed_phone_mail .mail-box .chosen-container{
+  padding: 2px 2px;
+  font-size: 1em;
+  height: auto;
+}
+.fixed_phone_mail .mail-box .input-group{ padding: 0 15px;}
+.fixed_phone_mail .adjuntar a{ font-size: 20px;}
+.fixed_phone_mail .phoneCompose h1{ font-weight: 500}
+.fixed_phone_mail .phoneCompose .mail-text{ 
+  padding: 10px 20px 10px 20px;
+}
+.fixed_phone_mail .phoneCompose .mail-text h1{ margin-top: 0;}
+.fixed_phone_mail .phoneCompose .date input{ 
+  margin-left: -15px;
+  padding: 5px 0;
+}
+.fixed_phone_mail .phoneCompose .date .input-group-addon{ margin-left: -15px; }
+.fixed_phone_mail .phoneCompose [date-picker-wrapper] {
+  position: relative !important;
+  display: block;
+  margin-top: -85%;
+}
+
+/*-formus-*/
+#previewZone{ background: #ccc; border: 3px dotted #fff; height: 180px; width: 180px;}
+
+/*-calendar-*/
+.fc-event-time, .fc-event-title{ color: #fff}
