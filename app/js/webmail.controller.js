@@ -197,7 +197,7 @@ var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 
 				ext = val.filePath.substr((~-val.filePath.lastIndexOf(".") >>> 0) + 2);
 				val.ext=utilsGeneral.GetTextIcon(ext);
-				
+
 				adjuntos.push(val);
 			});
 			console.log(adjuntos);
@@ -316,10 +316,9 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 }
 
 var WebmailCreateMailboxCtrl = function($scope, $http, $state, $stateParams,utilsWebmail,$modalInstance){
-	$scope.newmailbox="647";
 
 	$scope.crear = function(){
-
+		console.log($scope.newmailbox);
 		utilsWebmail.addMailbox($scope.newmailbox).success(function (response) { 
 			console.log(response);
 			if(response.error==0)  $state.go('webmail' , $stateParams,{reload: true});
