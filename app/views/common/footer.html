@@ -1,8 +1,20 @@
-<div class="footer">
+<div class="fixed_phone_mail">
+	<div class="composeEmail" ng-include="'views/common/mail_compose.html'"> 
+	</div>
+	<div class="phoneFixed" ng-include="'views/common/phone.html'">
+	</div>
+</div>
+<div class="footer fixed">
     <div class="pull-right">
-        10GB of <strong>250GB</strong> Free.
+        <span class="actual_date">Martes 25 de octubre 2015, <span>12:30</span></span>
     </div>
     <div>
-        <strong>Copyright</strong> Example Company &copy; 2014-2015
+        <strong>Copyright</strong> Bidef consultoría &copy; 2015
     </div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.composeEmail').hide();
+		$('.phoneFixed').hide();		
+	});
+</script>
