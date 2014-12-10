@@ -1,0 +1,63 @@
+<div class="mail-box-header clearfix">
+    Enviar Email - Asunto Lorem Ipsum...
+    <div class="pull-right">
+        <a class="btn btn-link mailMinimizar"><i class="fa fa-angle-down"></i></a>        
+        <a class="btn btn-link mailCerrar"><i class="fa fa-times"></i></a>
+    </div>
+</div>
+<div class="mail-box">
+    <div class="mail-body">
+        <form class="form-horizontal" method="get">
+            <div class="form-group">
+                <div class="input-group col-sm-12">
+                    <select multiple chosen class="chosen-select" style="width:350px;">
+                        <option>Seleccionar...</option>
+                        <option>Ana Ruíz - Ayuntamiento Lugo</option>
+                        <option>Pablo Castro - Modeling SA</option>
+                        <option>Carmen Rojo - Alumo</option>
+                        <option>...</option>
+                    </select>
+                </div>             
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12"><input type="text" class="form-control" value="" placeholder="Asunto"></div>
+            </div>
+        </form>
+    </div>
+    <div class="mail-text h-200">
+        <div class="ibox-content no-padding">
+            <div summernote class="summernote">                
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="mail-body clearfix">        
+        <div class="pull-left adjuntar">
+            <a href="javascript:void(0);" class=""><i class="fa fa-paperclip"></i></a>
+        </div>
+        <div class="pull-right">
+            <a href="mailbox.html" class="btn btn-white btn-xs" data-toggle="tooltip" data-placement="top" title="Descartar email"><i class="fa fa-times"></i> Descartar</a>
+            <a href="mailbox.html" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Enviar">    Enviar <i class="fa fa-mail-forward"></i></a>
+        </div>
+        
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+        
+        $('.mailMinimizar').click(function(){
+            var $mailbox = $('.composeEmail').find('.mail-box');
+            if($mailbox.hasClass('hidden')) $mailbox.removeClass('hidden');
+            else $mailbox.addClass('hidden');
+        });
+        $('.mailCerrar').click(function(){
+            $('.composeEmail').hide('fast');
+        });       
+
+    });
+
+</script>

@@ -1,0 +1,78 @@
+<div class="phoneCompose">
+    <div class="mail-box-header clearfix">
+        Registrar llamada - 00:00:00
+        <div class="pull-right">
+            <a class="btn btn-link phoneMinimizar"><i class="fa fa-angle-down"></i></a>
+            <a class="btn btn-link phoneCerrar"><i class="fa fa-times"></i></a>
+        </div>
+    </div>
+    <div class="mail-box">
+        <div class="mail-body">
+            <form class="form-horizontal" method="get">
+                <div class="form-group">
+                    <div class="input-group col-sm-12">
+                        <select chosen class="chosen-select" style="width:350px;">
+                            <option>Seleccionar...</option>
+                            <option>Ana Ruíz - Ayuntamiento Lugo</option>
+                            <option>Pablo Castro - Modeling SA</option>
+                            <option>Carmen Rojo - Alumo</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12"><input type="text" class="form-control" value="" placeholder="Asunto"></div>
+                </div>
+            </form>
+        </div>
+        <div class="mail-text gray-bg">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <h1>00:00:00</h1>
+                    <button class="btn btn-primary dim" type="button"><i class="fa fa-play"></i></button>
+                    <button class="btn btn-warning dim" type="button"><i class="fa fa-pause"></i></button>
+                    <button class="btn btn-default  dim " type="button"><i class="fa fa-stop"></i></button>
+                </div>
+                <div class="pull-right">
+                    <img src="img/a1.jpg" width="55" class="img-responsive img-circle pull-left">
+                    <p class="pull-right margL15"><strong>Octavio Mayor</strong><br> Empresa Demo SA<br>981 90 90 90<br>omayor@empresa.com</p>
+                </div>
+            </div>
+            <div class="clearfix">
+                <p><textarea class="form-control" rows="4" placeholder="Notas..."></textarea></p>
+            </div>
+            <div class="form-group" id="data_1">
+                <label class="font-noraml">Programar siguiente llamada</label>
+                <div class="input-group date">
+                    <input class="form-control ng-scope ng-valid ng-dirty" date-time="" ng-model="sampleDate" view="date" type="datetime">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="mail-body clearfix">
+            <div class="pull-left adjuntar">
+                <a href="javascript:void(0);" class=""><i class="fa fa-paperclip"></i></a>
+            </div>
+            <div class="pull-right">
+                <a href="javascript:void(0);" class="btn btn-white btn-xs" data-toggle="tooltip" data-placement="top" title="Descartar email"><i class="fa fa-times"></i> Descartar</a>
+                <a href="javascript:void(0);" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Enviar">Guardar <i class="fa fa-mail-forward"></i></a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){       
+
+        $('.phoneMinimizar').click(function(){
+            var $mailbox = $('.phoneFixed').find('.mail-box');
+            if($mailbox.hasClass('hidden')) $mailbox.removeClass('hidden');
+            else $mailbox.addClass('hidden');
+        });
+                
+        $('.phoneCerrar').click(function(){
+            $('.phoneFixed').hide('fast');
+        });  
+    });   
+
+</script>
