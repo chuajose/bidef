@@ -143,3 +143,15 @@ li.borderD{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
 
 /*-webmail-*/
 .skin-1 .ibox-content:last-child { background: #fff; border-color: #E7EAEC;}
+.file-box .imagen {
+    height: 100px;
+    overflow: hidden;
+}
+
+.file-box .file .file-name {
+    padding: 10px;
+    background-color: #F8F8F8;
+    border-top: 1px solid #E7EAEC;
+    min-height: 75px;
+}
+.progress.loading { margin-bottom: 0 !important; height: 5px !important;}
