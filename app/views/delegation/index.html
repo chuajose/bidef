@@ -1,18 +1,26 @@
 <div class="row  border-bottom white-bg dashboard-header" ng-controller="DelegationCtrl">
-    <div class="col-sm-3">
+    <div class="col-sm-4">
         <h2>Delegaciones</h2>
-        <small>Hay 6 delegaciones actualmente.</small>
+        <form class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Añadir Delegación" ng-model="nuevaDelegation.delegation_name" value="">
+                <span class="input-group-btn">
+                    <button ng-click="Save(nuevaDelegation.delegation_name)" class="btn btn-success"><span class="fa fa-plus"></span></button>
+                </span>
+            </div>
+        </form>
+        <small>Hay {{countDelegation}} delegaciones actualmente.</small>
         <ul class="list-group clear-list m-t">            
-            <li class="list-group-item" ng-repeat="delegation in delegations" id="{{delegation.id_delegation}}">{{delegation.delegation_name}}</li>
+            <li class="list-group-item" ng-repeat="delegation in delegations" id="{{delegation.id_delegation}}"><a href="delegation/{{delegation.id_delegation}}">{{delegation.delegation_name}}</a><a ng-click="Remove($index, delegation.id_delegation)" class="pull-right text-danger"><span class="fa fa-times"></span></a></li>
+        </ul>
+        <hr>
+        <h2>Provincias</h2>        
+        <ul class="list-group clear-list m-t">            
+            <li class="list-group-item" ng-repeat="provincia in provincias" id="{{provincia.id_provincia}}">{{provincia.nombre_provincia}}</li>
         </ul>
     </div>
-    <div class="col-sm-6">
-        <ui-chart series="data" options="options" title="Simple Chart" subtitle="with percent values">
-            <y-axis title="Temperature">
-                <labels>
-                    <span>{{ value }}</span>
-                </labels>
-            </y-axis>            
-        </ui-chart>
+    <div class="col-sm-8">
+        <ui-map series="series" options="options" title="" subtitle="">            
+        </ui-map>
     </div>
 </div>
