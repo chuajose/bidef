@@ -5,30 +5,17 @@ angular.module('bidef.delegation', [
 ])
 .config(
   [          '$stateProvider', '$urlRouterProvider',
-    function ($stateProvider,   $urlRouterProvider) {
-      console.log('entra delegation');
+    function ($stateProvider,   $urlRouterProvider) {    
       $stateProvider
         .state('delegation', {
-
           url: '/delegation',
-
-          views: {
-
-            '': {
-              templateUrl: 'views/delegation/index.html',
-               controller: 'DelegationCtrl'
-            }
-
-            /*'mensajes@webmail': {
-              templateUrl: 'views/webmail/mensajes.html',
-             
-            },
-            'bandejas@webmail': {
-              templateUrl: 'views/webmail/bandejas.html',
-            },*/
-
-          }
-
+          templateUrl: 'views/delegation/index.html',
+          controller: 'DelegationCtrl'
+        })
+        .state('profile_delegation', {
+          url: '/:id',
+          templateUrl: 'views/delegation/profile.html',
+          controller: 'DelegationCtrl'                       
         });
     }
   ]
