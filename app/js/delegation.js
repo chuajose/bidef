@@ -5,17 +5,17 @@ angular.module('bidef.delegation', [
 ])
 .config(
   [          '$stateProvider', '$urlRouterProvider',
-    function ($stateProvider,   $urlRouterProvider) {    
+    function ($stateProvider,   $urlRouterProvider) {
       $stateProvider
         .state('delegation', {
           url: '/delegation',
           templateUrl: 'views/delegation/index.html',
           controller: 'DelegationCtrl'
         })
-        .state('profile_delegation', {
+        .state('delegation.profile_delegation', {
           url: '/:id',
           templateUrl: 'views/delegation/profile.html',
-          controller: 'DelegationCtrl'                       
+          controller: 'DelegationCtrl'
         });
     }
   ]
