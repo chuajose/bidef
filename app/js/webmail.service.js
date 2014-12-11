@@ -69,10 +69,13 @@ var utilsWebmail = function ($http) {
 
     EnviarMail: function EnviarMail(asunto,mensaje,destinatario,borrador,draft){
 
+               var data = $.param({ 'subject':asunto,'message':mensaje,'to':destinatario,'borrador':borrador,'draft':draft});
+
       return $http({
                 url     : "../api/index.php/email/mail",
                 method  : "POST",
-                data    : "subject="+asunto+"&message="+mensaje+"&to="+destinatario+"&borrador="+borrador+"&draft="+draft,
+              //  data    : "subject="+asunto+"&message="+mensaje+"&to="+destinatario+"&borrador="+borrador+"&draft="+draft,
+                data : data,
                 headers : {'Content-Type': 'application/x-www-form-urlencoded'}
             })
             .success(function(data){

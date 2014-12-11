@@ -11,18 +11,12 @@
     </ul>
 </div>
 <script>
-var timeout;
 $('.ibox-tools').hide();
 $('.mailbox').hover( 
     function() {
-        clearTimeout(timeout);
-    $( this).find(' .ibox-tools' ).show( );
+        $( this).find(' .ibox-tools' ).show( );
     }, function() {
-        timeout = setTimeout(function(){
-           $( this).find(' .ibox-tools' ).hide( );
-        }, 2000);
-
-    
+        $( this).find(' .ibox-tools' ).hide( );
     }
 );
 </script>

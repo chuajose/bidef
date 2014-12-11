@@ -38,11 +38,11 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams,utilsWebm
     };
 
   
-	$scope.hasPendingRequests = function () {
+	/*$scope.hasPendingRequests = function () {
 			$scope.loading = parseInt(100)-($http.pendingRequests.length*parseInt(10));
 			//console.log($scope.loading);
         return $http.pendingRequests.length > 0;
-    };
+    };*/
 
     $scope.checkImportant = function() {
     	//console.log($scope.mensajes);
@@ -75,12 +75,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams,utilsWebm
 		});
     }
 
-    $scope.deleteMailbox = function() {
-    	
-    	utilsWebmail.DeleteMailbox($scope.mailbox).success(function (response) { 
-    	$state.go('webmail' , $stateParams,{reload: true});
-    	});
-    }
+
 
     $scope.check_read = function() {
     	//console.log($scope.mensajes);
@@ -173,7 +168,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams,utilsWebm
     }
 
 }
-
+//Vista de mensaje
 var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebmail,utilsGeneral){
 
 	$scope.mensaje="";
@@ -184,38 +179,31 @@ var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 	}
 	$scope.mailbox = $stateParams.mailbox;
 	utilsWebmail.VerMail($stateParams.id,$stateParams.mailbox).success(function (response) { 
-			console.log('Entro a leer el email ');
-			console.log(response);
-		
-			$scope.mensaje      = response.view;
-			$scope.subject	= response.header.subject;
-			$scope.from	= response.header.fromAddress;
-			$scope.fecha	= response.header.date;
-			var adjuntos =[];
-			//recorro los adjuntos para añadirle los datos de icono
-			$.each(response.adjuntos, function(index, val) {	
+	
+		$scope.mensaje      = response.view;
+		$scope.subject	= response.header.subject;
+		$scope.from	= response.header.fromAddress;
+		$scope.fecha	= response.header.date;
+		var adjuntos =[];
+		//recorro los adjuntos para añadirle los datos de icono
+		$.each(response.adjuntos, function(index, val) {	
 
-				ext = val.filePath.substr((~-val.filePath.lastIndexOf(".") >>> 0) + 2);
-				val.ext=utilsGeneral.GetTextIcon(ext);
+			ext = val.filePath.substr((~-val.filePath.lastIndexOf(".") >>> 0) + 2);
+			val.ext=utilsGeneral.GetTextIcon(ext);
 
-				adjuntos.push(val);
-			});
-			console.log(adjuntos);
-			$scope.adjuntos = adjuntos;
-			$scope.adjuntoslength = response.adjuntos.length;
-			$scope.uid	= $stateParams.id;
-		
-	//	var ficheros = response.adjuntos;
- //console.log(ficheros.length());
-
+			adjuntos.push(val);
+		});
+		console.log(adjuntos);
+		$scope.adjuntos = adjuntos;
+		$scope.adjuntoslength = response.adjuntos.length;
+		$scope.uid	= $stateParams.id;
+	
 		document.getElementById('iframe').contentWindow.updatedata($scope.mensaje);
-
-		
-
 		
 	});
 
-	$scope.updateMail = function(action){
+	//Actualizar el email (importante, leido, no leido)
+	$scope.UpdateMail = function(action){
 			utilsWebmail.ActionMail($scope.uid, action).success(function (response) { 
 				$scope.mensajes      = response.mensajes;
 				$scope.bandeja       = $stateParams.mailbox;
@@ -225,6 +213,7 @@ var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 
 	}
 
+	//Eliminar el email 
 	$scope.DeleteMail = function(uid) {
     	console.log(uid);
     	utilsWebmail.DeleteMail($scope.uid).success(function (response) { 
@@ -234,8 +223,14 @@ var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 
     }
 
+    //Volver atras en el mensaje
+    $scope.BackPage = function(){
+
+    	window.history.back();
+    }
 }
 
+//Vista de creación de mensaje
 var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebmail, $timeout){
 	$scope.subject  = "";
 	$scope.mensaje  = "";
@@ -304,8 +299,9 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 	 * Envio el mail
 	 */
 	$scope.send = function(){
+		//console.log($scope.mensaje);
 		var mensaje = $scope.mensaje+"<blockquote>"+$scope.mensajeorig+"</blockquote>";
-		utilsWebmail.EnviarMail($scope.subject,encodeURIComponent(mensaje) ,$scope.from,0,$scope.draft).success(function (response) { 
+		utilsWebmail.EnviarMail($scope.subject,mensaje ,$scope.from,0,$scope.draft).success(function (response) { 
 
 			if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
 			
@@ -315,6 +311,7 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 
 }
 
+//Crear una nueva bandeja
 var WebmailCreateMailboxCtrl = function($scope, $http, $state, $stateParams,utilsWebmail,$modalInstance){
 
 	$scope.crear = function(){
@@ -328,6 +325,7 @@ var WebmailCreateMailboxCtrl = function($scope, $http, $state, $stateParams,util
 }
 
 
+//Vista de listado de carpetas
 var WebmailMailboxesController = function($scope, $http, $state, $stateParams,utilsWebmail,$modal){
 	utilsWebmail.ListarMailbox().success(function (response) { 
 		$scope.bandejas= response.bandejas;
@@ -374,6 +372,7 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
             		utilsWebmail.DeleteMailbox(mailbox).success(function (response) { 
 						console.log(mailbox);
 						if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
+						  //$scope.bandejas.splice(idx, 1);
 					});
             		modalInstance.close();
             	}
