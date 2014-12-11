@@ -397,9 +397,10 @@ class Email extends REST_Controller
     {
         $this->load->model('imap_model');
 
+        
         if($this->post('borrador')==1) {
 
-            $datos = array(
+            /*$datos = array(
 
             'dest' => $this->post('to'),
             'subject' => $this->post('subject'),
@@ -414,8 +415,35 @@ class Email extends REST_Controller
                 $draft=$this->imap_model->add_draft($datos);
             }
 
-            $this->data['draft']= $draft;
+            $this->data['draft']= $draft;*/
 
+        } else {
+
+           $this->load->library('email');
+           
+            $this->email->from('<bidef@josebravo.es>', 'Bidef');
+            $this->email->to( $this->post('to'));
+
+            $this->email->subject( $this->post('subject'));
+            $this->email->message( $this->input->post('message'));
+
+            $this->email->send();
+            echo $this->email->print_debugger();
+            $mail = "From: bidef@josbravo.es\r\n".
+                     "To: ". $this->post('to')."\r\n".
+                     "Subject: ". $this->post('subject')."\r\n".
+                     "Date: ".date("r", strtotime("now"))."\r\n".
+                     "\r\n".
+                      $this->post('message').
+                     "\r\n";
+             $this->imap->move_sent_mail('Sent', $mail);
+            //imap_append($this->mbox,self::$imapStream."INBOX.Sent",$mail ,"\\Seen");
+            //$mensaje = nl2br(imap_mail_compose($envelope, $body));
+
+
+            // imap_mail('chua.jose@gmail.com','asuntuti',$mensaje);
+             echo  imap_last_error();
+             die('envio mail');
         }
         
         $this->response($this->data, 200);
