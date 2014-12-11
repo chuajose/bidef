@@ -14,7 +14,7 @@ var utilsDelegation = function ($http) {
 
     InsertDelegation: function InsertDelegation(delegation) {
       //console.log('entra service delegation');
-      return $http({ 
+      return $http({
                       method: 'POST',
                       url: '../api/index.php/delegation/insert_delegation/',
                       data: "delegation_name="+delegation+"",
@@ -24,7 +24,7 @@ var utilsDelegation = function ($http) {
 
     DeleteDelegation: function DeleteDelegation(id_delegation) {
       //console.log('entra service delegation');
-      return $http({ 
+      return $http({
                       method: 'POST',
                       url: '../api/index.php/delegation/delete_delegations/',
                       data: "id="+id_delegation+"",
@@ -34,9 +34,9 @@ var utilsDelegation = function ($http) {
 
     GetDelegation: function GetDelegation(id_delegation) {
       //console.log('entra service delegation');
-      return $http({ 
+      return $http({
                       method: 'GET',
-                      url: '../api/index.php/delegation/get_delegation_get/?id='+id_delegation,
+                      url: '../api/index.php/delegation/get_delegation/?id='+id_delegation,
                       //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     });
     }

@@ -12,10 +12,15 @@ angular.module('bidef.delegation', [
           templateUrl: 'views/delegation/index.html',
           controller: 'DelegationCtrl'
         })
-        .state('delegation.profile_delegation', {
-          url: '/:id',
-          templateUrl: 'views/delegation/profile.html',
-          controller: 'DelegationCtrl'
+        .state('delegation.profile', {
+          url: '/profile/:id',
+          views: {
+          'profile': {
+            templateUrl: 'views/delegation/profile.html',
+            controller: 'DelegationProfileCtrl'
+          }
+        }
+
         });
     }
   ]
