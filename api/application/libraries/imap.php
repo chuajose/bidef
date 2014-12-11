@@ -196,6 +196,8 @@ class Imap {
 	}
 
 
+	
+
 	/**
 	 * Recoge el listado de bandejas
 	 *
@@ -362,6 +364,11 @@ class Imap {
 		return imap_mail_move($this->imap_stream, $mailId, $mailBox, CP_UID) && $this->expunge_deleted_mails();
 	}
 
+	public function move_sent_mail($mailbox, $mail)
+	{
+		 return imap_append($this->imap_stream,$this->mailbox.$mailbox,$mail,"\\Seen");
+	}
+
 	/**
 	 * Borra los mensaje marcados para borrar con imap_delete(), imap_mail_move(), o imap_set_flag_full().
 	 * @return bool
@@ -501,6 +508,11 @@ class Imap {
 				}
 				if(isset($mail->to)) {
 					$mail->to = $this->decode_mime_str($mail->to, $this->server_encoding);
+				}
+
+				if(isset($mail->date)){
+					$this->ci->load->helper('date');
+					$mail->date=fecha_spanish($mail->date,false,true);
 				}
 
 				if($this->has_attachment($mail->uid)) {
@@ -813,7 +825,7 @@ class Imap {
 				$attachment->filePath = $this->attachments_dir . DIRECTORY_SEPARATOR . $fileSysName;
 				//$attachment->size = filesize($this->attachments_dir . DIRECTORY_SEPARATOR . $fileSysName);
 				file_put_contents($attachment->filePath, $data);
-				$attachment->filePath = base_url()."api/adjuntos". DIRECTORY_SEPARATOR . $fileSysName;
+				$attachment->filePath = base_url()."adjuntos". DIRECTORY_SEPARATOR . $fileSysName;
 			}
 
 			$mail->add_attachment($attachment);
@@ -847,7 +859,7 @@ class Imap {
 				 * fin check html
 				 */
 				//echo $data;
-				$mail->textHtml .= utf8_encode($data);
+				$mail->textHtml .= ($data);
 			}
 		}
 		elseif($partStructure->type == 2 && $data) {
