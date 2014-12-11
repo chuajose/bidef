@@ -7,7 +7,7 @@ angular.module('bidef.crm', [
       $stateProvider
         .state('client_form', {
             url: "/client_form",
-            templateUrl: "views/form_client.html",
+            templateUrl: "views/crm/form_client.html",
             controller: "crmCtrl",
             data: { pageTitle: 'Crear ayuntamiento' }
         }).state('municipalities', {
@@ -17,13 +17,13 @@ angular.module('bidef.crm', [
             data: { pageTitle: 'Municipis' }
         }).state('municipalities.list', {
             url: "/list",
-            templateUrl: "views/table_municipalities.html",
+            templateUrl: "views/crm/table_municipalities.html",
             controller: "crmCtrl",
             data: { pageTitle: 'Municipios' }
         }).state('municipalities.details', {
             url: "/:id",
-            templateUrl: "views/profile_municipality.html",
-            controller: "crmCtrl",
+            templateUrl: "views/crm/profile_municipality.html",
+            controller: "municipalityCtrl",
             data: { pageTitle: 'Municipios' }
         })
         ;

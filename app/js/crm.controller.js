@@ -37,17 +37,21 @@ function crmCtrl($scope, $http, $state, $stateParams,utilsCrm, DTOptionsBuilder,
         DTColumnBuilder.newColumn('nombre_municipio').withTitle('Municipio'),
         DTColumnBuilder.newColumn('nombre_provincia').withTitle('Provincia')
     ];
-    if($state.current.name=='municipalities.details'){
-        $scope.municipality=[];
-        utilsCrm.Municipality($stateParams.id).success(function (response){
-            $scope.municipality=response;
-        });
+}
+function municipalityCtrl($scope, $http, $state, $stateParams,utilsCrm){
+    $scope.municipality=[];
+    utilsCrm.Municipality($stateParams.id).success(function (response){
+        $scope.municipality=response;
+    });
+
+    $scope.probar=function(){
+
+        console.log($scope.show_contact_form)
     }
-
-
 }
 
 //Definimos los controladores
 angular
     .module('bidef')
     .controller('crmCtrl ', crmCtrl)
+    .controller('municipalityCtrl ', municipalityCtrl)

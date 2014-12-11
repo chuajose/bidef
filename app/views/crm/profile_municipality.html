@@ -26,32 +26,13 @@
                 </div>
                 <div>
                     <div class="ibox-content no-padding border-left-right">
-                        <img alt="image" class="img-responsive" ng-src="{{municipality.img}}" src="img/profile_big.jpg">
+                        <img alt="image" class="img-responsive" ng-src="{{municipality.img}}">
                     </div>
                     <div class="ibox-content profile-content">
                         <h4><strong>{{municipality.nombre_municipio}}</strong></h4>
 
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <h5>
-                            About me
-                        </h5>
-
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitat.
-                        </p>
-
-
-                        <div class="user-button">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <button type="button" class="btn btn-primary btn-sm btn-block"><i class="fa fa-envelope"></i> Send Message</button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button type="button" class="btn btn-default btn-sm btn-block"><i class="fa fa-coffee"></i> Buy a coffee</button>
-                                </div>
-                            </div>
-                        </div>
+                        <p><i class="fa fa-map-marker"></i> {{municipality.direccion}} {{municipality.cp}}</p>
+                        <p><i class="fa fa-phone"></i> {{municipality.telefono}}</p>
                     </div>
                 </div>
             </div>
@@ -61,104 +42,183 @@
                 <a ui-sref="profile">
                     <div class="col-sm-4">
                         <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" ng-src="{{municipality.goberments[0].img}}" src="img/a2.jpg">
+                            <img alt="image" class="img-circle m-t-xs img-responsive" ng-src="{{municipality.goberments[0].img}}">
 
                             <div class="m-t-xs font-bold">Alcalde</div>
                         </div>
                     </div>
                     <div class="col-sm-8">
-                        <h3><strong>{{municipality.goberments[0].nombre}}</strong></h3>
+                        <h3><strong>{{municipality.goberments[0].nombre}} {{municipality.goberments[0].apellidos}}</strong></h3>
 
                         <p><i class="fa fa-angellist"></i> {{municipality.goberments[0].fecha}}</p>
                         <address>
-                            <strong>{{municipality.goberments[0].nombre_partido_politico}}</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
+                            <strong>{{municipality.goberments[0].nombre_partido_politico}}</strong>
                         </address>
                     </div>
                     <div class="clearfix"></div>
                 </a>
             </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Contactos
+                </div>
+                <div class="panel-body">
+                    <div class="alert alert-info" ng-hide="municipality.contacts.length">
+                        No hay ningún contacto en este ayuntamiento
+                    </div>
+                    <div class="contact-box" ng-repeat="contact in municipality.contacts">
+                        <a ui-sref="profile">
+                            <div class="col-sm-4">
+                                <div class="text-center">
+                                    <img alt="image" class="img-circle m-t-xs img-responsive" ng-src="{{contact.img}}">
+
+                                    <div class="m-t-xs font-bold">{{contact.job}}</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <h3><strong>{{contact.nombre}} {{contact.apellidos}}</strong></h3>
+
+                                <p><i class="fa fa-phone"></i> {{contact.telefono}}</p>
+                                <p>{{contact.descripcion}}</p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </a>
+                    </div>
+                    <div class="user-button">
+                        <div class="row">
+                            <div class="col-md-6 pull-right">
+                                <button type="button" class="btn btn-primary btn-sm btn-block" ng-click="show_contact_form = 1" ng-init="show_contact_form = 0"><i class="fa fa-user"></i> Añadir contacto</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="ibox float-e-margins" ng-hide="! show_contact_form" ng-show="show_contact_form">
+                <div class="ibox-title">
+                    <h5>Añadir contacto</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal">
+                        <p>Sign in today for more expirience.</p>
+
+                        <div class="form-group"><label class="col-lg-2 control-label">Nombre</label>
+
+                            <div class="col-lg-10"><input type="text" placeholder="Nombre" class="form-control"> <span class="help-block m-b-none">Example block-level help text here.</span>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-lg-2 control-label">Apellidos</label>
+
+                            <div class="col-lg-10"><input type="text" placeholder="Apellidos" class="form-control"> <span class="help-block m-b-none">Example block-level help text here.</span>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-lg-2 control-label">Cargo</label>
+
+                            <div class="col-lg-10"><input type="text" placeholder="Cargo" class="form-control"> <span class="help-block m-b-none">Example block-level help text here.</span>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-lg-2 control-label">Email</label>
+
+                            <div class="col-lg-10"><input type="email" placeholder="Email" class="form-control"> <span class="help-block m-b-none">Example block-level help text here.</span>
+                            </div>
+                        </div>
+                        <div class="form-group"><label class="col-lg-2 control-label">Telefono</label>
+                            <div class="col-lg-10"><input type="text" class="form-control" data-mask="999 999 999" placeholder="" ng-model="dataInput6"><span class="help-block">981 123 123</span></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <div class="checkbox"> <input icheck type="checkbox" ng-model="main.checkOne"><i></i> Remember me </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button class="btn btn-white" type="submit">Cancel</button>
+                                <button class="btn btn-primary" type="submit">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
         <div class="col-lg-4">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Timeline</h5>
-                <span class="label label-primary">Meeting today</span>
-                <div ibox-tools></div>
-            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Timeline</h5>
+                    <span class="label label-primary">Meeting today</span>
+                    <div ibox-tools></div>
+                </div>
 
-            <div class="ibox-content inspinia-timeline">
+                <div class="ibox-content inspinia-timeline">
 
-                <div class="timeline-item">
-                    <div class="row">
-                        <div class="col-xs-3 date">
-                            <i class="fa fa-briefcase"></i>
-                            6:00 am
-                            <br/>
-                            <small class="text-navy">2 hour ago</small>
-                        </div>
-                        <div class="col-xs-7 content no-top-border">
-                            <p class="m-b-xs"><strong>Meeting</strong></p>
+                    <div class="timeline-item">
+                        <div class="row">
+                            <div class="col-xs-3 date">
+                                <i class="fa fa-briefcase"></i>
+                                6:00 am
+                                <br/>
+                                <small class="text-navy">2 hour ago</small>
+                            </div>
+                            <div class="col-xs-7 content no-top-border">
+                                <p class="m-b-xs"><strong>Meeting</strong></p>
 
-                            <p>Conference on the sales results for the previous year. Monica please examine sales trends in marketing and products.</p>
+                                <p>Conference on the sales results for the previous year. Monica please examine sales trends in marketing and products.</p>
 
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="row">
-                        <div class="col-xs-3 date">
-                            <i class="fa fa-file-text"></i>
-                            7:00 am
-                            <br/>
-                            <small class="text-navy">3 hour ago</small>
-                        </div>
-                        <div class="col-xs-7 content">
-                            <p class="m-b-xs"><strong>Send documents to Mike</strong></p>
+                    <div class="timeline-item">
+                        <div class="row">
+                            <div class="col-xs-3 date">
+                                <i class="fa fa-file-text"></i>
+                                7:00 am
+                                <br/>
+                                <small class="text-navy">3 hour ago</small>
+                            </div>
+                            <div class="col-xs-7 content">
+                                <p class="m-b-xs"><strong>Send documents to Mike</strong></p>
 
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</p>
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="row">
-                        <div class="col-xs-3 date">
-                            <i class="fa fa-coffee"></i>
-                            8:00 am
-                            <br/>
-                        </div>
-                        <div class="col-xs-7 content">
-                            <p class="m-b-xs"><strong>Coffee Break</strong></p>
+                    <div class="timeline-item">
+                        <div class="row">
+                            <div class="col-xs-3 date">
+                                <i class="fa fa-coffee"></i>
+                                8:00 am
+                                <br/>
+                            </div>
+                            <div class="col-xs-7 content">
+                                <p class="m-b-xs"><strong>Coffee Break</strong></p>
 
-                            <p>
-                                Go to shop and find some products.
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.
-                            </p>
+                                <p>
+                                    Go to shop and find some products.
+                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="row">
-                        <div class="col-xs-3 date">
-                            <i class="fa fa-phone"></i>
-                            11:00 am
-                            <br/>
-                            <small class="text-navy">21 hour ago</small>
-                        </div>
-                        <div class="col-xs-7 content">
-                            <p class="m-b-xs"><strong>Phone with Jeronimo</strong></p>
+                    <div class="timeline-item">
+                        <div class="row">
+                            <div class="col-xs-3 date">
+                                <i class="fa fa-phone"></i>
+                                11:00 am
+                                <br/>
+                                <small class="text-navy">21 hour ago</small>
+                            </div>
+                            <div class="col-xs-7 content">
+                                <p class="m-b-xs"><strong>Phone with Jeronimo</strong></p>
 
-                            <p>
-                                Lorem Ipsum has been the industry's standard dummy text ever since.
-                            </p>
+                                <p>
+                                    Lorem Ipsum has been the industry's standard dummy text ever since.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
         <div class="col-md-8">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
