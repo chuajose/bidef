@@ -328,11 +328,60 @@ var WebmailCreateMailboxCtrl = function($scope, $http, $state, $stateParams,util
 }
 
 
-var WebmailMailboxes = function($scope, $http, $state, $stateParams,utilsWebmail){
+var WebmailMailboxesController = function($scope, $http, $state, $stateParams,utilsWebmail,$modal){
 	utilsWebmail.ListarMailbox().success(function (response) { 
 		$scope.bandejas= response.bandejas;
 		console.log(response.bandejas);
 	});
+
+	$scope.changeMailbox = function(mailbox){
+
+		console.log(mailbox);
+
+		var modalInstance = $modal.open({
+            templateUrl: 'views/webmail/modal.html',
+            controller: function($scope){
+
+            	$scope.mensaje = "Estas seguro de?";
+            	console.log($scope.mensaje);
+
+            	$scope.salir=function(){
+            		    modalInstance.close();
+            	}
+
+            	$scope.ok=function(){
+            		    modalInstance.close();
+            	}
+            },
+        });
+	}
+
+	$scope.removeMailbox = function(mailbox){
+
+		var modalInstance = $modal.open({
+            templateUrl: 'views/webmail/modal.html',
+            controller: function($scope){
+
+            	$scope.mensaje = "Estas seguro de eliminar la bandeja "+mailbox+"?";
+            	$scope.submensaje = "Se eliminarán todos los correos que contiene";
+            	console.log($scope.mensaje);
+
+            	$scope.salir=function(){
+            		    modalInstance.close();
+            	}
+
+            	$scope.ok=function(){
+            		utilsWebmail.DeleteMailbox(mailbox).success(function (response) { 
+						console.log(mailbox);
+						if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
+					});
+            		modalInstance.close();
+            	}
+            },
+        });
+
+		
+	}
 }
 //Definimos los controladores
 angular
@@ -341,4 +390,4 @@ angular
     .controller('WebmailMensajeCtrl',WebmailMensajeCtrl)
     .controller('WebmailComposeCtrl',WebmailComposeCtrl)
     .controller('WebmailCreateMailboxCtrl',WebmailCreateMailboxCtrl)
-    .controller('WebmailMailboxes',WebmailMailboxes)
+    .controller('WebmailMailboxesController',WebmailMailboxesController)

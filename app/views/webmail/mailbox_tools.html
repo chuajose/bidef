@@ -1,0 +1,28 @@
+<div class="ibox-tools dropdown">
+    
+    <a class="dropdown-toggle" href>
+        <i class="fa fa-wrench"></i>
+    </a>
+    <ul class="dropdown-menu dropdown-user">
+        <li><a ng-click="changeMailbox(bandeja.name)">{{bandeja.name}}Cambiar nombre</a>
+        </li>
+        <li><a ng-click="removeMailbox(bandeja.name)">Eliminar</a>
+        </li>
+    </ul>
+</div>
+<script>
+var timeout;
+$('.ibox-tools').hide();
+$('.mailbox').hover( 
+    function() {
+        clearTimeout(timeout);
+    $( this).find(' .ibox-tools' ).show( );
+    }, function() {
+        timeout = setTimeout(function(){
+           $( this).find(' .ibox-tools' ).hide( );
+        }, 2000);
+
+    
+    }
+);
+</script>

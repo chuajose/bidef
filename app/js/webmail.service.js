@@ -118,7 +118,7 @@ var utilsWebmail = function ($http) {
 
     },
 
-    DeleteMailbox: function DeleteMailbox(){
+    DeleteMailbox: function DeleteMailbox(mailbox){
       return $http({
                 url     : "../api/index.php/email/mailbox",
                 method  : "delete",
