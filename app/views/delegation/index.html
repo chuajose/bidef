@@ -1,4 +1,4 @@
-<div class="row  border-bottom white-bg dashboard-header" ng-controller="DelegationCtrl">
+<div ui-view class="row  border-bottom white-bg dashboard-header">
     <div class="col-sm-4">
         <h2>Delegaciones</h2>
         <form class="form-group">
@@ -10,17 +10,17 @@
             </div>
         </form>
         <small>Hay {{countDelegation}} delegaciones actualmente.</small>
-        <ul class="list-group clear-list m-t">            
-            <li class="list-group-item" ng-repeat="delegation in delegations" id="{{delegation.id_delegation}}"><a href="delegation/{{delegation.id_delegation}}">{{delegation.delegation_name}}</a><a ng-click="Remove($index, delegation.id_delegation)" class="pull-right text-danger"><span class="fa fa-times"></span></a></li>
+        <ul class="list-group clear-list m-t">
+            <li class="list-group-item" ng-repeat="delegation in delegations" id="{{delegation.id_delegation}}"><a ui-sref="delegation.profile({id:delegation.id_delegation})">{{delegation.delegation_name}}</a><a ng-click="Remove($index, delegation.id_delegation)" class="pull-right text-danger"><span class="fa fa-times"></span></a></li>
         </ul>
         <hr>
-        <h2>Provincias</h2>        
-        <ul class="list-group clear-list m-t">            
+        <h2>Provincias</h2>
+        <ul class="list-group clear-list m-t">
             <li class="list-group-item" ng-repeat="provincia in provincias" id="{{provincia.id_provincia}}">{{provincia.nombre_provincia}}</li>
         </ul>
     </div>
-    <div class="col-sm-8">
-        <ui-map series="series" options="options" title="" subtitle="">            
+    <div ui-view="profile" class="col-sm-8">
+        <ui-map series="data" options="options" title="" subtitle="">
         </ui-map>
     </div>
 </div>
