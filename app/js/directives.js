@@ -209,7 +209,7 @@ function vectorMap() {
                         }
                     ]
                 },
-                onRegionSelected: function(e, code, isSelected, selectedRegions){                  
+                onRegionSelected: function(e, code, isSelected, selectedRegions){
                     console.log(selectedRegions);
                 },
                 onRegionOver:function(e, code){
