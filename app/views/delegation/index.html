@@ -17,21 +17,119 @@
                     <a ng-click="Remove($index, delegation.id_delegation)" class="btn btn-link pull-right text-danger"><span class="fa fa-times"></span></a>
                     <a colorpicker ng-model="color_delegation" ng-change="AddColor(delegation.id_delegation, color_delegation)" class="btn btn-link pull-right"><span class="fa fa-pencil"></span></a>
                 </li>
-                    
-            </ul>        
+
+            </ul>
         </div>
-        <div class="col-sm-7 col-sm-offset-1">            
+        <div class="col-sm-7 col-sm-offset-1">
             <h4 class="mTop15">Selecciona las provincias que quieres asignar a una delegación:</h4>
             <div vector-map style="height: 300px;" my-map-data="dataMap"></div>
             <p>
                 <label>Asigna estas provincias a una Delegación</label>
-                <select chosen class="chosen-select" style="width:350px;">
-                    <option ng-repeat="delegation in delegations" value="{{delegation.id_delegation}}">{{delegation.delegation_name}}</option>
+                <select ng-model="select_delegation" ng-options="delegation.delegation_name for delegation in delegations" chosen class="chosen-select" style="width:350px;">
                 </select>
             </p>
             <p class="clearfix"><button class="btn btn-success pull-right">Asignar</button></p>
         </div>
     </div>
-    <div ui-view="profile" autoscroll="true" class="row dashboard-header">                
+    <div ui-view="profile" class="row dashboard-header">
+        <h1>Datos de las delegaciones</h1>
+        <div class="row m-t-lg">
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content widget">
+                        <ui-chart series="dataDelegation" options="optionsDelegation" title="" subtitle="">
+                        </ui-chart>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="widget style1 navy-bg">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <i class="fa fa-euro fa-5x"></i>
+                                </div>
+                                <div class="col-xs-8 text-right">
+                                    <span>Total facturado</span>
+                                    <h2 class="font-bold">185.860€</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="widget style1 blue-bg">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <i class="fa fa-thumbs-up fa-5x"></i>
+                                </div>
+                                <div class="col-xs-8 text-right">
+                                    <span>Proyectos completados</span>
+                                    <h2 class="font-bold">31</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="widget style1 red-bg">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <i class="fa fa-euro fa-5x"></i>
+                                </div>
+                                <div class="col-xs-8 text-right">
+                                    <span>Total gastos</span>
+                                    <h2 class="font-bold">18.860€</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="widget style1 blue-bg">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <i class="fa fa-users fa-5x"></i>
+                                </div>
+                                <div class="col-xs-8 text-right">
+                                    <span>Alumnos contratados</span>
+                                    <h2 class="font-bold">765</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-lg">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content widget">
+                    <table datatable="" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                        <tr>
+                            <th>Delegación</th>
+                            <th>Facturación</th>
+                            <th>Gastos</th>
+                            <th>Beneficios</th>
+                            <th>Rendimiento</th>
+                            <th>Proyectos</th>
+                            <th>Alumnos</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="delegation_table in delegations_table">
+                            <td>{{delegation_table.delegacion_name}}</td>
+                            <td>{{delegation_table.delegacion_facturacion}}</td>
+                            <td>{{delegation_table.delegacion_gastos}}</td>
+                            <td>{{delegation_table.delegacion_beneficios}}</td>
+                            <td>{{delegation_table.delegacion_rendimiento}}</td>
+                            <td>{{delegation_table.delegacion_proyectos}}</td>
+                            <td>{{delegation_table.delegacion_alumnos}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
