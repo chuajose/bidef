@@ -34,9 +34,9 @@ function pageTitle($rootScope, $timeout) {
         link: function(scope, element) {
             var listener = function(event, toState, toParams, fromState, fromParams) {
                 // Default title - load on Dashboard 1
-                var title = 'INSPINIA | Responsive Admin Theme';
+                var title = 'Bidef APP';
                 // Create your own title pattern
-                if (toState.data && toState.data.pageTitle) title = 'INSPINIA | ' + toState.data.pageTitle;
+                if (toState.data && toState.data.pageTitle) title = 'Bidef | ' + toState.data.pageTitle;
                 $timeout(function() {
                     element.text(title);
                 });
@@ -181,8 +181,9 @@ function vectorMap() {
             myMapData: '=',
         },
         link: function (scope, element, attrs) {
-            element.vectorMap({
-                map: 'world_mill_en',
+            var mapElement = element.vectorMap({
+                map: 'es_mill_en',
+                regionsSelectable: true,
                 backgroundColor: "transparent",
                 regionStyle: {
                     initial: {
@@ -191,17 +192,29 @@ function vectorMap() {
                         stroke: 'none',
                         "stroke-width": 0,
                         "stroke-opacity": 0
+                    },
+                    selected: {
+                        fill: '#1ab394'
                     }
                 },
                 series: {
                     regions: [
                         {
                             values: scope.myMapData,
-                            scale: ["#1ab394", "#22d6b1"],
+                            scale: {
+                              1: "#1c84c6",
+                              2: "#111111"
+                            },
                             normalizeFunction: 'polynomial'
                         }
                     ]
                 },
+                onRegionSelected: function(e, code, isSelected, selectedRegions){                  
+                    console.log(selectedRegions);
+                },
+                onRegionOver:function(e, code){
+                    console.log(code);
+                }
             });
         }
     }
