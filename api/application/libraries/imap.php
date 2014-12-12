@@ -210,16 +210,15 @@ class Imap {
 	protected function init_folder($folder,&$array,$data,$key){
 
 		$folders=explode('.',$folder);
-
+		$name=array_shift($folders);
 		if(count($folders)>1){
 
-			$name=array_shift($folders);
+			
 			$sub = $this->init_folder(implode('.',$folders),$array[$name],$data,$key);
 
 		}else{
 
 			$sub=array();
-			$name=array_shift($folders);
 
 		}
 
@@ -366,7 +365,16 @@ class Imap {
 
 	public function move_sent_mail($mailbox, $mail)
 	{
-		 return imap_append($this->imap_stream,$this->mailbox.$mailbox,$mail,"\\Seen");
+		//Comprobamos si la carpeta enviados ya existe
+		$this->get_listing_folders();
+
+		if(!in_array($mailbox, $this->mailboxes)){
+
+		  	$this->create_mailbox($mailbox);
+
+		}
+
+		return imap_append($this->imap_stream,$this->mailbox.$mailbox,$mail,"\\Seen");
 	}
 
 	/**
