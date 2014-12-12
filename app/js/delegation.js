@@ -1,6 +1,7 @@
 angular.module('bidef.delegation', [
   'ui.router',
   'ui-highcharts',
+  'colorpicker.module',
   'bidef.delegation.service',
 ])
 .config(
@@ -15,12 +16,11 @@ angular.module('bidef.delegation', [
         .state('delegation.profile', {
           url: '/profile/:id',
           views: {
-          'profile': {
-            templateUrl: 'views/delegation/profile.html',
-            controller: 'DelegationProfileCtrl'
+            'profile': {
+              templateUrl: 'views/delegation/profile.html',
+              controller: 'DelegationProfileCtrl'
+            }
           }
-        }
-
         });
     }
   ]
