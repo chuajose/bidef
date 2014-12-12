@@ -13,18 +13,18 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
     /**
      * vectorMap - Directive for Vector map plugin
      */
-    
+
     var dataMap_series = {
         "ES-C": 1,
         "ES-O": 1,
         "ES-S": 1,
         "ES-LU": 1,
         "ES-OR": 1,
-        "ES-PO": 1,        
-        "ES-M": 2,            
-    };    
+        "ES-PO": 1,
+        "ES-M": 2,
+    };
 
-    $scope.dataMap = dataMap_series;    
+    $scope.dataMap = dataMap_series;
 
     $scope.Save = function(delegation){
         utilsDelegation.InsertDelegation(delegation).success(function (response){});
@@ -39,6 +39,90 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
     $scope.AddColor = function(id_delegation, color){
         console.log(id_delegation + ' - ' + color);
     }
+
+
+
+
+    $scope.optionsDelegation = {
+        chart: {
+            type: 'area'
+        },
+        title: {
+            text: 'Desarrolo de la Delegación'
+        },
+        xAxis: {
+            categories: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'],
+            tickmarkPlacement: 'on',
+            title: {
+                enabled: false
+            }
+        },
+        yAxis: {
+            labels: {
+                formatter: function () {
+                    return this.value / 1000;
+                }
+            }
+        },
+        tooltip: {
+            shared: true,
+        },
+        plotOptions: {
+            area: {
+                stacking: 'normal',
+                lineColor: '#666666',
+                lineWidth: 1,
+                marker: {
+                    lineWidth: 1,
+                    lineColor: '#666666'
+                }
+            }
+        }
+    }
+
+    $scope.dataDelegation = [{
+            name: 'Facturación',
+            data: [502, 635, 809, 947, 1402, 3634, 5268]
+        },{
+            name: 'Rendimiento',
+            data: [163, 203, 276, 408, 547, 729, 628]
+        }];
+
+    /*-table delegaciones-*/
+
+    var delegation_data = [
+                   {            'delegacion_name': 'Delegacion Norte',
+                                'delegacion_facturacion': 1500,
+                                'delegacion_gastos': 250,
+                                'delegacion_beneficios': 1250,
+                                'delegacion_rendimiento': 200,
+                                'delegacion_proyectos': 4,
+                                'delegacion_alumnos': 34
+                    },
+                    {           'delegacion_name': 'Delegacion Sur',
+                                'delegacion_facturacion': 1500,
+                                'delegacion_gastos': 250,
+                                'delegacion_beneficios': 1250,
+                                'delegacion_rendimiento': 200,
+                                'delegacion_proyectos': 4,
+                                'delegacion_alumnos': 34
+                    }
+                            ];
+
+    $scope.delegations_table = delegation_data;
+
+   /* $scope.dtOptions = DTOptionsBuilder.fromSource(table_data)
+        .withPaginationType('full_numbers');
+
+    $scope.dtColumns = [
+        DTColumnBuilder.newColumn('delegacion_name').withTitle('Delegación'),
+        DTColumnBuilder.newColumn('delegacion_facturación').withTitle('Facturación'),
+        DTColumnBuilder.newColumn('delegacion_gastos').withTitle('Gastos'),
+        DTColumnBuilder.newColumn('delegacion_beneficios').withTitle('Beneficios'),
+        DTColumnBuilder.newColumn('delegacion_rendimiento').withTitle('Rendimiento'),
+        DTColumnBuilder.newColumn('delegacion_proyectos').withTitle('Proyectos'),
+        DTColumnBuilder.newColumn('delegacion_alumnos').withTitle('Alumnos')
+    ];*/
 }
 
 
@@ -67,7 +151,7 @@ var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsD
                 enabled: false
             }
         },
-        yAxis: {            
+        yAxis: {
             labels: {
                 formatter: function () {
                     return this.value / 1000;
@@ -75,7 +159,7 @@ var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsD
             }
         },
         tooltip: {
-            shared: true,                   
+            shared: true,
         },
         plotOptions: {
             area: {
@@ -87,9 +171,9 @@ var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsD
                     lineColor: '#666666'
                 }
             }
-        }    
-    }    
-    
+        }
+    }
+
     $scope.dataDelegation = [{
             name: 'Facturación',
             data: [502, 635, 809, 947, 1402, 3634, 5268]
@@ -101,7 +185,7 @@ var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsD
     /*-pie-*/
     $scope.optionsPieDelegation = {
         chart: {
-            type: 'pie'            
+            type: 'pie'
         },
         title: {
             text: null
@@ -125,7 +209,7 @@ var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsD
     $scope.dataPieDelegation = [{
             type: 'pie',
             name: 'Facturación con respecto a las demás delegaciones',
-            data: [                
+            data: [
                 {
                     name: 'Norte',
                     y: 12.8,
@@ -135,6 +219,9 @@ var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsD
                 ['Resto',    8.5]
             ]
         }];
+
+
+
 }
 
 
