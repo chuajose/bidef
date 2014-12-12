@@ -372,26 +372,56 @@ function ionRangeSlider() {
 /**
  * dropZone - Directive for Drag and drop zone file upload plugin
  */
-function dropZone() {
+function dropZone($http) {
+
     return function(scope, element, attrs) {
+        scope.files=[];
         element.dropzone({
-            url: "/upload",
-            maxFilesize: 100,
+            url: "../api/index.php/email/attachment",
+            addRemoveLinks:true,
+            maxFilesize: 10,
             paramName: "uploadfile",
             maxThumbnailFilesize: 5,
             init: function() {
-                scope.files.push({file: 'added'});
                 this.on('success', function(file, json) {
+
+                    file.nameserver=json.file.name;
+                    file.url=json.file.url;
+                    scope.files.push(file);
                 });
                 this.on('addedfile', function(file) {
                     scope.$apply(function(){
-                        alert(file);
-                        scope.files.push({file: 'added'});
+                      //  console.log(file);
+                        //scope.files.push(file);
                     });
                 });
                 this.on('drop', function(file) {
-                    alert('file');
+                   // alert('file');
                 });
+                this.on('removedfile', function(file) {
+
+                   // console.log(json);
+                    //al eliminar fichero, buscamos su posicion dentro del array para borrarlo
+                    var position =scope.files.indexOf(file);
+                    scope.files.splice(position,1);
+
+                    return $http({
+                                    url     : "../api/index.php/email/attachment",
+                                    method  : "delete",
+                                    data    : "name="+file.nameserver,
+                                    //data    : 
+                                   // headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+                                })
+                                .success(function(data){
+                                
+                                })
+                                .error(function(){
+                                    //$location.path("/")
+                            });
+
+                    
+                });
+                
             }
         });
     }

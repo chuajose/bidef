@@ -67,9 +67,9 @@ var utilsWebmail = function ($http) {
         })
     }, 
 
-    EnviarMail: function EnviarMail(asunto,mensaje,destinatario,borrador,draft){
+    EnviarMail: function EnviarMail(asunto,mensaje,destinatario,adjuntos,borrador,draft){
 
-               var data = $.param({ 'subject':asunto,'message':mensaje,'to':destinatario,'borrador':borrador,'draft':draft});
+               var data = $.param({ 'subject':asunto,'message':mensaje,'to':destinatario,'borrador':borrador,'draft':draft,'attachements':adjuntos});
 
       return $http({
                 url     : "../api/index.php/email/mail",

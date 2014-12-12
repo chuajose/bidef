@@ -29,7 +29,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams,utilsWebm
 
   	$scope.pageChanged = function(page) {
 	  	$scope.currentPage = page;
-	    utilsWebmail.ListarWebmail(page,'inbox').success(function (response) { 
+	    utilsWebmail.ListarWebmail(page,$scope.mailbox).success(function (response) { 
 
 			$scope.bandejas = response.bandejas;
 			$scope.mensajes = response.emails;
@@ -163,8 +163,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams,utilsWebm
 
     $scope.refresh = function() {
 
-    	$state.go('webmail' , $stateParams,{reload: true});
-
+    	$state.go('webmail.bandeja' , $stateParams,{reload: true});
     }
 
 }
@@ -237,7 +236,7 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 	$scope.from     = "";
 	$scope.uid      = "";
 	$scope.draft      = 0;
-	var timeout     = null;
+	$scope.files      = null;
 	var mensajeorig = "";
 
 	/*
@@ -258,20 +257,23 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 					$scope.uid	= $stateParams.id;
 
 					document.getElementById('iframe').contentWindow.updatedata($scope.mensajeorig );
-
+//
 				}
 				
 		});
 	}
 
 
+
 	/*
 	 *  Guardo los datos del borrador cada segundo despues de que cambie el cuerpo del mensaje
 	 */
 	var SaveBorrador = function(){
+		
+		files=[];
 		var mensaje = $scope.mensaje+"<blockquote>"+$scope.mensajeorig+"</blockquote>";
 		//Guardanmos el borrador
-		utilsWebmail.EnviarMail($scope.subject,encodeURIComponent(mensaje) ,$scope.from, 1, $scope.draft).success(function (response) { 
+		utilsWebmail.EnviarMail($scope.subject,encodeURIComponent(mensaje) ,$scope.from, files, 1, $scope.draft).success(function (response) { 
 			//if(response.error>0) $state.go('webmail' , $stateParams,{reload: true});
 			$scope.draft=response.draft;
 		});
@@ -299,9 +301,24 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 	 * Envio el mail
 	 */
 	$scope.send = function(){
+
+		files=[];
+		if($scope.files)
+		{
+			$.each($scope.files, function(index, val) {
+				 //console.log(val);
+				files.push(val.nameserver);
+			});
+		}
+
 		//console.log($scope.mensaje);
-		var mensaje = $scope.mensaje+"<blockquote>"+$scope.mensajeorig+"</blockquote>";
-		utilsWebmail.EnviarMail($scope.subject,mensaje ,$scope.from,0,$scope.draft).success(function (response) { 
+		//
+		if($scope.mensajeorig && $scope.mensajeorig!=""){
+			var mensaje = $scope.mensaje+"<blockquote>"+$scope.mensajeorig+"</blockquote>";
+		} else {
+			var mensaje = $scope.mensaje;
+		}
+		utilsWebmail.EnviarMail($scope.subject,mensaje ,$scope.from, files,0,$scope.draft).success(function (response) { 
 
 			if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
 			
