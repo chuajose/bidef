@@ -397,7 +397,6 @@ class Email extends REST_Controller
     {
         $this->load->model('imap_model');
 
-        
         if($this->post('borrador')==1) {
 
             /*$datos = array(
@@ -419,33 +418,111 @@ class Email extends REST_Controller
 
         } else {
 
+        	//echo $this->post('to');die();
            $this->load->library('email');
            
-            $this->email->from('<bidef@josebravo.es>', 'Bidef');
+            $this->email->from('bidef@josebravo.es', 'Bidef');
             $this->email->to( $this->post('to'));
 
             $this->email->subject( $this->post('subject'));
             $this->email->message( $this->input->post('message'));
-
-            $this->email->send();
-            echo $this->email->print_debugger();
-            $mail = "From: bidef@josbravo.es\r\n".
-                     "To: ". $this->post('to')."\r\n".
-                     "Subject: ". $this->post('subject')."\r\n".
-                     "Date: ".date("r", strtotime("now"))."\r\n".
-                     "\r\n".
-                      $this->post('message').
-                     "\r\n";
-             $this->imap->move_sent_mail('Sent', $mail);
-            //imap_append($this->mbox,self::$imapStream."INBOX.Sent",$mail ,"\\Seen");
-            //$mensaje = nl2br(imap_mail_compose($envelope, $body));
+            //var_dump($this->post('attachements'));
+            $string="";
 
 
-            // imap_mail('chua.jose@gmail.com','asuntuti',$mensaje);
-             echo  imap_last_error();
-             die('envio mail');
+            $body=array();
+
+            $part1["type"] = TYPEMULTIPART;
+            $part1["subtype"] = "mixed";
+
+            $body[]=$part1;
+
+            $attachements = $this->post('attachements');
+
+            if(!empty($attachements)){
+                foreach ($this->post('attachements') as $key => $value) {
+                     $this->email->attach('adjuntos/1/'.$value);
+
+
+                    $part2=array();
+                   
+                    $filename = 'adjuntos/1/'.$value;
+                    $fp = fopen($filename, "r");
+                    $contents = fread($fp, filesize($filename));
+                    fclose($fp);
+
+                    $part2["type"] = TYPEAPPLICATION;
+                    $part2["encoding"] = ENCBASE64;
+                    $part2["subtype"] = "octet-stream";
+                    $part2["description"] = $value;
+                    $part2['disposition.type'] = 'attachment';
+                    $part2['disposition'] = array ('filename' => $value);
+                    $part2['type.parameters'] = array('name' => $value);
+                    $part2['dparameters.filename'] = $value;
+                    $part2["contents.data"] = base64_encode($contents);
+                    $body[]=$part2;
+
+                }
+            }
+
+            $envio = $this->email->send();
+
+            if($envio){
+
+                $envelope["from"]= "bidef@josebravo.es";
+                $envelope["to"]  = $this->post('to');
+                //$envelope["cc"]  = "bar@example.com";
+                $envelope["subject"] = $this->post('subject');
+                
+
+                $part3["type"] = TYPETEXT;
+                $part3["subtype"] = "plain";
+                $part3["description"] = "description";
+                $part3["contents.data"] = strip_tags($this->input->post('message'))."\n\n\n\t";
+
+                $part4["type"] = TYPETEXT;
+                $part4["subtype"] = "html";
+                $part4["description"] = "description";
+                $part4["contents.data"] = $this->input->post('message')."\n\n\n\t";
+                $body[] = $part4;
+                //$body[] = $part3;
+
+                $mail= imap_mail_compose($envelope, $body);
+
+                $this->imap->move_sent_mail('Sent', $mail);
+            }
+           // echo $this->email->print_debugger();
+
+        
+            
+           
         }
         
+        $this->response($this->data, 200);
+    }
+
+    function attachment_post()
+    {
+    	//die('asdfsdf');
+        $this->load->helper('fichero_helper');
+
+        $fichero = new fichero();
+        $fichero->carpeta="adjuntos";
+        
+        $this->data['file']=$fichero->subir("todos","uploadfile");
+        $this->response($this->data, 200);
+
+    }
+
+    function attachment_delete()
+    {
+        $this->load->helper('fichero_helper');
+        //echo $this->delete('name');
+        $fichero = new fichero();
+        $fichero->carpeta="adjuntos";
+        $fichero->borrar_ficheros($this->delete('name'));
+
+       // $this->data['file']=$_FILES['uploadfile'];
         $this->response($this->data, 200);
     }
 }
