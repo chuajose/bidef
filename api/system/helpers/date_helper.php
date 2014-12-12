@@ -607,5 +607,76 @@ if ( ! function_exists('timezones'))
 }
 
 
+/**
+ * fecha_spanish
+ *
+ * Devuelve un string en español del tipo
+ * Miercoles, 14 de enero de 2013
+ *
+ * @access	public
+ * @param	string	fecha
+ * @param	bool	larga
+ * @param	bool	verdia
+ * @return	string
+ */
+function fecha_spanish($fecha,$larga=false,$verdia=false){
+
+	if($fecha!='0000-00-00 00:00:00' && $fecha!='' && !is_null($fecha)){
+		$fecha = strtotime($fecha);
+
+		$dia=date("l",$fecha);
+	 
+		if ($dia=="Monday") $dia="Lunes";
+		if ($dia=="Tuesday") $dia="Martes";
+		if ($dia=="Wednesday") $dia="Miércoles";
+		if ($dia=="Thursday") $dia="Jueves";
+		if ($dia=="Friday") $dia="Viernes";
+		if ($dia=="Saturday") $dia="Sabado";
+		if ($dia=="Sunday") $dia="Domingo";
+ 
+		if($verdia){
+
+			$verdia=$dia.", ";
+		}
+		$mes=date("F",$fecha);
+		 
+		if ($mes=="January") $mes="Enero";
+		if ($mes=="February") $mes="Febrero";
+		if ($mes=="March") $mes="Marzo";
+		if ($mes=="April") $mes="Abril";
+		if ($mes=="May") $mes="Mayo";
+		if ($mes=="June") $mes="Junio";
+		if ($mes=="July") $mes="Julio";
+		if ($mes=="August") $mes="Agosto";
+		if ($mes=="September") $mes="Septiembre";
+		if ($mes=="October") $mes="Octubre";
+		if ($mes=="November") $mes="Noviembre";
+		if ($mes=="December") $mes="Diciembre";
+		 
+		$ano=date("Y",$fecha);
+
+		$dian=date('d',$fecha);
+
+		$hora=date('H',$fecha);
+		$minuto=date('i',$fecha);
+		$segundo=date('s',$fecha);
+
+
+		if(($hora!='00' || $minuto!='00' || $segundo!='00') && $larga){
+
+			$opciones = ' a las '.$hora.':'.$minuto.':'.$segundo;
+
+		}else{
+
+			$opciones='';
+		}
+
+
+		return  $verdia.$dian.' de ' .$mes.' de '.$ano.$opciones;
+	}
+	return false;
+}
+
+
 /* End of file date_helper.php */
 /* Location: ./system/helpers/date_helper.php */
