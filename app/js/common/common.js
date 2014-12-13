@@ -1,3 +1,6 @@
+
+var APIURL = "http://localhost/teslabide/trunk/api.php/";
+
 var utilsGeneral = function ($http) {
 
   return {
