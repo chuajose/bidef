@@ -6,8 +6,16 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams,utilsWebm
   	$scope.select = {};//almaceno los uids de los mensaje checkeados
   	$scope.mailbox = "INBOX";
   	$scope.palabra = "";
-  	//console.log('entro en WebmailCtrl');
+  	$scope.bigTotalItems = 0;
 
+    $scope.searchUseen = "";
+    $scope.searchStart = "";
+    $scope.searchEnd = "";
+    $scope.searchBody = "";
+    $scope.searchSubject = "";
+    $scope.searchTo = "";
+    $scope.searchWord = "";
+  	//console.log('entro en WebmailCtrl');
   	if($stateParams.mailbox){
 
   		$scope.mailbox = $stateParams.mailbox;
@@ -140,12 +148,18 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams,utilsWebm
     }
 
 
+    
 
-
-	$scope.buscar = function (palabra) {
-		console.log(palabra);
-
-	    utilsWebmail.SearchWebmail(palabra, $scope.bigCurrentPage,$scope.mailbox).success(function (response) { 
+	$scope.buscar = function () {
+		var search = [];
+		search.useen = $scope.searchUseen;
+	    search.start = $scope.searchStart;
+	    search.end = $scope.searchEnd;
+	    search.body = $scope.searchBody;
+	    search.subject = $scope.searchSubject;
+	    search.to = $scope.searchTo;
+		search.word = $scope.searchWord;
+	    utilsWebmail.SearchWebmail(search, $scope.bigCurrentPage,$scope.mailbox).success(function (response) { 
 			$scope.mensajes      = response.emails;
 			$scope.bandeja       = $stateParams.mailbox;
 			$scope.mensaje       = false;
@@ -161,6 +175,29 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams,utilsWebm
         });
     };
 
+    $scope.AdvSearch = function () {
+
+    	var modalInstance = $modal.open({
+            templateUrl: 'views/webmail/modal_advance_search.html',
+            controller: function($scope){
+
+            
+            	$scope.salir=function(){
+            		    modalInstance.close();
+            	}
+
+            	$scope.ok=function(){
+            		utilsWebmail.DeleteMailbox(mailbox).success(function (response) { 
+						console.log(mailbox);
+						if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
+						  //$scope.bandejas.splice(idx, 1);
+					});
+            		modalInstance.close();
+            	}
+            },
+        });
+
+    }
     $scope.refresh = function() {
 
     	$state.go('webmail.bandeja' , $stateParams,{reload: true});
@@ -283,6 +320,7 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 	 *  Compruebo si hay modificaciones en el cuerpo del mensaje para guardar el borrador
 	 */
 	var debounceSaveUpdates = function(newVal, oldVal) {
+		timeout=0;
 	    if (newVal != oldVal) {
 	      if (timeout) {
 	        $timeout.cancel(timeout)
@@ -344,10 +382,14 @@ var WebmailCreateMailboxCtrl = function($scope, $http, $state, $stateParams,util
 
 //Vista de listado de carpetas
 var WebmailMailboxesController = function($scope, $http, $state, $stateParams,utilsWebmail,$modal){
+
 	utilsWebmail.ListarMailbox().success(function (response) { 
 		$scope.bandejas= response.bandejas;
+		$scope.bandejas_clientes = response.bandejas_clientes; 
+		$scope.bandejas_otros = response.bandejas_otros;
 		console.log(response.bandejas);
 	});
+	$scope.separator ='.';
 
 	$scope.changeMailbox = function(mailbox){
 
@@ -371,8 +413,10 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
         });
 	}
 
-	$scope.removeMailbox = function(mailbox){
 
+
+	$scope.removeMailbox = function(mailbox,key){
+		var borro = false;
 		var modalInstance = $modal.open({
             templateUrl: 'views/webmail/modal.html',
             controller: function($scope){
@@ -382,21 +426,38 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
             	console.log($scope.mensaje);
 
             	$scope.salir=function(){
-            		    modalInstance.close();
+            		 modalInstance.dismiss('cancel');
+
             	}
 
             	$scope.ok=function(){
+            		console.log('entro en borrar'+key);
+            		borro = true;
             		utilsWebmail.DeleteMailbox(mailbox).success(function (response) { 
-						console.log(mailbox);
-						if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
+						//if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
 						  //$scope.bandejas.splice(idx, 1);
 					});
-            		modalInstance.close();
+            		modalInstance.close(key);
             	}
             },
         });
 
-		
+        modalInstance.result.then(function(key) {
+	        console.log($scope.bandejas_otros);
+
+	        var result=[];
+	        $.each($scope.bandejas_otros, function(index, val) {	
+
+				result.push(val);
+			});
+        	 result.splice(key, 1);
+        	 $scope.bandejas_otros=result;
+        	 console.log('gsfgs'+key);
+
+        }, function() {
+        	console.log('Modal dismissed at: ' + new Date());
+      	});
+
 	}
 }
 //Definimos los controladores

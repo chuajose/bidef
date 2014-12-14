@@ -1,6 +1,7 @@
             <div class="mail-box-header">
                 <div class="pull-right tooltip-demo">
-                    <a ui-sref="inbox" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to draft folder"><i class="fa fa-pencil"></i> Borrador</a>
+                    <!--<a ui-sref="inbox" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to draft folder"><i class="fa fa-pencil"></i> Borrador</a>-->
+                    <button ng-click="send()" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Send"><i class="fa fa-reply"></i> Enviar</button>
                     <a  ui-sref="webmail.ver({id:uid})" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Discard email"><i class="fa fa-times"></i> Descartar</a>
                 </div>
                 <h2>
@@ -37,7 +38,7 @@
                 <div class="mail-body text-right tooltip-demo">
                     <button ng-click="send()" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Send"><i class="fa fa-reply"></i> Enviar</button>
                     <a ui-sref="webmail.ver({id:uid})" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Discard email"><i class="fa fa-times"></i> Descartar</a>
-                    <button ui-sref="inbox" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to draft folder"><i class="fa fa-pencil"></i> Borrador</button>
+                    <!--<button ui-sref="inbox" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to draft folder"><i class="fa fa-pencil"></i> Borrador</button>-->
                 </div>
                 <div class="clearfix"></div>
 

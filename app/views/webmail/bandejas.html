@@ -7,15 +7,17 @@
         <h5>Bandejas</h5>
         <ul class="folder-list m-b-md" style="padding: 0">
             <li class="mailbox" ng-repeat="bandeja in bandejas">
-                <div ng-hide="bandeja.name==='INBOX'" mailbox-tools></div>
                 <a  ui-sref="webmail.bandeja({mailbox:bandeja.name, pagina:0})"> 
                     <i  ng-class="{'fa fa-inbox'   : bandeja.name === 'INBOX',
                                                        'fa fa-envelope-o' : bandeja.name === 'Sent',
                                                        'fa fa-trash-o'    : bandeja.name === 'Trash',
                                                        'fa fa-recycle'   : bandeja.name === 'Junk',
-                                                       'fa fa-file-text-o' : bandeja.name === 'Drafts'}" ></i> {{bandeja.name}} <span ng-show="bandeja.data.Unread" class="label label-warning pull-right">{{bandeja.data.Unread}}</span> 
+                                                       'fa fa-file-text-o' : bandeja.name === 'Borradores'}" ></i> {{bandeja.name}} <span ng-show="bandeja.data.Unread" class="label label-warning pull-right">{{bandeja.data.Unread}}</span> 
                      
                 </a>
+                <ul class="folder-list" style="padding-left:10px">
+                <li class="mailbox" ng-repeat="subfolder in bandeja.folders"><div ng-hide="bandeja.name==='INBOX'" mailbox-tools></div><a  ui-sref="webmail.bandeja({mailbox:bandeja.name+separator+subfolder.name, pagina:0})"> {{subfolder.name}}</a></li>
+                </ul>
             </li>
 
 
@@ -26,15 +28,17 @@
             <li><a ui-sref="webmail"> <i class="fa fa-trash-o"></i> Papelera</a></li>-->
         </ul>
         <!--<button ng-click="open()" class="btn btn-success " type="button"><i class="fa fa-paste"></i> Crear Carpeta</button>-->
-       <!-- <h5>Categories</h5>
+        <h5>Bandejas Clientes</h5>
         <ul class="category-list" style="padding: 0">
-            <li><a href=""> <i class="fa fa-circle text-navy"></i> Work </a></li>
-            <li><a href=""> <i class="fa fa-circle text-danger"></i> Documents</a></li>
-            <li><a href=""> <i class="fa fa-circle text-primary"></i> Social</a></li>
-            <li><a href=""> <i class="fa fa-circle text-info"></i> Advertising</a></li>
-            <li><a href=""> <i class="fa fa-circle text-warning"></i> Clients</a></li>
+            <li ng-repeat="bandeja_cliente in bandejas_clientes"><a ui-sref="webmail.bandeja({mailbox:bandeja_cliente.name, pagina:0})"> <i class="fa fa-circle text-navy"></i> {{bandeja_cliente.name}} </a></li>
+            
         </ul>
-
+        <h5>Bandejas Privadas</h5>
+        <ul class="category-list" style="padding: 0">
+            <li class="mailbox" ng-repeat="(key,bandeja_otra) in bandejas_otros"><div mailbox-tools></div><a ui-sref="webmail.bandeja({mailbox:bandeja_otra.name, pagina:0})"> <i class="fa fa-circle text-navy"></i> {{bandeja_otra.name}} </a></li>
+            
+        </ul>
+        <!--
         <h5 class="tag-title">Labels</h5>
         <ul class="tag-list" style="padding: 0">
             <li><a href=""><i class="fa fa-tag"></i> Family</a></li>

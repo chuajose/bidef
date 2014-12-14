@@ -6,17 +6,18 @@ var utilsWebmail = function ($http) {
     //  console.log(id);
       return $http({ 
         method: 'GET', 
-        url: '../api/index.php/email/mails',
+        url: APIURL+'email/mails',
         params: {page: page, mailbox: mailbox}
          }); 
     },   
 
     SearchWebmail: function SearchWebmail(search ,page, mailbox) {
     //  console.log(id);
+
       return $http({ 
         method: 'POST', 
-        url: '../api/index.php/email/mails',
-        data    : "search="+search+"&page="+page+"&mailbox="+mailbox,
+        url: APIURL+'email/mails',
+        data    : "word="+search.word+"&useen="+search.useen+"&end="+search.end+"&start="+search.start+"&body="+search.body+"&subject="+search.subject+"&to="+search.to+"&page="+page+"&mailbox="+mailbox,
         headers : {'Content-Type': 'application/x-www-form-urlencoded'}
          }); 
     },   
@@ -25,7 +26,7 @@ var utilsWebmail = function ($http) {
     //  console.log(id);
       return $http({ 
         method: 'PUT', 
-        url: '../api/index.php/email/mail',
+        url: APIURL+'email/mail',
         data: {id: id, action:action, mailbox:mailbox}
          }); 
     },   
@@ -35,7 +36,7 @@ var utilsWebmail = function ($http) {
     //  console.log(id);
       return $http({ 
         method: 'DELETE', 
-        url: '../api/index.php/email/mail',
+        url: APIURL+'email/mail',
         //data: {id: id},
         //headers : {'Content-Type': 'application/x-www-form-urlencoded'}
         params: {id: id}
@@ -46,7 +47,7 @@ var utilsWebmail = function ($http) {
     //  console.log(id);
       return $http({ 
         method: 'GET', 
-        url: '../api/index.php/email/mail',
+        url: APIURL+'email/mail',
         params: {id: id, mailbox:mailbox}
          }); 
     },   
