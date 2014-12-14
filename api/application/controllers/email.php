@@ -48,8 +48,31 @@ class Email extends REST_Controller
     function mailbox_get()
     {
         $bandejas               = $this->imap->get_listing_folders();
+
+        $folders = array();
+        $clients = array();
+        $others  = array();
+        if( !empty( $bandejas )) {
+            $i=4;
+            foreach ($bandejas as $key => $value) {
+               
+               if($key=='INBOX') $folders[0]=$value; 
+               elseif($key=='Sent') $folders[1]=$value; 
+               elseif($key=='Trash') $folders[2]=$value;
+               elseif($key=='Borradores') $folders[3]=$value;
+               elseif($key=='Clientes') $clients[$i]=$value;
+               else $others[$i]=$value; 
+
+               $i++;
+            }
+        }
+        ksort($folders);
         
-        $this->data['bandejas'] =$bandejas;
+        $this->data['bandejas'] =$folders;
+        $this->data['bandejas_clientes'] =$clients;
+        $this->data['bandejas_otros'] =$others;
+
+       // var_dump($this->data);
 
         /*if($drafts = $this->imap_model->get_draft(1)) {
 
@@ -248,17 +271,24 @@ class Email extends REST_Controller
             $page = 1;
         }
 
+        $string = '';
 
+        if($this->post('to') && $this->post('to') !=="") $string .=' FROM "'.$this->post('to').'"';
+        if($this->post('useen') && $this->post('useen') =="true") $string .=' UNSEEN '; 
+        if($this->post('start') && $this->post('start') !=="") $string .=' SINCE "'.$this->post('start').'"';
+        if($this->post('end') && $this->post('end') !=="") $string .=' BEFORE "'.$this->post('end').'"';
+        if($this->post('word')) {
 
-        if($this->post('search')) {
-
-            $criteria = $this->post('search');
-            $criteria = 'SUBJECT "'.$criteria.'"';
+            $criteria[] =  'SUBJECT "'.$this->post('word').'"' .$string;
+            $criteria[] =  'BODY "'.$this->post('word').'"' .$string;
+            //$criteria[] = array('field' => 'BODY', 'value'=>'casa');
             
         } else {
-            
-            $criteria = 'ALL';
+            if($this->post('subject') && $this->post('subject') !=="") $string .=' SUBJECT "'.$this->post('subject').'"';
+            if($this->post('body') && $this->post('body') !=="") $string .=' BODY "'.$this->post('body').'"';
+            $criteria[] = $string;
         }
+
 
         if($this->post('mailbox'))
             $mailbox = $this->post('mailbox');
