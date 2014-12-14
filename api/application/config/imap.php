@@ -10,7 +10,7 @@
 |	imap.example.com/
 |
 */
-$config['server']	= '';
+$config['server']	= 'imap.1and1.es';
 
 /*
 |--------------------------------------------------------------------------
@@ -70,3 +70,17 @@ $config['server_encoding'] = 'UTF-8';
 |
 */
 $config['attachments_dir']	= 'adjuntos';
+
+/*
+|--------------------------------------------------------------------------
+| Carpetas principales
+|--------------------------------------------------------------------------
+|
+| Nombre de las carpetas que cargaremos como bandejas principales
+|
+*/
+$config['folders']['INBOX'] = "Entrada";
+$config['folders']['Sent'] = "Enviados";
+$config['folders']['Trash'] = "Papelera";
+$config['folders']['Drafts'] = "Borradores";
+
