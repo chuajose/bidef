@@ -28,6 +28,8 @@ class Email extends REST_Controller
 
         $this->load->model('imap_model');
 
+        $this->load->config('imap',TRUE);
+
         $user = $this->imap_model->get(1);
 
         $this->login         = $this->imap->connect( $user->user, $user->password);//usuario y password
@@ -48,20 +50,29 @@ class Email extends REST_Controller
     function mailbox_get()
     {
         $bandejas               = $this->imap->get_listing_folders();
-
+        $folder_config = $this->config->item('folders','imap');
         $folders = array();
         $clients = array();
         $others  = array();
         if( !empty( $bandejas )) {
-            $i=4;
+            $i=count($folder_config);
             foreach ($bandejas as $key => $value) {
                
-               if($key=='INBOX') $folders[0]=$value; 
-               elseif($key=='Sent') $folders[1]=$value; 
-               elseif($key=='Trash') $folders[2]=$value;
-               elseif($key=='Borradores') $folders[3]=$value;
-               elseif($key=='Clientes') $clients[$i]=$value;
-               else $others[$i]=$value; 
+               if($key=='INBOX') {
+                    $value['name_show']=(isset($folder_config[$key])) ? $folder_config[$key] : "Entrada";
+                    $folders[0]=$value; 
+               }elseif($key=='Sent') {
+                    $value['name_show']=(isset($folder_config[$key])) ? $folder_config[$key] : "Enviados";
+                    $folders[1]=$value; 
+               }elseif($key=='Trash') {
+                    $value['name_show']=(isset($folder_config[$key])) ? $folder_config[$key] : "Papelera";
+                    $folders[2]=$value;
+               }elseif($key=='Borradores') {
+                    $value['name_show']=(isset($folder_config[$key])) ? $folder_config[$key] : "Borradores";
+                    $folders[3]=$value;
+               }elseif($key=='Clientes') {
+                $clients[$i]=$value;
+               }else $others[$i]=$value; 
 
                $i++;
             }
