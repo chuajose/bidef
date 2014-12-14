@@ -4,7 +4,7 @@ var utilsCrm = function ($http) {
 
     InsertClient: function InsertClient(client,billingData){
         return $http({
-                url     : "/crm/crm/client",
+                url     : APIURL+"crm/client",
                 method  : "POST",
                 data    : {data:client,billing:billingData},
                 headers : {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -19,19 +19,33 @@ var utilsCrm = function ($http) {
       },
     ListMunicipalities: function ListMunicipalities(){
         return $http({
-                url     : "/crm/crm/municipalities",
+                url     : APIURL+"crm/municipalities",
                 method  : "GET"
             })
 
       },
     Municipality: function Municipality(id){
         return $http({
-                url     : "/crm/crm/municipality/"+id,
+                url     : APIURL+"crm/municipality/"+id,
                 method  : "GET"
             })
 
       },
+    InsertMunicipalityContact: function InsertMunicipalityContact(contact,id){
+        return $http({
+                url     : APIURL+"crm/municipality_contact",
+                method  : "POST",
+                data    : {contact:contact,id:id},
+                headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
+      },
+    ListMunicipalityContacts: function ListMunicipalityContacts(id){
+        return $http({
+                url     : APIURL+"crm/municipality_contacts/"+id,
+                method  : "GET"
+            })
 
+      },
     ListarMensajes: function ListarMensajes(bandeja,pagina,busqueda){
 
       return $http({

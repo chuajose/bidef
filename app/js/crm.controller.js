@@ -15,7 +15,7 @@ function crmCtrl($scope, $http, $state, $stateParams,utilsCrm, DTOptionsBuilder,
         .withOption('ajax', {
             // Either you specify the AjaxDataProp here
             // dataSrc: 'data',
-            url: '/crm/crm/municipalities',
+            url: APIURL+'crm/municipalities',
             type: 'POST'
         })
         // or here
@@ -44,9 +44,27 @@ function municipalityCtrl($scope, $http, $state, $stateParams,utilsCrm){
         $scope.municipality=response;
     });
 
-    $scope.probar=function(){
-
-        console.log($scope.show_contact_form)
+    $scope.open_contact_form=function(){
+        $scope.success_contact_form=0;
+        $scope.show_contact_form=1;
+        document.getElementById("new_contact_name").focus();
+    }
+    $scope.send_contact_form=function(){
+        utilsCrm.InsertMunicipalityContact($scope.new_contact,$scope.municipality.id_municipio).success(function (response){
+            $scope.reset_contact_form();
+            $scope.success_contact_form=1;
+            utilsCrm.ListMunicipalityContacts($scope.municipality.id_municipio).success(function (response){
+                $scope.municipality.contacts=response;
+            });
+        }).error(function(response){
+            console.log(response);
+        });
+        return true;
+    }
+    $scope.reset_contact_form=function(){
+        $scope.new_contact=[];
+        $scope.show_contact_form=0;
+        return true;
     }
 }
 

@@ -1,5 +1,5 @@
 
-var APIURL = "http://localhost/teslabide/api/index.php/";
+var APIURL = "http://localhost/crm/";
 
 var utilsGeneral = function ($http) {
 
@@ -42,7 +42,7 @@ var utilsGeneral = function ($http) {
 			        break;
 			    default:
 			        ext = "file";
-			} 
+			}
 	      return ext;
 	    },
 	}
