@@ -72,7 +72,7 @@ class Email extends REST_Controller
                     $folders[3]=$value;
                }elseif($key=='Clientes') {
                 $clients[$i]=$value;
-               }else $others[$i]=$value; 
+               }else $others[]=$value; 
 
                $i++;
             }
