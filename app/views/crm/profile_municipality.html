@@ -68,32 +68,28 @@
                         No hay ningún contacto en este ayuntamiento
                     </div>
                     <div class="contact-box" ng-repeat="contact in municipality.contacts">
-                        <a ui-sref="profile">
-                            <div class="col-sm-4">
-                                <div class="text-center">
-                                    <img alt="image" class="img-circle m-t-xs img-responsive" ng-src="{{contact.img}}">
-
-                                    <div class="m-t-xs font-bold">{{contact.job}}</div>
-                                </div>
-                            </div>
-                            <div class="col-sm-8">
-                                <h3><strong>{{contact.nombre}} {{contact.apellidos}}</strong></h3>
-
-                                <p><i class="fa fa-phone"></i> {{contact.telefono}}</p>
-                                <p>{{contact.descripcion}}</p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </a>
+                        <a class="btn btn-link pull-right text-danger"><span class="fa fa-times"></span></a>
+                            <a class="btn btn-link pull-right"><span class="fa fa-pencil"></span></a>
+                        <h3>
+                            <strong>{{contact.nombre}} {{contact.apellidos}}</strong>
+                        </h3>
+                        <p><i class="fa fa-sitemap"></i> {{contact.cargo}}</p>
+                        <p><i class="fa fa-envelope"></i> {{contact.email}}</p>
+                        <p><i class="fa fa-phone"></i> {{contact.telefono}}</p>
+                        <p>{{contact.descripcion}}</p>
                     </div>
                     <div class="user-button">
                         <div class="row">
                             <div class="col-md-6 pull-right">
-                                <button type="button" class="btn btn-primary btn-sm btn-block" ng-click="show_contact_form = 1" ng-init="show_contact_form = 0"><i class="fa fa-user"></i> Añadir contacto</button>
+                                <button type="button" class="btn btn-primary btn-sm btn-block" ng-click="open_contact_form()" ng-init="show_contact_form = 0"><i class="fa fa-user"></i> Añadir contacto</button>
                             </div>
                         </div>
                     </div>
 
                 </div>
+            </div>
+            <div class="alert alert-success" ng-show="success_contact_form" ng-init="success_contact_form=0">
+                Se ha agregado el contacto
             </div>
             <div class="ibox float-e-margins" ng-hide="! show_contact_form" ng-show="show_contact_form">
                 <div class="ibox-title">
@@ -101,40 +97,33 @@
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal">
-                        <p>Sign in today for more expirience.</p>
-
                         <div class="form-group"><label class="col-lg-2 control-label">Nombre</label>
 
-                            <div class="col-lg-10"><input type="text" placeholder="Nombre" class="form-control"> <span class="help-block m-b-none">Example block-level help text here.</span>
+                            <div class="col-lg-10"><input type="text" id="new_contact_name" placeholder="Nombre" ng-model="new_contact.nombre" class="form-control" required="required">
                             </div>
                         </div>
                         <div class="form-group"><label class="col-lg-2 control-label">Apellidos</label>
 
-                            <div class="col-lg-10"><input type="text" placeholder="Apellidos" class="form-control"> <span class="help-block m-b-none">Example block-level help text here.</span>
+                            <div class="col-lg-10"><input type="text" placeholder="Apellidos" ng-model="new_contact.apellidos" class="form-control">
                             </div>
                         </div>
                         <div class="form-group"><label class="col-lg-2 control-label">Cargo</label>
 
-                            <div class="col-lg-10"><input type="text" placeholder="Cargo" class="form-control"> <span class="help-block m-b-none">Example block-level help text here.</span>
+                            <div class="col-lg-10"><input type="text" placeholder="Cargo" ng-model="new_contact.cargo" class="form-control">
                             </div>
                         </div>
                         <div class="form-group"><label class="col-lg-2 control-label">Email</label>
 
-                            <div class="col-lg-10"><input type="email" placeholder="Email" class="form-control"> <span class="help-block m-b-none">Example block-level help text here.</span>
+                            <div class="col-lg-10"><input type="email" placeholder="Email" ng-model="new_contact.email" class="form-control">
                             </div>
                         </div>
-                        <div class="form-group"><label class="col-lg-2 control-label">Telefono</label>
-                            <div class="col-lg-10"><input type="text" class="form-control" data-mask="999 999 999" placeholder="" ng-model="dataInput6"><span class="help-block">981 123 123</span></div>
+                        <div class="form-group"><label class="col-lg-2 control-label">Teléfono</label>
+                            <div class="col-lg-10"><input type="text" placeholder="Teléfono" class="form-control" ng-model="new_contact.telefono" data-mask="999 999 999" placeholder="" ng-model="dataInput6"><span class="help-block">981 123 123</span></div>
                         </div>
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-10">
-                                <div class="checkbox"> <input icheck type="checkbox" ng-model="main.checkOne"><i></i> Remember me </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
-                                <button class="btn btn-white" type="submit">Cancel</button>
-                                <button class="btn btn-primary" type="submit">Save changes</button>
+                                <button class="btn btn-white" ng-click="reset_contact_form()" type="submit">Cancel</button>
+                                <button class="btn btn-primary" ng-click="send_contact_form()" type="submit">Save changes</button>
                             </div>
                         </div>
                     </form>
