@@ -4,19 +4,9 @@
         <i class="fa fa-wrench"></i>
     </a>
     <ul class="dropdown-menu dropdown-user">
-        <li><a ng-click="changeMailbox(bandeja_otra.name)">{{bandeja_otra.name}}Cambiar nombre</a>
+        <li><a ng-click="changeMailbox(bandeja_otra.name)">Cambiar nombre</a>
         </li>
-        <li><a ng-click="removeMailbox(bandeja_otra.name,key)">{{key}}Eliminar</a>
+        <li><a ng-click="removeMailbox(bandeja_otra.name,key)">Eliminar</a>
         </li>
     </ul>
 </div>
-<script>
-$('.ibox-tools').hide();
-$('.mailbox').hover( 
-    function() {
-        $( this).find(' .ibox-tools' ).show( );
-    }, function() {
-        $( this).find(' .ibox-tools' ).hide( );
-    }
-);
-</script>

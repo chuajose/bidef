@@ -105,6 +105,22 @@ var utilsWebmail = function ($http) {
      
     },
 
+    UpdateMailbox: function addMailbox(mailbox,newmailbox){
+      console.log('add '+mailbox);
+      return $http({
+                url     : "../api/index.php/email/mailbox",
+                method  : "PUT",
+                data    : "mailbox="+mailbox+"&mailbox_new="+newmailbox,
+                headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(data){
+            
+            })
+            .error(function(){
+                //$location.path("/")
+        })
+     
+    },
     ListarMailbox: function ListarMailbox(){
       return $http({
                 url     : "../api/index.php/email/mailbox",

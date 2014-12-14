@@ -382,31 +382,39 @@ var WebmailCreateMailboxCtrl = function($scope, $http, $state, $stateParams,util
 
 //Vista de listado de carpetas
 var WebmailMailboxesController = function($scope, $http, $state, $stateParams,utilsWebmail,$modal){
-
+	console.log($stateParams.mailbox);
+	$scope.mailboxsel = $stateParams.mailbox;
 	utilsWebmail.ListarMailbox().success(function (response) { 
 		$scope.bandejas= response.bandejas;
 		$scope.bandejas_clientes = response.bandejas_clientes; 
 		$scope.bandejas_otros = response.bandejas_otros;
-		console.log(response.bandejas);
+		console.log(response.bandejas_otros);
 	});
 	$scope.separator ='.';
+
+	$scope.setFolder = function (mailbox){
+
+		$scope.mailboxsel = mailbox;
+	}
 
 	$scope.changeMailbox = function(mailbox){
 
 		console.log(mailbox);
-
+		$scope.mailbox=mailbox;
 		var modalInstance = $modal.open({
-            templateUrl: 'views/webmail/modal.html',
+            templateUrl: 'views/webmail/modal_edit_mailbox.html',
             controller: function($scope){
 
-            	$scope.mensaje = "Estas seguro de?";
-            	console.log($scope.mensaje);
 
             	$scope.salir=function(){
             		    modalInstance.close();
             	}
 
             	$scope.ok=function(){
+            		utilsWebmail.UpdateMailbox(mailbox,$scope.newmailbox).success(function (response) { 
+						
+						console.log(response);
+					});
             		    modalInstance.close();
             	}
             },
