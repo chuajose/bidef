@@ -401,29 +401,44 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
 
 		console.log(mailbox);
 		$scope.mailbox=mailbox;
+		$scope.newmailbox="";
 		var modalInstance = $modal.open({
             templateUrl: 'views/webmail/modal_edit_mailbox.html',
             controller: function($scope){
 
 
             	$scope.salir=function(){
-            		    modalInstance.close();
+            		 modalInstance.dismiss('cancel');
             	}
 
             	$scope.ok=function(){
-            		utilsWebmail.UpdateMailbox(mailbox,$scope.newmailbox).success(function (response) { 
+            		mailbox.newname=$scope.newmailbox;
+            		console.log(mailbox.newname);
+            		utilsWebmail.UpdateMailbox(mailbox.name,$scope.newmailbox).success(function (response) { 
 						
 						console.log(response);
+						
 					});
-            		    modalInstance.close();
+            		    modalInstance.close(mailbox);
             	}
             },
         });
+
+        modalInstance.result.then(function(mailbox) {
+        	console.log('neuvo'+mailbox.newname);
+	        var key = $scope.bandejas_otros.indexOf(mailbox);
+	        $scope.bandejas_otros[key].name=mailbox.newname;
+	        
+
+        }, function() {
+        	console.log('Modal dismissed at: ' + new Date());
+      	});
+
 	}
 
 
 
-	$scope.removeMailbox = function(mailbox,key){
+	$scope.removeMailbox = function(mailbox){
 		var borro = false;
 		var modalInstance = $modal.open({
             templateUrl: 'views/webmail/modal.html',
@@ -431,7 +446,6 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
 
             	$scope.mensaje = "Estas seguro de eliminar la bandeja "+mailbox+"?";
             	$scope.submensaje = "Se eliminarán todos los correos que contiene";
-            	console.log($scope.mensaje);
 
             	$scope.salir=function(){
             		 modalInstance.dismiss('cancel');
@@ -439,28 +453,22 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
             	}
 
             	$scope.ok=function(){
-            		console.log('entro en borrar'+key);
+            		console.log('entro en borrar'+mailbox);
             		borro = true;
-            		utilsWebmail.DeleteMailbox(mailbox).success(function (response) { 
+            		/*utilsWebmail.DeleteMailbox(mailbox).success(function (response) { 
 						//if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
 						  //$scope.bandejas.splice(idx, 1);
-					});
-            		modalInstance.close(key);
+					});*/
+            		modalInstance.close(mailbox);
             	}
             },
         });
 
-        modalInstance.result.then(function(key) {
+        modalInstance.result.then(function(mailbox) {
 	        console.log($scope.bandejas_otros);
-
-	        var result=[];
-	        $.each($scope.bandejas_otros, function(index, val) {	
-
-				result.push(val);
-			});
-        	 result.splice(key, 1);
-        	 $scope.bandejas_otros=result;
-        	 console.log('gsfgs'+key);
+	        var key = $scope.bandejas_otros.indexOf(mailbox);
+	        $scope.bandejas_otros.splice(key, 1);
+	        
 
         }, function() {
         	console.log('Modal dismissed at: ' + new Date());

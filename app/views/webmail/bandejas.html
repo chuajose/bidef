@@ -35,7 +35,7 @@
         </ul>
         <h5>Bandejas Privadas</h5> 
         <ul class="category-list" style="padding: 0">
-            <li class="mailbox" ng-repeat="(key,bandeja_otra) in bandejas_otros">
+            <li class="mailbox" ng-repeat="bandeja_otra in bandejas_otros">
                 <div  ng-show="bandeja_otra.name==mailboxsel"  mailbox-tools></div><a ng-click="setFolder(bandeja_otra.name)" ui-sref="webmail.bandeja({mailbox:bandeja_otra.name, pagina:0})"> <i class="fa fa-circle text-navy"></i> {{bandeja_otra.name}} </a></li>
             <ul class="folder-list" style="padding-left:10px">
                 <li class="mailbox" ng-repeat="subfolder in bandeja_otra.folders"><a  ui-sref="webmail.bandeja({mailbox:bandeja_otra.name+separator+subfolder.name, pagina:0})"> {{subfolder.name}}</a></li>
