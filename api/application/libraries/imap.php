@@ -209,21 +209,17 @@ class Imap {
 
 	protected function init_folder($folder,&$array,$data,$key){
 
-		$folders=explode('.',$folder);
-		$name=array_shift($folders);
+		$folders=explode($this->delimiter,$folder);
+
 		if(count($folders)>1){
-
-			
-			$sub = $this->init_folder(implode('.',$folders),$array[$name],$data,$key);
-
+			$name=array_shift($folders);
+			$this->init_folder(implode($this->delimiter,$folders),$array[$name]['folders'],$data,$key);
 		}else{
 
 			$sub=array();
-
+			$name=array_shift($folders);
+			$array[$name]=array('name'=>$name,'data'=>$data,'folders'=>array());
 		}
-
-		if(!isset($array[$name]))
-		$array[$name]=array('name'=>$name,'data'=>$data,'folders'=>$sub);
 
 		return $array;
 	}
@@ -232,14 +228,13 @@ class Imap {
 
 	public function get_listing_folders() {
 		$this->mailboxes = array();
-		
-		$folders = imap_list($this->imap_stream, "{".$this->server."}", "*");
+
+		$folders = imap_getmailboxes($this->imap_stream, "{".$this->server."}", "*");
 
 		foreach ($folders as $key => $folder)
 		{
-			$folder = str_replace("{".$this->server."}", "", imap_utf7_decode($folder));
-
-			//echo $folder."-><br>";
+			$this->delimiter = $folder->delimiter;
+			$folder = str_replace("{".$this->server."}", "", imap_utf7_decode($folder->name));
 		//	$subfolder = explode('.', $folder);
 			$this->change_imap_stream($folder);
 			//$datos = $this->get_mailbox_info();
@@ -285,10 +280,22 @@ class Imap {
 	 *
 	 * @return array Mails ids
 	 */
-	public function search_mails($criteria = 'ALL',$page=0) {
+	public function search_mails($criteria = array(),$page=0) {
 
 		//echo $criteria;
-		$mailsIds = imap_search($this->imap_stream, $criteria, SE_UID, $this->server_encoding);
+		if(empty($criteria) || $criteria == ""){
+
+			$mailsIds = imap_search($this->imap_stream, 'ALL', SE_UID, $this->server_encoding);
+
+		} else {
+
+			$mailsIds = array();
+			foreach ($criteria as $key => $value) {
+				$ids = imap_search($this->imap_stream, $value, SE_UID, $this->server_encoding);
+				$mailsIds = array_merge($ids,$mailsIds);
+			}
+
+		}
 
 		//var_dump($mailsIds);
 		if(!$mailsIds) return false;
