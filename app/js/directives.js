@@ -176,45 +176,50 @@ function minimalizaSidebar($timeout) {
  */
 function vectorMap() {
     return {
-        restrict: 'A',
-        scope: {
-            myMapData: '=',
-        },
+        restrict: 'EAC',
         link: function (scope, element, attrs) {
-            var mapElement = element.vectorMap({
-                map: 'es_mill_en',
-                regionsSelectable: true,
-                backgroundColor: "transparent",
-                regionStyle: {
-                    initial: {
-                        fill: '#e4e4e4',
-                        "fill-opacity": 0.9,
-                        stroke: 'none',
-                        "stroke-width": 0,
-                        "stroke-opacity": 0
-                    },
-                    selected: {
-                        fill: '#1ab394'
-                    }
-                },
-                series: {
-                    regions: [
-                        {
-                            values: scope.myMapData,
-                            scale: {
-                              1: "#1c84c6",
-                              2: "#111111"
-                            },
-                            normalizeFunction: 'polynomial'
+            scope.$watch("mapdata", function(n,o){
+                element.empty();
+                console.log(scope.mapdata);
+                //console.dir(scope.this.$parent.myMapData);
+                //var data_map = {'ES-SA': 'rgb(0, 0, 0)'};
+                window.mapElement = element.vectorMap({
+                    map: 'es_mill_en',
+                    regionsSelectable: true,
+                    backgroundColor: "transparent",
+                    regionStyle: {
+                        initial: {
+                            fill: '#e4e4e4',
+                            "fill-opacity": 0.9,
+                            stroke: 'none',
+                            "stroke-width": 0,
+                            "stroke-opacity": 0
+                        },
+                        selected: {
+                            fill: '#1ab394'
                         }
-                    ]
-                },
-                onRegionSelected: function(e, code, isSelected, selectedRegions){
-                    console.log(selectedRegions);
-                },
-                onRegionOver:function(e, code){
-                    console.log(code);
-                }
+                    },
+                    series: {
+                        regions: [
+                            {
+                                values: scope.mapdata,
+                                //values:{'ES-SA': 'rgb(0, 0, 0)'},
+                                attribute: 'fill',
+                                normalizeFunction: 'polynomial'
+                            }
+                        ]
+                    },
+                    onRegionSelected: function(e, code, isSelected, selectedRegions){
+                        window.selectedAreasMap = selectedRegions;
+                        //return selectedRegions;
+                        //console.log(selectedAreasMap);
+                    },
+                    onRegionOver:function(e, code){
+                        console.log(scope.myMapData);
+                        //console.log(code);
+                        //console.log(scope.dataMap);
+                    }
+                });
             });
         }
     }
