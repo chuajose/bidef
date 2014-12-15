@@ -44,9 +44,9 @@ class Delegation_library
 	}
 	
 	
-	function insert_delegation($delegation_name)
+	function insert_delegation($delegation_name, $color)
 	{		
-		if($delegation_inserted = $this->CI->user_model->insert_delegation($delegation_name)) return TRUE;
+		if($delegation_inserted = $this->CI->user_model->insert_delegation($delegation_name, $color)) return $delegation_inserted;
 		else return FALSE;
 	}
 }
