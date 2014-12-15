@@ -33,6 +33,9 @@ $lang['user_no_exists'] = '29';
 $lang['delegation_not_found'] = '29';
 $lang['permission_denied']  = '203';
 $lang['need_login']         = '2031';
+/*-delegation-*/
+$lang['color_repeat_false']         = '301';
+$lang['color_repeat_true']         = '302';
 /*--*/
 $lang['error_general']      = '500';
 
