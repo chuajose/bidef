@@ -13,22 +13,22 @@
             <small>Hay {{countDelegation}} delegaciones actualmente.</small>
             <ul class="list-group clear-list m-t">
                 <li class="list-group-item" ng-repeat="delegation in delegations" id="{{delegation.id_delegation}}">
-                    <a ui-sref="delegation.profile({id:delegation.id_delegation})">{{delegation.delegation_name}}</a>
+                    <a ui-sref="delegation.profile({id:delegation.id_delegation})" style="color: {{delegation.color}};">{{delegation.delegation_name}}</a>
                     <a ng-click="Remove($index, delegation.id_delegation)" class="btn btn-link pull-right text-danger"><span class="fa fa-times"></span></a>
-                    <a colorpicker ng-model="color_delegation" ng-change="AddColor(delegation.id_delegation, color_delegation)" class="btn btn-link pull-right"><span class="fa fa-pencil"></span></a>
+                    <a colorpicker="rgb" ng-model="picker.color" ng-change="UpdateDelegation($index, delegation.id_delegation, false, picker.color)" class="btn btn-link pull-right"><span class="fa fa-pencil"></span></a>
                 </li>
 
             </ul>
         </div>
         <div class="col-sm-7 col-sm-offset-1">
             <h4 class="mTop15">Selecciona las provincias que quieres asignar a una delegación:</h4>
-            <div vector-map style="height: 300px;" my-map-data="dataMap"></div>
+            <div vector-map style="height: 300px;"></div>
             <p>
                 <label>Asigna estas provincias a una Delegación</label>
-                <select ng-model="select_delegation" ng-options="delegation.delegation_name for delegation in delegations" chosen class="chosen-select" style="width:350px;">
+                <select ng-model="select_delegation" ng-options="delegation.delegation_name for delegation in delegations track by delegation.id_delegation" chosen class="chosen-select" style="width:350px;">
                 </select>
             </p>
-            <p class="clearfix"><button class="btn btn-success pull-right">Asignar</button></p>
+            <p class="clearfix"><button class="btn btn-success pull-right" ng-click="UpdateMapaDelegacionProvincias(select_delegation.id_delegation)">Asignar</button></p>
         </div>
     </div>
     <div ui-view="profile" class="row dashboard-header">
