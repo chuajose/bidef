@@ -1,5 +1,42 @@
+/*-
+$scope.Save = function(delegation, callback)
+{
+    var insertarColor=function(color)
+    {
+        console.log('color:' + color);
+        utilsDelegation.InsertDelegation(delegation, color).success(function (response){
+            console.log(response);
+            if(response.respuesta ===  '0')
+            {
+                $scope.delegations.push({delegation_name:delegation, color: color});
+                $scope.countDelegation = $scope.delegations.length;
+            }
+        });
+    }
+    GenerateRandomDelegationColor(insertarColor);
+
+}
+GenerateRandomDelegationColor = function(callback)
+  {
+      color = randomColor();
+      utilsDelegation.checkDelegationRepeatColor(color).success(function (response){
+          console.log(response.respuesta);
+          if(parseInt(response.respuesta) != 301) GenerateRandomDelegationColor(callback);
+          callback(color);
+      });
+  }
+
+  function randomColor()
+  {
+      var r = function () { return Math.floor(Math.random()*256) };
+      return "rgb(" + r() + "," + r() + "," + r() + ")";
+  }
+-*/
+
+
 var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegation){
 	utilsDelegation.ListarDelegations('').success(function (response) {
+
 		$scope.delegations = response;
         $scope.countDelegation = response.length;
 	});
@@ -13,34 +50,105 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
     /**
      * vectorMap - Directive for Vector map plugin
      */
+     utilsDelegation.MapaDelegacionProvincias('').success(function (response) {
+        //var data_mapa_array = []
+        //data_mapa_array['ES-SA'] = '#000000'
+        //$scope.dataMap = response;
+        //console.log(typeof response);
 
-    var dataMap_series = {
-        "ES-C": 1,
-        "ES-O": 1,
-        "ES-S": 1,
-        "ES-LU": 1,
-        "ES-OR": 1,
-        "ES-PO": 1,
-        "ES-M": 2,
-    };
+        //console.log(typeof $scope.dataMap);
+        //console.log($scope.dataMap);
+        //$scope.data = response;
+        $scope.mapdata = response;
+        console.dir($scope.mapdata);
+        //var mapobject = window.mapElement;
 
-    $scope.dataMap = dataMap_series;
+    });
 
-    $scope.Save = function(delegation){
-        utilsDelegation.InsertDelegation(delegation).success(function (response){});
-        $scope.delegations.push({delegation_name:delegation});
-        $scope.countDelegation = $scope.delegations.length;
+
+
+
+
+    var colors = ['rgb(41, 128, 185)','rgb(142, 68, 173)','rgb(0, 0, 0)','rgb(44, 62, 80)','rgb(243, 156, 18)','rgb(211, 84, 0)','rgb(192, 57, 43)','rgb(127, 140, 141)']
+
+    $scope.Save = function(delegation)
+    {
+        /*GenerateRandomDelegationColor(function(color)
+        {*/
+            var color = colors[$scope.countDelegation];
+            utilsDelegation.InsertDelegation(delegation, color).success(function (response){
+                if(response.respuesta > 0)
+                {
+                    $scope.delegations.push({id_delegation: response.respuesta, delegation_name:delegation, color: color});
+                    $scope.countDelegation = $scope.delegations.length;
+                }
+            });
+        /*});*/
     }
-    $scope.Remove = function(index, id_delegation){
+    $scope.Remove = function(index, id_delegation)
+    {
         utilsDelegation.DeleteDelegation(id_delegation).success(function (response){});
         $scope.delegations.splice(index,1);
         $scope.countDelegation = $scope.delegations.length;
     }
-    $scope.AddColor = function(id_delegation, color){
-        console.log(id_delegation + ' - ' + color);
+    $scope.UpdateDelegation = function(index, id_delegation, delegation_name, color)
+    {
+        console.log('name: '+delegation_name+' - color: '+color)
+        utilsDelegation.UpdateDelegation(id_delegation, delegation_name, color).success(function (response)
+        {
+            if(response.respuesta ===  0)
+            {
+                console.log(response);
+                if(delegation_name) $scope.delegations[index].delegation_name = delegation_name;
+                if(color) $scope.delegations[index].color = color;
+            }
+        });
+    }
+    $scope.UpdateMapaDelegacionProvincias = function(id_delegation, vectorMapCode)
+    {
+        console.log(id_delegation + ' - vector_code: ' + window.selectedAreasMap);
+        if(selectedAreasMap)
+        {
+            utilsDelegation.UpdateMapaDelegacionProvincias(id_delegation, selectedAreasMap).success(function (response)
+            {
+                console.log(response);
+               utilsDelegation.MapaDelegacionProvincias('').success(function (response) {
+                    //var data_mapa_array = []
+                    //data_mapa_array['ES-SA'] = '#000000'
+                    //$scope.dataMap = response;
+                    //console.log(typeof response);
+
+                    //console.log(typeof $scope.dataMap);
+                    //console.log($scope.dataMap);
+                    //$scope.data = response;
+                    $scope.mapdata = response;
+                    console.dir($scope.mapdata);
+                    //var mapobject = window.mapElement;
+
+                });
+
+                /*- funcion para limpiar el mapa
+                clearSelectedRegions();
+                -*/
+            });
+        }
+
     }
 
+    GenerateRandomDelegationColor = function()
+    {
+        color = randomColor();
+        utilsDelegation.checkDelegationRepeatColor(color).success(function (response){
+            console.log(response.respuesta);
+            if(parseInt(response.respuesta) !== 301) GenerateRandomDelegationColor();
+        });
+    }
 
+    function randomColor()
+    {
+        var r = function () { return Math.floor(Math.random()*256) };
+        return "rgb(" + r() + "," + r() + "," + r() + ")";
+    }
 
 
     $scope.optionsDelegation = {
@@ -89,7 +197,6 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
         }];
 
     /*-table delegaciones-*/
-
     var delegation_data = [
                    {            'delegacion_name': 'Delegacion Norte',
                                 'delegacion_facturacion': 1500,
@@ -111,21 +218,7 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
 
     $scope.delegations_table = delegation_data;
 
-   /* $scope.dtOptions = DTOptionsBuilder.fromSource(table_data)
-        .withPaginationType('full_numbers');
-
-    $scope.dtColumns = [
-        DTColumnBuilder.newColumn('delegacion_name').withTitle('Delegación'),
-        DTColumnBuilder.newColumn('delegacion_facturación').withTitle('Facturación'),
-        DTColumnBuilder.newColumn('delegacion_gastos').withTitle('Gastos'),
-        DTColumnBuilder.newColumn('delegacion_beneficios').withTitle('Beneficios'),
-        DTColumnBuilder.newColumn('delegacion_rendimiento').withTitle('Rendimiento'),
-        DTColumnBuilder.newColumn('delegacion_proyectos').withTitle('Proyectos'),
-        DTColumnBuilder.newColumn('delegacion_alumnos').withTitle('Alumnos')
-    ];*/
 }
-
-
 
 
 
