@@ -1,14 +1,16 @@
-var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegation){
+var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegation, $translate, $translatePartialLoader){
     $scope.countDelegation = 0;
     $scope.delegations = false;
     $scope.provincias = false;
+    $translatePartialLoader.addPart('delegation');
+    $translate.refresh();
 	utilsDelegation.ListarDelegations('').success(function (response) {
         if(response.respuesta != 29)
         {
             $scope.delegations = response;
-            $scope.countDelegation = response.length;    
+            $scope.countDelegation = response.length;
         }
-		
+
 	});
 
     utilsDelegation.ListarProvincias('').success(function (response) {
@@ -106,7 +108,7 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
                utilsDelegation.MapaDelegacionProvincias('').success(function (response) {
                     $scope.mapdata = response;
                     console.dir($scope.mapdata);
-                }); 
+                });
             });
         }
     }
@@ -184,7 +186,7 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
 
 
 
-var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsDelegation){        
+var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsDelegation){
     $scope.name = $stateParams.id;
         utilsDelegation.GetDelegation($stateParams.id).success(function (response){
            // console.log(response[0].id_delegation);
@@ -272,7 +274,7 @@ var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsD
                         ['Resto',    8.5]
                     ]
                 }];
-                    
+
                 });
 }
 
