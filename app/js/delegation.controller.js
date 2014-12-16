@@ -1,5 +1,5 @@
-var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegation){
-    $translatePartialLoader.addPart('webmail');
+var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegation, $translatePartialLoader, $translate){
+    $translatePartialLoader.addPart('delegation');
     $translate.refresh();
     $scope.countDelegation = 0;
     $scope.delegations = false;
@@ -186,8 +186,8 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
 
 
 
-var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsDelegation){
-    $translatePartialLoader.addPart('webmail');
+var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsDelegation, $translatePartialLoader, $translate){
+    $translatePartialLoader.addPart('delegation');
     $translate.refresh();
     $scope.name = $stateParams.id;
         utilsDelegation.GetDelegation($stateParams.id).success(function (response){
