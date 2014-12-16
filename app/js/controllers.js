@@ -3032,7 +3032,7 @@ function mailComposeController($scope,$state,$stateParams,$translate,$translateP
         //
       
         var mensaje = $scope.mensaje;
-        utilsWebmail.EnviarMail($scope.subject,mensaje ,$scope.from, files,0,$scope.draft).success(function (response) { 
+        utilsWebmail.EnviarMail($scope.subject,mensaje ,$scope.to, files,0,$scope.draft).success(function (response) { 
 
            // if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
             
