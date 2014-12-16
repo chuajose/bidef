@@ -246,4 +246,5 @@ angular
     .config(config)
     .run(function($rootScope, $state) {
         $rootScope.$state = $state;
+        //localize.setLanguage('es-es');
     });

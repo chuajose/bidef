@@ -1,4 +1,9 @@
-var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams,utilsWebmail){
+var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWebmail, $translate, $translatePartialLoader){
+
+	$translatePartialLoader.addPart('webmail');
+  	$translate.refresh();
+
+
 	$scope.mensajes = "";
 	$scope.maxSize = 5;
   	$scope.bigCurrentPage = 1;
@@ -444,7 +449,7 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
             templateUrl: 'views/webmail/modal.html',
             controller: function($scope){
 
-            	$scope.mensaje = "Estas seguro de eliminar la bandeja "+mailbox+"?";
+            	$scope.mensaje = "Estas seguro de eliminar la bandeja "+mailbox.name+"?";
             	$scope.submensaje = "Se eliminarán todos los correos que contiene";
 
             	$scope.salir=function(){

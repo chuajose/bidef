@@ -5,6 +5,7 @@
  */
 (function () {
     angular.module('bidef', [
+     //   'localization',
         'ui.router',
         'ui.calendar',
         'ui.bootstrap',
@@ -26,5 +27,8 @@
         'bidef.inicio',
         'bidef.crm',
         'bidef.common',
+        'pascalprecht.translate', 
+        'ngCookies',
+        'angularTranslateApp'
     ])
 })();
