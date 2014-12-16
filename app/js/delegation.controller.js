@@ -1,9 +1,9 @@
-var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegation, $translate, $translatePartialLoader){
+var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegation){
+    $translatePartialLoader.addPart('webmail');
+    $translate.refresh();
     $scope.countDelegation = 0;
     $scope.delegations = false;
     $scope.provincias = false;
-    $translatePartialLoader.addPart('delegation');
-    $translate.refresh();
 	utilsDelegation.ListarDelegations('').success(function (response) {
         if(response.respuesta != 29)
         {
@@ -187,6 +187,8 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
 
 
 var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsDelegation){
+    $translatePartialLoader.addPart('webmail');
+    $translate.refresh();
     $scope.name = $stateParams.id;
         utilsDelegation.GetDelegation($stateParams.id).success(function (response){
            // console.log(response[0].id_delegation);
