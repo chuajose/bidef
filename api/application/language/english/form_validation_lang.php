@@ -38,6 +38,7 @@ $lang['color_repeat_false']         = '301';
 $lang['color_repeat_true']         = '302';
 /*--*/
 $lang['error_general']      = '500';
+$lang['error_general']      = '-1';
 
 
 
