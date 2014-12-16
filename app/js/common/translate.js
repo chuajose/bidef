@@ -4,5 +4,5 @@ angular.module('angularTranslateApp', ['pascalprecht.translate'])
       urlTemplate: 'i18n/{lang}/{part}.json'
     });
 
-  $translateProvider.preferredLanguage('es-es');
+  $translateProvider.preferredLanguage('en-us');
 });

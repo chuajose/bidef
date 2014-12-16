@@ -6,6 +6,8 @@
 (function () {
     angular.module('bidef', [
      //   'localization',
+        'pascalprecht.translate',
+        'angularTranslateApp',
         'ui.router',
         'ui.calendar',
         'ui.bootstrap',
@@ -26,9 +28,7 @@
         'bidef.delegation',
         'bidef.inicio',
         'bidef.crm',
-        'bidef.common',
-        'pascalprecht.translate', 
-        'ngCookies',
-        'angularTranslateApp'
+        'bidef.common'
+       // 'ngCookies',
     ])
 })();
