@@ -2961,6 +2961,23 @@ function chartJsCtrl() {
 
 };
 
+function AppController($scope,$state,$stateParams,$translate, $translatePartialLoader ) {
+
+    $scope.setEnglishLanguage = function() {
+//$translateProvider.preferredLanguage('en-US');
+        $translate.use( 'en-us');
+              //  $state.go('webmail' , $stateParams,{reload: true});
+
+    };
+
+    $scope.setPigLatinLanguage = function() {
+        $translate.use('es-es');
+
+        //$state.go('webmail' , $stateParams,{reload: true});
+    };
+}
+
+
 /**
  *
  * Pass all functions into module
@@ -2980,3 +2997,4 @@ angular
     .controller('wizardCtrl', wizardCtrl)
     .controller('CalendarCtrl', CalendarCtrl)
     .controller('chartJsCtrl', chartJsCtrl)
+    .controller('AppController', AppController)
