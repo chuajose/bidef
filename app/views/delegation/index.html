@@ -13,7 +13,8 @@
             <small>Hay {{countDelegation}} delegaciones actualmente.</small>
             <!-- <input ng-model="delegation_name_filtro"> -->
             <ul class="list-group clear-list m-t" ng-show="delegations" class="ng-hide">
-                <li class="list-group-item"  ng-repeat="delegation in delegations | filter:{delegation_name:nuevaDelegation.delegation_name} | orderBy:'delegation_name'" id="{{delegation.id_delegation}}">
+                <!-- | filter:{delegation_name:nuevaDelegation.delegation_name}  -->
+                <li class="list-group-item"  ng-repeat="delegation in delegations | orderBy:'delegation_name'" id="{{delegation.id_delegation}}">
                     <a ui-sref="delegation.profile({id:delegation.id_delegation})" style="color: {{delegation.color}};">{{delegation.delegation_name}}</a>
                     <a ng-click="Remove($index, delegation.id_delegation)" class="btn btn-link pull-right text-danger"><span class="fa fa-times"></span></a>
                     <a colorpicker="rgb" ng-model="picker.color" ng-change="UpdateDelegation($index, delegation.id_delegation, false, picker.color)" class="btn btn-link pull-right"><span class="fa fa-pencil"></span></a>
