@@ -2978,6 +2978,71 @@ function AppController($scope,$state,$stateParams,$translate, $translatePartialL
 }
 
 
+function mailComposeController($scope,$state,$stateParams,$translate,$translatePartialLoader,utilsWebmail,$timeout ) {
+
+
+    /*
+     *  Guardo los datos del borrador cada segundo despues de que cambie el cuerpo del mensaje
+     */
+    var SaveBorrador = function(){
+        
+        files=[];
+        var mensaje = $scope.mensaje;
+        //Guardanmos el borrador
+        utilsWebmail.EnviarMail($scope.subject,encodeURIComponent(mensaje) ,$scope.from, files, 1, $scope.draft).success(function (response) { 
+            //if(response.error>0) $state.go('webmail' , $stateParams,{reload: true});
+            $scope.draft=response.draft;
+        });
+    }
+
+    /*
+     *  Compruebo si hay modificaciones en el cuerpo del mensaje para guardar el borrador
+     */
+    var debounceSaveUpdates = function(newVal, oldVal) {
+        timeout=0;
+        if (newVal != oldVal) {
+          if (timeout) {
+            $timeout.cancel(timeout)
+          }
+          timeout = $timeout(SaveBorrador, 1000);  // 1000 = 1 second
+          console.log("Actualizo borradoes.");
+        }
+    };
+
+
+    //$scope.$watch('mensaje', debounceSaveUpdates);
+
+
+    
+    /*
+     * Envio el mail
+     */
+    $scope.send = function(){
+
+        files=[];
+        if($scope.files)
+        {
+            $.each($scope.files, function(index, val) {
+                 //console.log(val);
+                files.push(val.nameserver);
+            });
+        }
+
+        //console.log($scope.mensaje);
+        //
+      
+        var mensaje = $scope.mensaje;
+        utilsWebmail.EnviarMail($scope.subject,mensaje ,$scope.from, files,0,$scope.draft).success(function (response) { 
+
+           // if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
+            
+        });
+        console.log($scope.to);
+        console.log($scope.subject);
+        console.log($scope.mensaje);
+    }
+}
+
 /**
  *
  * Pass all functions into module
@@ -2998,3 +3063,4 @@ angular
     .controller('CalendarCtrl', CalendarCtrl)
     .controller('chartJsCtrl', chartJsCtrl)
     .controller('AppController', AppController)
+    .controller('mailComposeController', mailComposeController)

@@ -1,54 +1,53 @@
+
+<div ng-controller="mailComposeController">
 <div class="mail-box-header clearfix">
-    Enviar Email - Asunto Lorem Ipsum...
-    <div class="pull-right">
+    <div class="pull-right tooltip-demo">
         <a class="btn btn-link mailMinimizar"><i class="fa fa-angle-down"></i></a>        
         <a class="btn btn-link mailCerrar"><i class="fa fa-times"></i></a>
     </div>
+    <h2>
+        Componer mail
+    </h2>
 </div>
 <div class="mail-box">
-    <div class="mail-body">
+
+
+    <div class="mail-body clearfix">
+
         <form class="form-horizontal" method="get">
-            <div class="form-group">
-                <div class="input-group col-sm-12">
-                    <select multiple chosen class="chosen-select" style="width:350px;">
-                        <option>Seleccionar...</option>
-                        <option>Ana Ruíz - Ayuntamiento Lugo</option>
-                        <option>Pablo Castro - Modeling SA</option>
-                        <option>Carmen Rojo - Alumo</option>
-                        <option>...</option>
-                    </select>
-                </div>             
+            <div class="form-group"><label class="col-sm-2 control-label">A:</label>
+
+                <div class="col-sm-10"><input type="text" class="form-control" ng-model="to" value=""></div>
             </div>
-            <div class="form-group">
-                <div class="col-sm-12"><input type="text" class="form-control" value="" placeholder="Asunto"></div>
+            <div class="form-group"><label class="col-sm-2 control-label">Asunto:</label>
+
+                <div class="col-sm-10"><input type="text" class="form-control" ng-model="subject" value=""></div>
             </div>
         </form>
+
     </div>
+
     <div class="mail-text h-200">
-        <div class="ibox-content no-padding">
-            <div summernote class="summernote">                
-            </div>
+        <div summernote class="summernote"  ng-model="mensaje">
+            
         </div>
         <div class="clearfix"></div>
     </div>
-    <div class="mail-body clearfix">        
-        <div class="pull-left adjuntar">
-            <a href="javascript:void(0);" class=""><i class="fa fa-paperclip"></i></a>
-        </div>
-        <div class="pull-right">
-            <a href="mailbox.html" class="btn btn-white btn-xs" data-toggle="tooltip" data-placement="top" title="Descartar email"><i class="fa fa-times"></i> Descartar</a>
-            <a href="mailbox.html" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Enviar">    Enviar <i class="fa fa-mail-forward"></i></a>
-        </div>
-        
+    <form action="" class="dropzone" drop-zone="" id="file-dropzone"></form>
+       
+    
+    <div class="mail-body text-right tooltip-demo">
+         <a  class="btn btn-white btn-sm mailCerrar" data-toggle="tooltip" data-placement="top" title="Discard email"><i class="fa fa-times"></i> Descartar</a>
+        <button ng-click="send()" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Send"><i class="fa fa-reply"></i> Enviar</button>
+        <!--<button ui-sref="inbox" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to draft folder"><i class="fa fa-pencil"></i> Borrador</button>-->
     </div>
+    <div class="clearfix"></div>
+
+
 </div>
 <script>
     $(document).ready(function(){
-        $('.i-checks').iCheck({
-            checkboxClass: 'icheckbox_square-green',
-            radioClass: 'iradio_square-green',
-        });
-        
+       
         $('.mailMinimizar').click(function(){
             var $mailbox = $('.composeEmail').find('.mail-box');
             if($mailbox.hasClass('hidden')) $mailbox.removeClass('hidden');
@@ -61,3 +60,4 @@
     });
 
 </script>
+</div>
