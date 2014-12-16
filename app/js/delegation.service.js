@@ -82,6 +82,16 @@ var utilsDelegation = function ($http) {
                       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 
                     });
+    },
+    UpdateDeleteMapaDelegacionProvincias: function UpdateDeleteMapaDelegacionProvincias(vectormap_code)
+    {
+      return $http({
+                      method: 'POST',
+                      url: '../api/index.php/delegation/update_delete_delegation_map_provincias',
+                      data: 'vectormap_code='+vectormap_code,
+                      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+
+                    });
     }
 
 

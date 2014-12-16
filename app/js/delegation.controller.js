@@ -1,95 +1,67 @@
-/*-
-$scope.Save = function(delegation, callback)
-{
-    var insertarColor=function(color)
-    {
-        console.log('color:' + color);
-        utilsDelegation.InsertDelegation(delegation, color).success(function (response){
-            console.log(response);
-            if(response.respuesta ===  '0')
-            {
-                $scope.delegations.push({delegation_name:delegation, color: color});
-                $scope.countDelegation = $scope.delegations.length;
-            }
-        });
-    }
-    GenerateRandomDelegationColor(insertarColor);
-
-}
-GenerateRandomDelegationColor = function(callback)
-  {
-      color = randomColor();
-      utilsDelegation.checkDelegationRepeatColor(color).success(function (response){
-          console.log(response.respuesta);
-          if(parseInt(response.respuesta) != 301) GenerateRandomDelegationColor(callback);
-          callback(color);
-      });
-  }
-
-  function randomColor()
-  {
-      var r = function () { return Math.floor(Math.random()*256) };
-      return "rgb(" + r() + "," + r() + "," + r() + ")";
-  }
--*/
-
-
 var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegation){
+    $scope.countDelegation = 0;
+    $scope.delegations = false;
+    $scope.provincias = false;
 	utilsDelegation.ListarDelegations('').success(function (response) {
-
-		$scope.delegations = response;
-        $scope.countDelegation = response.length;
+        if(response.respuesta != 29)
+        {
+            $scope.delegations = response;
+            $scope.countDelegation = response.length;    
+        }
+		
 	});
 
     utilsDelegation.ListarProvincias('').success(function (response) {
         $scope.provincias = response;
     });
 
-
     /*-mapa-*/
     /**
      * vectorMap - Directive for Vector map plugin
      */
-     utilsDelegation.MapaDelegacionProvincias('').success(function (response) {
-        //var data_mapa_array = []
-        //data_mapa_array['ES-SA'] = '#000000'
-        //$scope.dataMap = response;
-        //console.log(typeof response);
-
-        //console.log(typeof $scope.dataMap);
-        //console.log($scope.dataMap);
-        //$scope.data = response;
+    map_draw = utilsDelegation.MapaDelegacionProvincias('').success(function (response) {
         $scope.mapdata = response;
-        console.dir($scope.mapdata);
-        //var mapobject = window.mapElement;
-
     });
 
-
-
-
-
-    var colors = ['rgb(41, 128, 185)','rgb(142, 68, 173)','rgb(0, 0, 0)','rgb(44, 62, 80)','rgb(243, 156, 18)','rgb(211, 84, 0)','rgb(192, 57, 43)','rgb(127, 140, 141)']
-
-    $scope.Save = function(delegation)
+    $scope.Save = function(delegation, callback)
     {
-        /*GenerateRandomDelegationColor(function(color)
-        {*/
-            var color = colors[$scope.countDelegation];
+        var insertarColor=function(color)
+        {
             utilsDelegation.InsertDelegation(delegation, color).success(function (response){
-                if(response.respuesta > 0)
+                console.log(response);
+                if(response.respuesta >  -1)
                 {
-                    $scope.delegations.push({id_delegation: response.respuesta, delegation_name:delegation, color: color});
+                    $scope.delegations.push({delegation_name: delegation, color: color, id_delegation: response.respuesta});
                     $scope.countDelegation = $scope.delegations.length;
                 }
             });
-        /*});*/
+        }
+        GenerateRandomDelegationColor(insertarColor);
+
     }
+    GenerateRandomDelegationColor = function(callback)
+    {
+      color = randomColor();
+      utilsDelegation.checkDelegationRepeatColor(color).success(function (response){
+          if(parseInt(response.respuesta) != 301) GenerateRandomDelegationColor(callback);
+          callback(color);
+      });
+    }
+
+    function randomColor()
+    {
+      var r = function () { return Math.floor(Math.random()*256) };
+      return "rgb(" + r() + "," + r() + "," + r() + ")";
+    }
+
     $scope.Remove = function(index, id_delegation)
     {
         utilsDelegation.DeleteDelegation(id_delegation).success(function (response){});
         $scope.delegations.splice(index,1);
         $scope.countDelegation = $scope.delegations.length;
+        utilsDelegation.MapaDelegacionProvincias('').success(function (response) {
+            $scope.mapdata = response;
+        });
     }
     $scope.UpdateDelegation = function(index, id_delegation, delegation_name, color)
     {
@@ -100,56 +72,44 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
             {
                 console.log(response);
                 if(delegation_name) $scope.delegations[index].delegation_name = delegation_name;
-                if(color) $scope.delegations[index].color = color;
+                if(color)
+                {
+                    $scope.delegations[index].color = color;
+                    utilsDelegation.MapaDelegacionProvincias('').success(function (response) {
+                        $scope.mapdata = response;
+                    });
+                }
             }
         });
     }
-    $scope.UpdateMapaDelegacionProvincias = function(id_delegation, vectorMapCode)
+    $scope.UpdateMapaDelegacionProvincias = function(id_delegation)
     {
-        console.log(id_delegation + ' - vector_code: ' + window.selectedAreasMap);
+        //console.log(id_delegation + ' - vector_code: ' + window.selectedAreasMap);
         if(selectedAreasMap)
         {
             utilsDelegation.UpdateMapaDelegacionProvincias(id_delegation, selectedAreasMap).success(function (response)
             {
-                console.log(response);
-               utilsDelegation.MapaDelegacionProvincias('').success(function (response) {
-                    //var data_mapa_array = []
-                    //data_mapa_array['ES-SA'] = '#000000'
-                    //$scope.dataMap = response;
-                    //console.log(typeof response);
-
-                    //console.log(typeof $scope.dataMap);
-                    //console.log($scope.dataMap);
-                    //$scope.data = response;
+                utilsDelegation.MapaDelegacionProvincias('').success(function (response) {
                     $scope.mapdata = response;
                     console.dir($scope.mapdata);
-                    //var mapobject = window.mapElement;
-
                 });
-
-                /*- funcion para limpiar el mapa
-                clearSelectedRegions();
-                -*/
             });
         }
 
     }
-
-    GenerateRandomDelegationColor = function()
+    $scope.UpdateDeleteMapaDelegacionProvincias = function()
     {
-        color = randomColor();
-        utilsDelegation.checkDelegationRepeatColor(color).success(function (response){
-            console.log(response.respuesta);
-            if(parseInt(response.respuesta) !== 301) GenerateRandomDelegationColor();
-        });
+        if(selectedAreasMap)
+        {
+            utilsDelegation.UpdateDeleteMapaDelegacionProvincias(selectedAreasMap).success(function (response)
+            {
+               utilsDelegation.MapaDelegacionProvincias('').success(function (response) {
+                    $scope.mapdata = response;
+                    console.dir($scope.mapdata);
+                }); 
+            });
+        }
     }
-
-    function randomColor()
-    {
-        var r = function () { return Math.floor(Math.random()*256) };
-        return "rgb(" + r() + "," + r() + "," + r() + ")";
-    }
-
 
     $scope.optionsDelegation = {
         chart: {
@@ -223,98 +183,97 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
 
 
 
-var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsDelegation){
+
+var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsDelegation){        
+    $scope.name = $stateParams.id;
         utilsDelegation.GetDelegation($stateParams.id).success(function (response){
            // console.log(response[0].id_delegation);
-            $scope.name = response[0].delegation_name;
-        });
-
-        /*-area-*/
-    $scope.optionsDelegation = {
-        chart: {
-            type: 'area'
-        },
-        title: {
-            text: 'Desarrolo de la Delegación'
-        },
-        xAxis: {
-            categories: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'],
-            tickmarkPlacement: 'on',
-            title: {
-                enabled: false
-            }
-        },
-        yAxis: {
-            labels: {
-                formatter: function () {
-                    return this.value / 1000;
-                }
-            }
-        },
-        tooltip: {
-            shared: true,
-        },
-        plotOptions: {
-            area: {
-                stacking: 'normal',
-                lineColor: '#666666',
-                lineWidth: 1,
-                marker: {
-                    lineWidth: 1,
-                    lineColor: '#666666'
-                }
-            }
-        }
-    }
-
-    $scope.dataDelegation = [{
-            name: 'Facturación',
-            data: [502, 635, 809, 947, 1402, 3634, 5268]
-        },{
-            name: 'Rendimiento',
-            data: [163, 203, 276, 408, 547, 729, 628]
-        }];
-
-    /*-pie-*/
-    $scope.optionsPieDelegation = {
-        chart: {
-            type: 'pie'
-        },
-        title: {
-            text: null
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                depth: 35,
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.name}'
-                }
-            }
-        }
-    };
-
-    $scope.dataPieDelegation = [{
-            type: 'pie',
-            name: 'Facturación con respecto a las demás delegaciones',
-            data: [
-                {
-                    name: 'Norte',
-                    y: 12.8,
-                    sliced: true,
-                    selected: true
+           $scope.name = response[0].delegation_name;
+           /*-area-*/
+           $scope.optionsDelegation = {
+                chart: {
+                    type: 'area'
                 },
-                ['Resto',    8.5]
-            ]
-        }];
+                title: {
+                    text: 'Desarrolo de la Delegación'+$scope.name,
+                },
+                xAxis: {
+                    categories: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'],
+                    tickmarkPlacement: 'on',
+                    title: {
+                        enabled: false
+                    }
+                },
+                yAxis: {
+                    labels: {
+                        formatter: function () {
+                            return this.value+'€';
+                        }
+                    }
+                },
+                tooltip: {
+                    shared: true,
+                },
+                plotOptions: {
+                    area: {
+                        stacking: 'normal',
+                        lineColor: '#666666',
+                        lineWidth: 1,
+                        marker: {
+                            lineWidth: 1,
+                            lineColor: '#666666'
+                        }
+                    }
+                }
+            }
 
+            $scope.dataDelegation = [{
+                    name: 'Facturación',
+                    data: [502, 635, 809, 947, 1402, 3634, 5268]
+                },{
+                    name: 'Rendimiento',
+                    data: [163, 203, 276, 408, 547, 729, 628]
+                }];
 
+            /*-pie-*/
+            $scope.optionsPieDelegation = {
+                chart: {
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Facturación de con respecto al conjunto de delegaciones',
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}'
+                        }
+                    }
+                }
+            };
 
+            $scope.dataPieDelegation = [{
+                    type: 'pie',
+                    name: 'Facturación con respecto a las demás delegaciones',
+                    data: [
+                        {
+                            name: $scope.name,
+                            y: 12.8,
+                            sliced: true,
+                            selected: true
+                        },
+                        ['Resto',    8.5]
+                    ]
+                }];
+                    
+                });
 }
 
 
