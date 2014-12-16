@@ -2970,7 +2970,7 @@ function AppController($scope,$state,$stateParams,$translate, $translatePartialL
 
     };
 
-    $scope.setPigLatinLanguage = function() {
+    $scope.setSpanishLanguage = function() {
         $translate.use('es-es');
 
         //$state.go('webmail' , $stateParams,{reload: true});

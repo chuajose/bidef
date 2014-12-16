@@ -1,5 +1,5 @@
 
-var APIURL = "http://localhost/crm/";
+var APIURL = "http://localhost/teslabide/trunk/api/index.php/";
 
 var utilsGeneral = function ($http) {
 
