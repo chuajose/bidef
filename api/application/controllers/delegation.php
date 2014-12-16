@@ -131,20 +131,58 @@ class Delegation extends Auth
             }   
             return $this->response($delegacion_map_value, 200);
         }
-
-        
     }
 
     function update_delegation_map_provincias_post()
     {
-        $code_map = explode(',', $this->post('vectormap_code'));
-        $data = array();
+        $code_map    = explode(',', $this->post('vectormap_code'));
+        $data_insert = array();        
+        $data_update = array();
+        $provincia   = '';        
+        $error       = 0;
+        if($provincias_exists = $this->user_model->provincias_has_delegations_all())
+        {
+            foreach ($provincias_exists as $key => $provincia) $provincia_check[] = $provincia['fid_provincia'];
+        }
         foreach ($code_map as $key => $value)
         {
-            $data[$key]['fid_delegation'] = $this->post('delegation_id');
-            $data[$key]['fid_provincia']  = (int) $this->user_model->get_provincia_by_map_code($value);
+            
+            $provincia = (int) $this->user_model->get_provincia_by_map_code($value);
+            if(in_array($provincia, $provincia_check))
+            {
+                $data_update[$key]['fid_delegation'] = $this->post('delegation_id');
+                $data_update[$key]['fid_provincia'] = $provincia;
+            }
+            else
+            {
+                $data_insert[$key]['fid_delegation'] = $this->post('delegation_id');
+                $data_insert[$key]['fid_provincia'] = $provincia;
+            }             
         }        
-        $this->user_model->update_delegation_map_provincias($data);
+        if(!empty($data_update))
+        {
+            if($this->user_model->update_delegation_map_provincias($data_update)) $error = 0;//return $this->response(array('respuesta' => 0), 200);
+            else $error = 1;
+        }
+        if(!empty($data_insert))
+        {
+            if($this->user_model->insert_delegation_map_provincias($data_insert)) $error = 0;
+            else $error = 1;
+        }
+        if($error) return $this->response(array('respuesta'=> -1),200);   
+        else return $this->response(array('respuesta' => 0), 200);
+    }
+
+    function update_delete_delegation_map_provincias_post()
+    {
+        $code_map    = explode(',', $this->post('vectormap_code'));
+        foreach ($code_map as $key => $value)
+        {
+            
+            $provincia[] = (int) $this->user_model->get_provincia_by_map_code($value);
+        }
+        if($this->user_model->update_delete_delegation_map_provincias($provincia)) return $this->response(array('respuesta' => 0), 200);
+        else $this->response(array('respuesta'=> -1),200);
     }
 
 }
