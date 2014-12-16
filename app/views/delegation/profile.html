@@ -1,193 +1,200 @@
-<h1>{{name}}</h1>
-<div class="row m-t-lg">
-    <div class="col-lg-6">
-        <div class="ibox float-e-margins">
-            <div class="ibox-content">
-                <ui-chart series="dataDelegation" options="optionsDelegation" title="" subtitle="">
-                </ui-chart>
-            </div>
-            <hr>
-            <div class="ibox-content">
-                <ui-chart series="dataPieDelegation" options="optionsPieDelegation" title="" subtitle="">
-                </ui-chart>
-            </div>
+<div class="delegation_profile">
+    <div class="row">
+        <h2 class="col-md-11">Datos de la delegación: <strong>{{name}}<strong></h2>
+        <div class="col-md-1">
+            <a ui-sref="delegation" class="btn btn-default btn-outline btn-circle"><span class="fa fa-arrow-left"></span><br><small>volver</small></a>
         </div>
     </div>
-    <div class="col-lg-6">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="widget style1 navy-bg">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <i class="fa fa-euro fa-5x"></i>
-                        </div>
-                        <div class="col-xs-8 text-right">
-                            <span>Total facturado</span>
-                            <h2 class="font-bold">15.860€</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="widget style1 blue-bg">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <i class="fa fa-thumbs-up fa-5x"></i>
-                        </div>
-                        <div class="col-xs-8 text-right">
-                            <span>Proyectos completados</span>
-                            <h2 class="font-bold">3</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="widget style1 red-bg">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <i class="fa fa-euro fa-5x"></i>
-                        </div>
-                        <div class="col-xs-8 text-right">
-                            <span>Total gastos</span>
-                            <h2 class="font-bold">1.860€</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="widget style1 blue-bg">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <i class="fa fa-users fa-5x"></i>
-                        </div>
-                        <div class="col-xs-8 text-right">
-                            <span>Alumnos contratados</span>
-                            <h2 class="font-bold">36</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="ibox-content text-center widget">
-                    <h1>Clara Castro</h1>
-                    <div class="m-b-sm">
-                        <img alt="image" class="img-circle" src="img/a8.jpg">
-                    </div>
-                    <p class="font-bold">Delegado territorial</p>
-                    <ul class="list-unstyled m-t-md">
-                        <li>
-                            <span class="fa fa-envelope m-r-xs"></span>
-                            delegado.zona_norte@bidef.com
-                        </li>
-                        <li>
-                            <span class="fa fa-phone m-r-xs"></span>
-                            675 788 457
-                        </li>
-                    </ul>
-                    <div class="text-center">
-                        <a class="btn btn-xs btn-primary"><i class="fa fa-envelope"></i> mail</a>
-                        <a class="btn btn-xs btn-success"><i class="fa fa-phone"></i> llamada</a>
-                        <a class="btn btn-xs btn-default"><i class="fa fa-user"></i> ver perfil</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
+    <div class="row m-t-lg">
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <div class="widget-proyectos-small">
-                        <div>
-                            <a href="" class="btn btn-link btn-sm"><span>Ayuntamiento Coruña</span></a>
+                    <ui-chart series="dataDelegation" options="optionsDelegation" title="" subtitle="">
+                    </ui-chart>
+                </div>
+                <hr>
+                <div class="ibox-content">
+                    <ui-chart series="dataPieDelegation" options="optionsPieDelegation" title="" subtitle="">
+                    </ui-chart>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="row">                
+                <div class="col-lg-6">
+                    <div class="widget style1 blue-bg">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-thumbs-up fa-5x"></i>
+                            </div>
+                            <div class="col-xs-8 text-right">
+                                <span>Proyectos completados</span>
+                                <h2 class="font-bold">3 <span class="fa fa-level-up"></span></h2>
+                            </div>
                         </div>
-                        <div class="progress progress-small">
-                            <div style="width: 90%;" class="progress-bar"></div>
-                        </div>
-                        <div class="clearfix mTop0">
-                            <small class="pull-left">20/12/2014</small>
-                            <small class="pull-right">90%</small>
-                        </div>
-                        <hr>
-                        <div>
-                            <a href="" class="btn btn-link btn-sm"><span>Ayuntamiento Culleredo</span></a>
-                        </div>
-                        <div class="progress progress-small">
-                            <div style="width: 50%;" class="progress-bar progress-bar-success"></div>
-                        </div>
-                        <div class="clearfix mTop0">
-                            <small class="pull-left">20/12/2014</small>
-                            <small class="pull-right">50%</small>
-                        </div>
-                        <hr>
-                        <div>
-                            <a href="" class="btn btn-link btn-sm"><span>Diputación Santiago</span></a>
-                        </div>
-                        <div class="progress progress-small">
-                            <div style="width: 40%;" class="progress-bar progress-bar-warning"></div>
-                        </div>
-                        <div class="clearfix mTop0">
-                            <small class="pull-left">20/12/2014</small>
-                            <small class="pull-right">40%</small>
-                        </div>
-                        <hr>
-                        <div>
-                            <a href="" class="btn btn-link btn-sm"><span>Diputación Ourense</span></a>
-                        </div>
-                        <div class="progress progress-small">
-                            <div style="width: 20%;" class="progress-bar progress-bar-danger"></div>
-                        </div>
-                        <div class="clearfix mTop0">
-                            <small class="pull-left">20/12/2014</small>
-                            <small class="pull-right">20%</small>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="widget style1 navy-bg">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-euro fa-5x"></i>
+                            </div>
+                            <div class="col-xs-8 text-right">
+                                <span>Total facturado</span>
+                                <h2 class="font-bold">15.860€ <span class="fa fa-level-up"></span></h2>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="ibox">
+            <div class="row">                
+                <div class="col-lg-6">
+                    <div class="widget style1 blue-bg">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-users fa-5x"></i>
+                            </div>
+                            <div class="col-xs-8 text-right">
+                                <span>Alumnos contratados</span>
+                                <h2 class="font-bold">36 <span class="fa fa-level-up"></span></h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="widget style1 red-bg">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-euro fa-5x"></i>
+                            </div>
+                            <div class="col-xs-8 text-right">
+                                <span>Total gastos</span>
+                                <h2 class="font-bold">1.860€ <span class="fa fa-level-down"></span></h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="ibox-content text-center widget">
+                        <h1>Clara Castro</h1>
+                        <div class="m-b-sm">
+                            <img alt="image" class="img-circle" src="img/a8.jpg">
+                        </div>
+                        <p class="font-bold">Delegado territorial</p>
+                        <ul class="list-unstyled m-t-md">
+                            <li>
+                                <span class="fa fa-envelope m-r-xs"></span>
+                                delegado.zona_norte@bidef.com
+                            </li>
+                            <li>
+                                <span class="fa fa-phone m-r-xs"></span>
+                                675 788 457
+                            </li>
+                        </ul>
+                        <div class="text-center">
+                            <a class="btn btn-xs btn-primary"><i class="fa fa-envelope"></i> mail</a>
+                            <a class="btn btn-xs btn-success"><i class="fa fa-phone"></i> llamada</a>
+                            <a class="btn btn-xs btn-default"><i class="fa fa-user"></i> ver perfil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <div class="ibox-content">
-                        <div>
-                            <div class="chat-activity-list">
-                                <div class="chat-element">
-                                    <img alt="image" class="pull-left img-circle" src="img/a2.jpg">
-                                    <div class="media-body ">
-                                        <a href=""><strong>Moisés Hurtado</strong></a>
-                                        <p class="m-b-xs">
-                                            Consultor A
-                                        </p>
+                        <div class="widget-proyectos-small">
+                            <div>
+                                <a href="" class="btn btn-link btn-sm"><span>Ayuntamiento Coruña</span></a>
+                            </div>
+                            <div class="progress progress-small">
+                                <div style="width: 90%;" class="progress-bar"></div>
+                            </div>
+                            <div class="clearfix mTop0">
+                                <small class="pull-left">20/12/2014</small>
+                                <small class="pull-right">90%</small>
+                            </div>
+                            <hr>
+                            <div>
+                                <a href="" class="btn btn-link btn-sm"><span>Ayuntamiento Culleredo</span></a>
+                            </div>
+                            <div class="progress progress-small">
+                                <div style="width: 50%;" class="progress-bar progress-bar-success"></div>
+                            </div>
+                            <div class="clearfix mTop0">
+                                <small class="pull-left">20/12/2014</small>
+                                <small class="pull-right">50%</small>
+                            </div>
+                            <hr>
+                            <div>
+                                <a href="" class="btn btn-link btn-sm"><span>Diputación Santiago</span></a>
+                            </div>
+                            <div class="progress progress-small">
+                                <div style="width: 40%;" class="progress-bar progress-bar-warning"></div>
+                            </div>
+                            <div class="clearfix mTop0">
+                                <small class="pull-left">20/12/2014</small>
+                                <small class="pull-right">40%</small>
+                            </div>
+                            <hr>
+                            <div>
+                                <a href="" class="btn btn-link btn-sm"><span>Diputación Ourense</span></a>
+                            </div>
+                            <div class="progress progress-small">
+                                <div style="width: 20%;" class="progress-bar progress-bar-danger"></div>
+                            </div>
+                            <div class="clearfix mTop0">
+                                <small class="pull-left">20/12/2014</small>
+                                <small class="pull-right">20%</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div>
+                                <div class="chat-activity-list">
+                                    <div class="chat-element">
+                                        <img alt="image" class="pull-left img-circle" src="img/a2.jpg">
+                                        <div class="media-body ">
+                                            <a href=""><strong>Moisés Hurtado</strong></a>
+                                            <p class="m-b-xs">
+                                                Consultor A
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="chat-element">
-                                    <img alt="image" class="pull-left img-circle" src="img/a1.jpg">
-                                    <div class="media-body ">
-                                        <a href=""><strong>Pablo Carpor</strong></a>
-                                        <p class="m-b-xs">
-                                            Consultor B
-                                        </p>
+                                    <div class="chat-element">
+                                        <img alt="image" class="pull-left img-circle" src="img/a1.jpg">
+                                        <div class="media-body ">
+                                            <a href=""><strong>Pablo Carpor</strong></a>
+                                            <p class="m-b-xs">
+                                                Consultor B
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="chat-element">
-                                    <img alt="image" class="pull-left img-circle" src="img/a3.jpg">
-                                    <div class="media-body">
-                                        <a href=""><strong>Carolina Moe</strong></a>
-                                        <p class="m-b-xs">
-                                            Consultor E
-                                        </p>
+                                    <div class="chat-element">
+                                        <img alt="image" class="pull-left img-circle" src="img/a3.jpg">
+                                        <div class="media-body">
+                                            <a href=""><strong>Carolina Moe</strong></a>
+                                            <p class="m-b-xs">
+                                                Consultor E
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="chat-element">
-                                    <img alt="image" class="pull-left img-circle" src="img/a7.jpg">
-                                    <div class="media-body ">
-                                        <a href=""><strong>Manuel Becerra</strong></a>
-                                        <p class="m-b-xs">
-                                            Consultor D
-                                        </p>
+                                    <div class="chat-element">
+                                        <img alt="image" class="pull-left img-circle" src="img/a7.jpg">
+                                        <div class="media-body ">
+                                            <a href=""><strong>Manuel Becerra</strong></a>
+                                            <p class="m-b-xs">
+                                                Consultor D
+                                            </p>
+                                        </div>
                                     </div>
+                                    <p class="text-center mBottom0"><a href="" class="btn-link btn btn-sm"><span class="fa fa-envelope"></span> enviar mail a todos</a></p>
                                 </div>
-                                <p class="text-center mBottom0"><a href="" class="btn-link btn btn-sm"><span class="fa fa-envelope"></span> enviar mail a todos</a></p>
                             </div>
                         </div>
                     </div>
