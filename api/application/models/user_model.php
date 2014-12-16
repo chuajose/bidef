@@ -84,13 +84,13 @@
 
 	    function delete_delegations($id){
 	    	if($id) 
-	    	{
+	    	{	    		
 	    		if(is_array($id)) $this->db->where_in('id_delegation', $id);
 	    		else $this->db->where('id_delegation', $id);
+	    		$query = $this->db->delete('delegation');
+	    		if($this->db->affected_rows() > 0) return TRUE;
+	    		else return FALSE;
 	    	}
-	    	$query = $this->db->delete('delegation');
-	    	if($query) return TRUE;
-	    	else return FALSE; 
 	    }
 
 	    function check_color_delegation($color)
@@ -120,15 +120,25 @@
 	    	$query = $query->result_array();
 	    	return $query;
 	    }
+
 	    /**
 	     * [update_delegation_map_provincias description]
 	     * @param  int $id_delegation
 	     * @param  array $code_map  codigos de las provincias (code_amp en tabla provincia)
 	     * @return bool                
 	     */
-	    function update_delegation_map_provincias($data)
+	    function insert_delegation_map_provincias($data)
 	    {
 	    	$this->db->insert_batch('delegation_has_provincia', $data);
+	    	if($this->db->affected_rows() > 0) return TRUE;
+	    	else return FALSE;
+	    }
+
+	    function update_delegation_map_provincias($data)
+	    {
+	    	$this->db->update_batch('delegation_has_provincia', $data, 'fid_provincia');
+	    	if($this->db->affected_rows() > 0) return TRUE;
+	    	else return FALSE;
 	    }
 
 	    function get_provincia_by_map_code($map_code)
@@ -138,6 +148,22 @@
 	    	$query = $this->db->get('provincia');
 	    	$query = $query->row('id_provincia');
 	    	return $query;
+	    }
+
+	    function provincias_has_delegations_all()
+	    {
+	    	$this->db->select('fid_provincia');
+	    	$query = $this->db->get('delegation_has_provincia');
+	    	if($query->num_rows() > 0) return $query->result_array();
+	    	else return FALSE;
+	    }
+
+	    function update_delete_delegation_map_provincias($data)
+	    {
+	    	$this->db->where_in('fid_provincia', $data);
+	    	$this->db->delete('delegation_has_provincia');
+	    	if($this->db->affected_rows() > 0) return TRUE;
+	    	else return FALSE;
 	    }
 
 	}
