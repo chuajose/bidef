@@ -186,6 +186,7 @@ function vectorMap() {
                 window.mapElement = element.vectorMap({
                     map: 'es_mill_en',
                     regionsSelectable: true,
+                    zoomOnScroll: false,
                     backgroundColor: "transparent",
                     regionStyle: {
                         initial: {
@@ -197,6 +198,10 @@ function vectorMap() {
                         },
                         selected: {
                             fill: '#1ab394'
+                        },
+                        hover: {
+                            cursor: 'pointer',
+                            fill: '#FEFEFE'
                         }
                     },
                     series: {
@@ -212,18 +217,25 @@ function vectorMap() {
                     onRegionSelected: function(e, code, isSelected, selectedRegions){
                         window.selectedAreasMap = selectedRegions;
                         //return selectedRegions;
-                        //console.log(selectedAreasMap);
+                        console.log(selectedAreasMap);
                     },
-                    onRegionOver:function(e, code){
-                        console.log(scope.myMapData);
+                    onRegionLabelShow: function(e, el, code){
+                      //label.text('bla bla bal');
+                      if (el.html() === '') {
+                        e.preventDefault();
+                      }
+                    },
+                    /*onRegionOver:function(e, code){
+                        console.log(scope.mapdata);
                         //console.log(code);
                         //console.log(scope.dataMap);
-                    }
+                    }*/
                 });
             });
         }
     }
 }
+
 
 
 /**
@@ -414,19 +426,19 @@ function dropZone($http) {
                                     url     : "../api/index.php/email/attachment",
                                     method  : "delete",
                                     data    : "name="+file.nameserver,
-                                    //data    : 
+                                    //data    :
                                    // headers : {'Content-Type': 'application/x-www-form-urlencoded'}
                                 })
                                 .success(function(data){
-                                
+
                                 })
                                 .error(function(){
                                     //$location.path("/")
                             });
 
-                    
+
                 });
-                
+
             }
         });
     }
