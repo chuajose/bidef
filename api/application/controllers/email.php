@@ -19,6 +19,7 @@ require APPPATH.'/libraries/REST_Controller.php';
 
 class Email extends REST_Controller
 {
+    var $separador = ".";
 
     function __construct(){
 
@@ -64,10 +65,10 @@ class Email extends REST_Controller
                 if($key             =='INBOX') {
                 $value['name_show'] = (isset($folder_config[$key])) ? $folder_config[$key] : "Entrada";
                 $folders[0]         =$value; 
-                }elseif($key        =='Sent') {
+                }elseif($key        =='Enviados') {
                 $value['name_show'] = (isset($folder_config[$key])) ? $folder_config[$key] : "Enviados";
                 $folders[1]         =$value; 
-                }elseif($key        =='Trash') {
+                }elseif($key        =='Papelera') {
                 $value['name_show'] = (isset($folder_config[$key])) ? $folder_config[$key] : "Papelera";
                 $folders[2]         =$value;
                 }elseif($key        =='Borradores') {
@@ -270,13 +271,13 @@ class Email extends REST_Controller
                         //Recorro los mensajes sin leer
                       // if(!$value->seen){
                             preg_match('/<?([-!#$%&\'*+\.\/0-9=?A-Z^_`a-z{|}~]+@[-!#$%&\'*+\/0-9=?A-Z^_`a-z{|}~]+\.[-!#$%&\'*+\.\/0-9=?A-Z^_`a-z{|}~]+)>?/',$value->from,$mail_dest);
-                            $rules = $this->imap_model->get_rules(false,$mail_dest[1]);
+                            $rules = $this->imap_model->get_rules(0,$mail_dest[1]);
                             if($rules && $rules->destination != $mailbox){
                              //   echo $rules->destination;
                                // $cambio = $this->imap->change_imap_stream($rules->destination);
                                // var_dump($this->imap->scan_mailbox($rules->destination));
                                // 
-                            if(!$this->imap->scan_mailbox('Clientes.'.$rules->destination))$this->imap->create_mailbox('Clientes.'.$rules->destination);
+                            if(!$this->imap->scan_mailbox('Clientes'.$this->seperador.$rules->destination))$this->imap->create_mailbox('Clientes'.$this->seperador.$rules->destination);
                             $this->imap->move_mail($value->uid,'Clientes.'.$rules->destination);
                             unset($list[$i]);
                         //}
