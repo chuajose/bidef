@@ -2,7 +2,14 @@
     <div class="row">
         <h2 class="col-md-11">Datos de la delegación: <strong>{{name}}<strong></h2>
         <div class="col-md-1">
-            <a ui-sref="delegation" class="btn btn-default btn-outline btn-circle"><span class="fa fa-arrow-left"></span><br><small>volver</small></a>
+            <a ui-sref="delegation" class="btn btn-white btn-outline btn-circle"><span class="fa fa-arrow-left"></span><br><small>volver</small></a>
+        </div>
+    </div>
+    <div class="clearfix">
+       <div class="input-group date">
+            <input type="datetime" class="form-control" date-time ng-model="start" view="date">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input type="datetime" class="form-control" date-time ng-model="end" view="date">
         </div>
     </div>
     <div class="row m-t-lg">
