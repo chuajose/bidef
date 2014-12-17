@@ -72,6 +72,7 @@ class Imap {
 	public function __construct() {
 		$this->ci =& get_instance();
 		$this->ci->load->config('imap',TRUE);
+		$this->ci->load->model('imap_model');
 
 		$this->server =  $this->ci->config->item('server', 'imap');
 		$this->port =  $this->ci->config->item('port', 'imap');
@@ -116,6 +117,12 @@ class Imap {
 		if(!$this->imap_stream) {
 			throw new Imap_mailbox_exception('Connection error: ' . imap_last_error());
 		}
+
+		//Inicializo las tres carpeta necesarias para clasifiacar
+		if(!$this->scan_mailbox('Clientes'))$this->create_mailbox('Clientes');
+		if(!$this->scan_mailbox('Ayuntamientos'))$this->create_mailbox('Ayuntamientos');
+		if(!$this->scan_mailbox('Alumnos'))$this->create_mailbox('Alumnos');
+
 		return true;
 	}
 	
@@ -182,6 +189,21 @@ class Imap {
 		return imap_renamemailbox ( $this->imap_stream, $this->mailbox.$mailbox , $this->mailbox.$new_mailbox );
 	}
 
+
+	public function scan_mailbox($mailbox)
+	{
+		$folders = imap_list($this->imap_stream, "{".$this->server."}", "*");
+		if(!empty($folders))
+		{
+			foreach ($folders as $folder) {
+				$folder_name = str_replace("{".$this->server."}", "", imap_utf7_decode($folder));
+				
+				if($folder_name==$mailbox) return true;
+			}
+		}
+		
+		return false;
+	}
 	/**
 	 * Recoge información sobre la bandeja actual
 	 *
@@ -367,7 +389,8 @@ class Imap {
 	 * @return bool
 	 */
 	public function move_mail($mailId, $mailBox) {
-		return imap_mail_move($this->imap_stream, $mailId, $mailBox, CP_UID) && $this->expunge_deleted_mails();
+
+		return imap_mail_move($this->imap_stream, $mailId,$mailBox, CP_UID) && $this->expunge_deleted_mails();
 	}
 
 	public function move_sent_mail($mailbox, $mail)
@@ -527,7 +550,7 @@ class Imap {
 
 				if(isset($mail->date)){
 					$this->ci->load->helper('date');
-					$mail->date=fecha_spanish($mail->date,false,true);
+					$mail->date=strtotime($mail->date,0)*1000;
 				}
 
 				if($this->has_attachment($mail->uid)) {
@@ -535,6 +558,8 @@ class Imap {
 				} else {
 					$mail->attachments = FALSE;
 				}
+
+
 			}
 		}
 		return $mails;
