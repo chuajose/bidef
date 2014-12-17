@@ -10,7 +10,8 @@
 |	imap.example.com/
 |
 */
-$config['server']	= 'imap.1and1.es';
+$config['server']	= 'vigiliam.com';
+
 
 /*
 |--------------------------------------------------------------------------
@@ -80,7 +81,7 @@ $config['attachments_dir']	= 'adjuntos';
 |
 */
 $config['folders']['INBOX'] = "Entrada";
-$config['folders']['Sent'] = "Enviados";
-$config['folders']['Trash'] = "Papelera";
-$config['folders']['Drafts'] = "Borradores";
+$config['folders']['Enviados'] = "Enviados";
+$config['folders']['Papelera'] = "Papelera";
+$config['folders']['Borradorse'] = "Borradores";
 
