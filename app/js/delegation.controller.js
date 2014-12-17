@@ -2,9 +2,12 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
     $translatePartialLoader.addPart('delegation');
     $translate.refresh();
     $scope.countDelegation = 0;
-    $scope.delegations = {};
+    $scope.delegations = [];
     $scope.provincias = {};
-    $scope.disabled = undefined;
+    $scope.delegation = {};
+    $scope.delegation.selected = '';
+    //$scope.delegation.selected = '';
+    //$scope.disabled = undefined;
 	$scope.ListDelegations = function(){
         utilsDelegation.ListarDelegations('').success(function (response) {
             if(response.respuesta != 29)
@@ -15,18 +18,6 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
 	   });
     }
     $scope.ListDelegations();
-
-    $scope.person = {};
-    $scope.people = [
-        { name: 'Adam',      email: 'adam@email.com',      age: 10 },
-        { name: 'Amalie',    email: 'amalie@email.com',    age: 12 },
-        { name: 'Wladimir',  email: 'wladimir@email.com',  age: 30 },
-        { name: 'Samantha',  email: 'samantha@email.com',  age: 31 },
-        { name: 'Estefanía', email: 'estefanía@email.com', age: 16 },
-        { name: 'Natasha',   email: 'natasha@email.com',   age: 54 },
-        { name: 'Nicole',    email: 'nicole@email.com',    age: 43 },
-        { name: 'Adrian',    email: 'adrian@email.com',    age: 21 }
-      ];
 
     utilsDelegation.ListarProvincias('').success(function (response) {
         $scope.provincias = response;
@@ -101,7 +92,7 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
     }
     $scope.UpdateMapaDelegacionProvincias = function(id_delegation)
     {
-        //console.log(id_delegation + ' - vector_code: ' + window.selectedAreasMap);
+        console.log(id_delegation + ' - vector_code: ' + window.selectedAreasMap);
         if(selectedAreasMap)
         {
             utilsDelegation.UpdateMapaDelegacionProvincias(id_delegation, selectedAreasMap).success(function (response)
@@ -160,8 +151,8 @@ var DelegationCtrl = function($scope, $http, $state, $stateParams, utilsDelegati
                 /*stacking: 'normal',
                 lineColor: '#ffffff',
                 lineWidth: 1,*/
-                marker: {    
-                    enabled: false,      
+                marker: {
+                    enabled: false,
                     symbol: 'circle',
                     radius: 2,
                     states: {
@@ -309,4 +300,3 @@ var DelegationProfileCtrl = function($scope, $http, $state, $stateParams, utilsD
 angular.module('bidef')
 .controller('DelegationCtrl ', DelegationCtrl)
 .controller('DelegationProfileCtrl ', DelegationProfileCtrl)
-/*.filter('propsFilter',propsFilter)*/
