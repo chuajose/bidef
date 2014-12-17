@@ -390,10 +390,12 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
 	console.log($stateParams.mailbox);
 	$scope.mailboxsel = $stateParams.mailbox;
 	utilsWebmail.ListarMailbox().success(function (response) { 
-		$scope.bandejas= response.bandejas;
-		$scope.bandejas_clientes = response.bandejas_clientes; 
-		$scope.bandejas_otros = response.bandejas_otros;
-		console.log(response.bandejas_otros);
+		$scope.bandejas               = response.bandejas;
+		$scope.bandejas_clientes      = response.bandejas_clientes; 
+		$scope.bandejas_alumnos       = response.bandejas_alumnos; 
+		$scope.bandejas_ayuntamientos = response.bandejas_ayuntamientos; 
+		$scope.bandejas_otros         = response.bandejas_otros;
+		console.log(response.bandejas_clientes);
 	});
 	$scope.separator ='.';
 
@@ -460,10 +462,10 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
             	$scope.ok=function(){
             		console.log('entro en borrar'+mailbox);
             		borro = true;
-            		/*utilsWebmail.DeleteMailbox(mailbox).success(function (response) { 
+            		utilsWebmail.DeleteMailbox(mailbox.name).success(function (response) { 
 						//if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
 						  //$scope.bandejas.splice(idx, 1);
-					});*/
+					});
             		modalInstance.close(mailbox);
             	}
             },

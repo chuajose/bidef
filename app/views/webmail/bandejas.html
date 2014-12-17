@@ -30,7 +30,29 @@
         <!--<button ng-click="open()" class="btn btn-success " type="button"><i class="fa fa-paste"></i> Crear Carpeta</button>-->
         <h5>Bandejas Clientes</h5>
         <ul class="category-list" style="padding: 0">
-            <li ng-repeat="bandeja_cliente in bandejas_clientes"><a ui-sref="webmail.bandeja({mailbox:bandeja_cliente.name, pagina:0})"> <i class="fa fa-circle text-navy"></i> {{bandeja_cliente.name}} </a></li>
+            <li ng-repeat="bandeja_cliente in bandejas_clientes">
+              <ul class="folder-list" style="padding-left:10px">
+                <li class="mailbox" ng-repeat="subfolder in bandeja_cliente.folders"><a  ui-sref="webmail.bandeja({mailbox:bandeja_cliente.name+separator+subfolder.name, pagina:0})"> {{subfolder.name}}</a></li>
+                </ul>
+            </li>
+            
+        </ul>
+        <h5>Bandejas Ayuntamientos</h5>
+        <ul class="category-list" style="padding: 0">
+            <li ng-repeat="bandeja_ayuntamiento in bandejas_ayuntamientos">
+              <ul class="folder-list" style="padding-left:10px">
+                <li class="mailbox" ng-repeat="subfolder in bandeja_ayuntamiento.folders"><a  ui-sref="webmail.bandeja({mailbox:bandeja_ayuntamiento.name+separator+subfolder.name, pagina:0})"> {{subfolder.name}}</a></li>
+                </ul>
+            </li>
+            
+        </ul>
+        <h5>Bandejas Alumnos</h5>
+        <ul class="category-list" style="padding: 0">
+            <li ng-repeat="bandeja_alumno in bandejas_alumnos">
+              <ul class="folder-list" style="padding-left:10px">
+                <li class="mailbox" ng-repeat="subfolder in bandeja_alumno.folders"><a  ui-sref="webmail.bandeja({mailbox:bandeja_alumno.name+separator+subfolder.name, pagina:0})"> {{subfolder.name}}</a></li>
+                </ul>
+            </li>
             
         </ul>
         <h5>Bandejas Privadas</h5> 
