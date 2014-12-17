@@ -24,4 +24,43 @@ class Imap_model extends CI_Model {
     	return $query;
     }    
 
+    function get_draft($user_id)
+    {
+        $this->db->where($this->field_usuario, $user_id);
+        $query = $this->db->get('webmail_msg');
+        return $query->result();
+
+    }
+
+    function add_draft($datos)
+    {
+
+
+        $this->db->insert('webmail_msg',$datos);
+
+        return $this->db->insert_id();
+    }
+
+    function update_draft($id,$datos)
+    {
+
+        $this->db->where('id_webmail_msg',$id);
+        $this->db->update('webmail_msg',$datos);
+
+        return $id;
+    }
+
+
+    function get_rules($user_id=FALSE, $condition=FALSE)
+    {
+        if($condition) $this->db->where('condition',$condition);
+        if($user_id)$this->db->where($this->field_usuario, $user_id);
+        $query = $this->db->get('webmail_rules');
+        if($query){
+        $query = $query->row();
+        }else $query = false;
+
+        return $query;
+    }    
+
 }
