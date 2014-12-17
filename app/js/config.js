@@ -7,8 +7,11 @@
  * Initial there are written stat for all view in theme.
  *
  */
-function config($stateProvider, $urlRouterProvider) {
+function config($stateProvider, $urlRouterProvider, uiSelectConfig) {
   //  $urlRouterProvider.otherwise("/dashboard_1");
+    uiSelectConfig.theme = 'select2';
+    /*uiSelectConfig.resetSearchInput = true;*/
+
     $stateProvider
         .state('dashboard_1', {
             url: "/dashboard_1",
