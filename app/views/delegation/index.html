@@ -29,7 +29,7 @@
             <div class="row">
             <p class="col-md-6">
                 <label>Añadir provincia/s a una Delegación</label>
-                <ui-select on-select="console.log(delegation.selected); UpdateMapaDelegacionProvincias(delegation.selected);" ng-model="delegation.selected" theme="bootstrap" class="">
+                <ui-select on-select="UpdateMapaDelegacionProvincias($select.selected.id_delegation)" ng-model="delegation.selected" theme="bootstrap" class="">
                     <ui-select-match placeholder="Seleccionar delegación...">{{$select.selected.delegation_name}}</ui-select-match>
                     <ui-select-choices repeat="item.id_delegation as item in delegations | filter: $select.search">
                       <span ng-bind-html="item.delegation_name | highlight: $select.search"></span>
@@ -38,7 +38,7 @@
                 <!-- <button class="btn btn-success btn-sm" ng-click="UpdateMapaDelegacionProvincias(delegation.selected)">Añadir</button> -->
             </p>
             <p class="col-md-6">
-                <br>                
+                <br>
                 <button class="btn btn-danger btn-outline btn-sm" ng-click="UpdateDeleteMapaDelegacionProvincias()">Eliminar provincia/s seleccionadas</button>
             </p>
         </div>
