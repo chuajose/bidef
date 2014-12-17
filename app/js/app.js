@@ -14,6 +14,8 @@
         'ui.checkbox',
         'ui.knob',
         'ui.switchery',
+        'ui.select',
+        'ngSanitize',
         'angular-peity',
         'easypiechart',
         'angular-flot',
