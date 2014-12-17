@@ -9,9 +9,9 @@
             <li class="mailbox" ng-repeat="bandeja in bandejas">
                 <a  ui-sref="webmail.bandeja({mailbox:bandeja.name, pagina:0})"> 
                     <i  ng-class="{'fa fa-inbox'   : bandeja.name === 'INBOX',
-                                                       'fa fa-envelope-o' : bandeja.name === 'Sent',
-                                                       'fa fa-trash-o'    : bandeja.name === 'Trash',
-                                                       'fa fa-recycle'   : bandeja.name === 'Junk',
+                                                       'fa fa-envelope-o' : bandeja.name === 'Enviados',
+                                                       'fa fa-trash-o'    : bandeja.name === 'Papelera',
+                                                       'fa fa-recycle'   : bandeja.name === 'Spam',
                                                        'fa fa-file-text-o' : bandeja.name === 'Borradores'}" ></i> {{bandeja.name_show}} <span ng-show="bandeja.data.Unread" class="label label-warning pull-right">{{bandeja.data.Unread}}</span> 
                      
                 </a>

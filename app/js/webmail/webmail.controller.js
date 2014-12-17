@@ -3,23 +3,22 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
 	$translatePartialLoader.addPart('webmail');
   	$translate.refresh();
 
-
-	$scope.mensajes = "";
-	$scope.maxSize = 5;
-  	$scope.bigCurrentPage = 1;
-  	$scope.bandejas = false;
-  	$scope.select = {};//almaceno los uids de los mensaje checkeados
-  	$scope.mailbox = "INBOX";
-  	$scope.palabra = "";
-  	$scope.bigTotalItems = 0;
-
-    $scope.searchUseen = "";
-    $scope.searchStart = "";
-    $scope.searchEnd = "";
-    $scope.searchBody = "";
-    $scope.searchSubject = "";
-    $scope.searchTo = "";
-    $scope.searchWord = "";
+	$scope.mensajes       = "";
+	$scope.maxSize        = 5;
+	$scope.bigCurrentPage = 1;
+	$scope.bandejas       = false;
+	$scope.select         = {};//almaceno los uids de los mensaje checkeados
+	$scope.mailbox        = "INBOX";
+	$scope.palabra        = "";
+	$scope.bigTotalItems  = 0;
+	
+	$scope.searchUseen    = "";
+	$scope.searchStart    = "";
+	$scope.searchEnd      = "";
+	$scope.searchBody     = "";
+	$scope.searchSubject  = "";
+	$scope.searchTo       = "";
+	$scope.searchWord     = "";
   	//console.log('entro en WebmailCtrl');
   	if($stateParams.mailbox){
 
@@ -44,8 +43,8 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
 	  	$scope.currentPage = page;
 	    utilsWebmail.ListarWebmail(page,$scope.mailbox).success(function (response) { 
 
-			$scope.bandejas = response.bandejas;
-			$scope.mensajes = response.emails;
+			$scope.bandejas      = response.bandejas;
+			$scope.mensajes      = response.emails;
 			$scope.bigTotalItems = response.total
 		});
     };
@@ -157,13 +156,13 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
 
 	$scope.buscar = function () {
 		var search = [];
-		search.useen = $scope.searchUseen;
-	    search.start = $scope.searchStart;
-	    search.end = $scope.searchEnd;
-	    search.body = $scope.searchBody;
-	    search.subject = $scope.searchSubject;
-	    search.to = $scope.searchTo;
-		search.word = $scope.searchWord;
+		search.useen   = $scope.searchUseen;
+		search.start   = $scope.searchStart;
+		search.end     = $scope.searchEnd;
+		search.body    = $scope.searchBody;
+		search.subject = $scope.searchSubject;
+		search.to      = $scope.searchTo;
+		search.word    = $scope.searchWord;
 	    utilsWebmail.SearchWebmail(search, $scope.bigCurrentPage,$scope.mailbox).success(function (response) { 
 			$scope.mensajes      = response.emails;
 			$scope.bandeja       = $stateParams.mailbox;
@@ -221,23 +220,22 @@ var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 	$scope.mailbox = $stateParams.mailbox;
 	utilsWebmail.VerMail($stateParams.id,$stateParams.mailbox).success(function (response) { 
 	
-		$scope.mensaje      = response.view;
-		$scope.subject	= response.header.subject;
-		$scope.from	= response.header.fromAddress;
-		$scope.fecha	= response.header.date;
-		var adjuntos =[];
+		$scope.mensaje = response.view;
+		$scope.subject = response.header.subject;
+		$scope.from    = response.header.fromAddress;
+		$scope.fecha   = response.header.date;
+		var adjuntos   = [];
 		//recorro los adjuntos para añadirle los datos de icono
 		$.each(response.adjuntos, function(index, val) {	
 
-			ext = val.filePath.substr((~-val.filePath.lastIndexOf(".") >>> 0) + 2);
-			val.ext=utilsGeneral.GetTextIcon(ext);
+			ext     = val.filePath.substr((~-val.filePath.lastIndexOf(".") >>> 0) + 2);
+			val.ext = utilsGeneral.GetTextIcon(ext);
 
 			adjuntos.push(val);
 		});
-		console.log(adjuntos);
-		$scope.adjuntos = adjuntos;
+		$scope.adjuntos       = adjuntos;
 		$scope.adjuntoslength = response.adjuntos.length;
-		$scope.uid	= $stateParams.id;
+		$scope.uid            = $stateParams.id;
 	
 		document.getElementById('iframe').contentWindow.updatedata($scope.mensaje);
 		
@@ -349,13 +347,9 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 		if($scope.files)
 		{
 			$.each($scope.files, function(index, val) {
-				 //console.log(val);
 				files.push(val.nameserver);
 			});
 		}
-
-		//console.log($scope.mensaje);
-		//
 		if($scope.mensajeorig && $scope.mensajeorig!=""){
 			var mensaje = $scope.mensaje+"<blockquote>"+$scope.mensajeorig+"</blockquote>";
 		} else {
@@ -378,7 +372,7 @@ var WebmailCreateMailboxCtrl = function($scope, $http, $state, $stateParams,util
 		console.log($scope.newmailbox);
 		utilsWebmail.addMailbox($scope.newmailbox).success(function (response) { 
 			console.log(response);
-			if(response.error==0)  $state.go('webmail' , $stateParams,{reload: true});
+			if(response.error== 0)  $state.go('webmail' , $stateParams,{reload: true});
 			$modalInstance.close();
 		});
 	}
@@ -406,9 +400,8 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
 
 	$scope.changeMailbox = function(mailbox){
 
-		console.log(mailbox);
-		$scope.mailbox=mailbox;
-		$scope.newmailbox="";
+		$scope.mailbox    = mailbox;
+		$scope.newmailbox = "";
 		var modalInstance = $modal.open({
             templateUrl: 'views/webmail/modal_edit_mailbox.html',
             controller: function($scope){
@@ -432,7 +425,6 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
         });
 
         modalInstance.result.then(function(mailbox) {
-        	console.log('neuvo'+mailbox.newname);
 	        var key = $scope.bandejas_otros.indexOf(mailbox);
 	        $scope.bandejas_otros[key].name=mailbox.newname;
 	        
@@ -450,9 +442,9 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
 		var modalInstance = $modal.open({
             templateUrl: 'views/webmail/modal.html',
             controller: function($scope){
-
-            	$scope.mensaje = "Estas seguro de eliminar la bandeja "+mailbox.name+"?";
-            	$scope.submensaje = "Se eliminarán todos los correos que contiene";
+				
+				$scope.mensaje    = "Estas seguro de eliminar la bandeja "+mailbox.name+"?";
+				$scope.submensaje = "Se eliminarán todos los correos que contiene";
 
             	$scope.salir=function(){
             		 modalInstance.dismiss('cancel');
@@ -472,7 +464,6 @@ var WebmailMailboxesController = function($scope, $http, $state, $stateParams,ut
         });
 
         modalInstance.result.then(function(mailbox) {
-	        console.log($scope.bandejas_otros);
 	        var key = $scope.bandejas_otros.indexOf(mailbox);
 	        $scope.bandejas_otros.splice(key, 1);
 	        
