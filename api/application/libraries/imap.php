@@ -119,6 +119,10 @@ class Imap {
 		}
 
 		//Inicializo las tres carpeta necesarias para clasifiacar
+		if(!$this->scan_mailbox('Enviados'))$this->create_mailbox('Enviados');
+		if(!$this->scan_mailbox('Papelera'))$this->create_mailbox('Papelera');
+		if(!$this->scan_mailbox('Borradores'))$this->create_mailbox('Borradores');
+
 		if(!$this->scan_mailbox('Clientes'))$this->create_mailbox('Clientes');
 		if(!$this->scan_mailbox('Ayuntamientos'))$this->create_mailbox('Ayuntamientos');
 		if(!$this->scan_mailbox('Alumnos'))$this->create_mailbox('Alumnos');
