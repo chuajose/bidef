@@ -33,7 +33,7 @@ class Email extends REST_Controller
 
         $user = $this->imap_model->get(1);
 
-        $this->login         = $this->imap->connect( $user->user, $user->password);//usuario y password
+        $this->login = $this->imap->connect( $user->user, $user->password);//usuario y password
         
         $this->data['error'] = 0;
 
@@ -121,10 +121,8 @@ class Email extends REST_Controller
     {
         if( $this->put( 'mailbox' ) && $this->put( 'mailbox_new') ) {   
 
-            echo $this->put('mailbox');
-
-            $_POST['mailbox'] = $this->put('mailbox');
-
+            $_POST['mailbox']     = $this->put('mailbox');
+            
             $_POST['mailbox_new'] = $this->put('mailbox_new');
 
             $this->form_validation->set_rules('mailbox_new', 'mailbox_new', 'trim|require');
@@ -149,7 +147,7 @@ class Email extends REST_Controller
 
         } else {
 
-            $this->data['error']=1; //No existen datos
+            $this->data['error'] = 1; //No existen datos
         }
 
         $this->response($this->data, 200);
@@ -316,10 +314,10 @@ class Email extends REST_Controller
 
         $string = '';
 
-        if($this->post('to') && $this->post('to') !=="") $string .=' FROM "'.$this->post('to').'"';
+        if($this->post('to') && $this->post('to')       !=="") $string .=' FROM "'.$this->post('to').'"';
         if($this->post('useen') && $this->post('useen') =="true") $string .=' UNSEEN '; 
         if($this->post('start') && $this->post('start') !=="") $string .=' SINCE "'.$this->post('start').'"';
-        if($this->post('end') && $this->post('end') !=="") $string .=' BEFORE "'.$this->post('end').'"';
+        if($this->post('end') && $this->post('end')     !=="") $string .=' BEFORE "'.$this->post('end').'"';
         if($this->post('word')) {
 
             $criteria[] =  'SUBJECT "'.$this->post('word').'"' .$string;
@@ -367,10 +365,10 @@ class Email extends REST_Controller
 
         if($this->get('mailbox'))$this->imap->change_imap_stream($this->get('mailbox'));//Si exsite mailbox selecciono el mail de esa carpeta
 
-        $email = $this->imap->get_mail($this->get('id')); 
-
-        $this->data['header'] = $email; //Datos del email
-
+        $email                  = $this->imap->get_mail($this->get('id')); 
+        
+        $this->data['header']   = $email; //Datos del email
+        
         $this->data['adjuntos'] = $email->get_attachments(); //Datos de los adjuntos
 
         //Mostramos la vista
@@ -407,30 +405,29 @@ class Email extends REST_Controller
         if($this->put('action') === "read") {
 
             if(!$this->imap->mark_mails_as_read($this->put('id'))){
-                $this->data['error']=2;
+                $this->data['error'] = 2;
             }
 
         } elseif($this->put('action') === "unread") {
 
             if(!$this->imap->mark_mails_as_unread($this->put('id'))){
-                $this->data['error']=2;
+                $this->data['error'] = 2;
             }
 
         } elseif($this->put('action') === "important") {
 
             if(!$this->imap->mark_mails_as_important($this->put('id'))){
-                $this->data['error']=2;
+                $this->data['error'] = 2;
             }
 
-        } elseif ($this->put('action')==="move" && $this->put('mailbox')) {
+        } elseif ($this->put('action') === "move" && $this->put('mailbox')) {
 
             if(!$this->imap->move_mail($this->put('id'),$this->put('mailbox'))){
-                $this->data['error']=3;
+                $this->data['error'] = 3;
             }
             
         }
 
-       
         $this->response($this->data, 200);
         
     }
@@ -454,7 +451,7 @@ class Email extends REST_Controller
 
         if(!$this->imap->delete_mail($_GET['id']))
         {
-            $this->data['error']=2;
+            $this->data['error'] = 2;
         }
 
         $this->response($this->data, 200);
@@ -523,23 +520,23 @@ class Email extends REST_Controller
                      $this->email->attach('adjuntos/1/'.$value);
 
 
-                    $part2=array();
-                   
-                    $filename = 'adjuntos/1/'.$value;
-                    $fp = fopen($filename, "r");
-                    $contents = fread($fp, filesize($filename));
+                    $part2                         =  array();
+                    
+                    $filename                      = 'adjuntos/1/'.$value;
+                    $fp                            = fopen($filename, "r");
+                    $contents                      = fread($fp, filesize($filename));
                     fclose($fp);
-
-                    $part2["type"] = TYPEAPPLICATION;
-                    $part2["encoding"] = ENCBASE64;
-                    $part2["subtype"] = "octet-stream";
-                    $part2["description"] = $value;
-                    $part2['disposition.type'] = 'attachment';
-                    $part2['disposition'] = array ('filename' => $value);
-                    $part2['type.parameters'] = array('name' => $value);
+                    
+                    $part2["type"]                 = TYPEAPPLICATION;
+                    $part2["encoding"]             = ENCBASE64;
+                    $part2["subtype"]              = "octet-stream";
+                    $part2["description"]          = $value;
+                    $part2['disposition.type']     = 'attachment';
+                    $part2['disposition']          = array ('filename' => $value);
+                    $part2['type.parameters']      = array('name' => $value);
                     $part2['dparameters.filename'] = $value;
-                    $part2["contents.data"] = base64_encode($contents);
-                    $body[]=$part2;
+                    $part2["contents.data"]        = base64_encode($contents);
+                    $body[]                        =$part2;
 
                 }
             }
@@ -548,23 +545,23 @@ class Email extends REST_Controller
 
             if($envio){
 
-                $envelope["from"]= "bidef@josebravo.es";
-                $envelope["to"]  = $to;
-                //$envelope["cc"]  = "bar@example.com";
-                $envelope["subject"] = $this->post('subject');
-                $envelope["date"] = date('Y-m-d H:i:s');
-
-
-                $part3["type"] = TYPETEXT;
-                $part3["subtype"] = "plain";
-                $part3["description"] = "description";
+                $envelope["from"]       = "bidef@josebravo.es";
+                $envelope["to"]         = $to;
+                //$envelope["cc"]       = "bar@example.com";
+                $envelope["subject"]    = $this->post('subject');
+                $envelope["date"]       = date('Y-m-d H:i:s');
+                
+                
+                $part3["type"]          = TYPETEXT;
+                $part3["subtype"]       = "plain";
+                $part3["description"]   = "description";
                 $part3["contents.data"] = strip_tags($this->input->post('message'))."\n\n\n\t";
-
-                $part4["type"] = TYPETEXT;
-                $part4["subtype"] = "html";
-                $part4["description"] = "description";
+                
+                $part4["type"]          = TYPETEXT;
+                $part4["subtype"]       = "html";
+                $part4["description"]   = "description";
                 $part4["contents.data"] = $this->input->post('message')."\n\n\n\t";
-                $body[] = $part4;
+                $body[]                 = $part4;
                 //$body[] = $part3;
 
                 $mail= imap_mail_compose($envelope, $body);
@@ -589,7 +586,7 @@ class Email extends REST_Controller
         $fichero = new fichero();
         $fichero->carpeta="adjuntos";
         
-        $this->data['file']=$fichero->subir("todos","uploadfile");
+        $this->data['file'] = $fichero->subir("todos","uploadfile");
         $this->response($this->data, 200);
 
     }
