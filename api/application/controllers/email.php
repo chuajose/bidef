@@ -49,39 +49,48 @@ class Email extends REST_Controller
      */
     function mailbox_get()
     {
-        $bandejas               = $this->imap->get_listing_folders();
+        $bandejas      = $this->imap->get_listing_folders();
         $folder_config = $this->config->item('folders','imap');
-        $folders = array();
-        $clients = array();
-        $others  = array();
+        $folders       = array();
+        $clients       = array();
+        $alums         = array();
+        $aytos         = array();
+        $others        = array();
+
         if( !empty( $bandejas )) {
             $i=count($folder_config);
             foreach ($bandejas as $key => $value) {
                
-               if($key=='INBOX') {
-                    $value['name_show']=(isset($folder_config[$key])) ? $folder_config[$key] : "Entrada";
-                    $folders[0]=$value; 
-               }elseif($key=='Sent') {
-                    $value['name_show']=(isset($folder_config[$key])) ? $folder_config[$key] : "Enviados";
-                    $folders[1]=$value; 
-               }elseif($key=='Trash') {
-                    $value['name_show']=(isset($folder_config[$key])) ? $folder_config[$key] : "Papelera";
-                    $folders[2]=$value;
-               }elseif($key=='Borradores') {
-                    $value['name_show']=(isset($folder_config[$key])) ? $folder_config[$key] : "Borradores";
-                    $folders[3]=$value;
-               }elseif($key=='Clientes') {
-                $clients[$i]=$value;
-               }else $others[]=$value; 
+                if($key             =='INBOX') {
+                $value['name_show'] = (isset($folder_config[$key])) ? $folder_config[$key] : "Entrada";
+                $folders[0]         =$value; 
+                }elseif($key        =='Sent') {
+                $value['name_show'] = (isset($folder_config[$key])) ? $folder_config[$key] : "Enviados";
+                $folders[1]         =$value; 
+                }elseif($key        =='Trash') {
+                $value['name_show'] = (isset($folder_config[$key])) ? $folder_config[$key] : "Papelera";
+                $folders[2]         =$value;
+                }elseif($key        =='Borradores') {
+                $value['name_show'] = (isset($folder_config[$key])) ? $folder_config[$key] : "Borradores";
+                $folders[3]         =$value;
+                }elseif($key        =='Clientes') {
+                $clients[$i]        =$value;
+                }elseif($key        =='Ayuntamientos') {
+                $aytos[$i]          =$value;
+                }elseif($key        =='Alumnos') {
+                $alums[$i]          =$value;
+                }else $others[]     =$value; 
 
                $i++;
             }
         }
         ksort($folders);
         
-        $this->data['bandejas'] =$folders;
-        $this->data['bandejas_clientes'] =$clients;
-        $this->data['bandejas_otros'] =$others;
+        $this->data['bandejas']               = $folders;
+        $this->data['bandejas_clientes']      = $clients;
+        $this->data['bandejas_alumnos']       = $alums;
+        $this->data['bandejas_ayuntamientos'] = $aytos;
+        $this->data['bandejas_otros']         = $others;
 
        // var_dump($this->data);
 
@@ -157,7 +166,7 @@ class Email extends REST_Controller
     function mailbox_delete()
     {
         if( $this->delete( 'mailbox' ) ) {
-
+            
             $this->data['mailbox'] = $this->imap->delete_mailbox($this->delete('mailbox'));
 
         }
@@ -253,6 +262,28 @@ class Email extends REST_Controller
 
             $this->imap->change_imap_stream($mailbox);
             list($list,$total) = $this->imap->paginate_mails($page);
+           // var_dump($list);  
+            if($this->get('mailbox')=="INBOX" && !empty($list)){
+                $i=0;
+                foreach ($list as $value) {
+                    $this->load->model('imap_model');
+                        //Recorro los mensajes sin leer
+                      // if(!$value->seen){
+                            preg_match('/<?([-!#$%&\'*+\.\/0-9=?A-Z^_`a-z{|}~]+@[-!#$%&\'*+\/0-9=?A-Z^_`a-z{|}~]+\.[-!#$%&\'*+\.\/0-9=?A-Z^_`a-z{|}~]+)>?/',$value->from,$mail_dest);
+                            $rules = $this->imap_model->get_rules(false,$mail_dest[1]);
+                            if($rules && $rules->destination != $mailbox){
+                             //   echo $rules->destination;
+                               // $cambio = $this->imap->change_imap_stream($rules->destination);
+                               // var_dump($this->imap->scan_mailbox($rules->destination));
+                               // 
+                            if(!$this->imap->scan_mailbox('Clientes.'.$rules->destination))$this->imap->create_mailbox('Clientes.'.$rules->destination);
+                            $this->imap->move_mail($value->uid,'Clientes.'.$rules->destination);
+                            unset($list[$i]);
+                        //}
+                    }
+                    $i++;
+                }
+            }
         }
 
        
@@ -459,11 +490,17 @@ class Email extends REST_Controller
 
         } else {
 
+            if(is_array($this->post('to'))){
+
+                $to = implode(',', $this->post('to'));
+            } else {
+                $to = $this->post('to');
+            }
         	//echo $this->post('to');die();
            $this->load->library('email');
            
             $this->email->from('bidef@josebravo.es', 'Bidef');
-            $this->email->to( $this->post('to'));
+            $this->email->to( $to);
 
             $this->email->subject( $this->post('subject'));
             $this->email->message( $this->input->post('message'));
@@ -511,10 +548,11 @@ class Email extends REST_Controller
             if($envio){
 
                 $envelope["from"]= "bidef@josebravo.es";
-                $envelope["to"]  = $this->post('to');
+                $envelope["to"]  = $to;
                 //$envelope["cc"]  = "bar@example.com";
                 $envelope["subject"] = $this->post('subject');
-                
+                $envelope["date"] = date('Y-m-d H:i:s');
+
 
                 $part3["type"] = TYPETEXT;
                 $part3["subtype"] = "plain";
