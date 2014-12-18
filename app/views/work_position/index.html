@@ -1,0 +1,8 @@
+<h1>{{ "_workposition_title_" | translate }} ({{countWorkpositions}})</h1>
+<ul class="list-group clear-list m-t" >
+    <!-- | filter:{delegation_name:nuevaDelegation.delegation_name}  -->
+    <li class="list-group-item"  ng-repeat="workposition in workpositions | orderBy:'workposition_username'" id="{{workposition.id}}">
+        <a ui-sref="work_position.profile({id:workposition.id})">{{workposition.username}}</a>        
+    </li>
+</ul>
+<button class="btn btn-success">Añadir un puesto</button>
