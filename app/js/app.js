@@ -30,6 +30,7 @@
         'bidef.delegation',
         'bidef.inicio',
         'bidef.crm',
+        'bidef.work_position',
         'bidef.common'
        // 'ngCookies',
     ])
