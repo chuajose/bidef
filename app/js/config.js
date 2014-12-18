@@ -9,7 +9,7 @@
  */
 function config($stateProvider, $urlRouterProvider, uiSelectConfig) {
   //  $urlRouterProvider.otherwise("/dashboard_1");
-    uiSelectConfig.theme = 'select2';
+    uiSelectConfig.theme = 'bootstrap';
     /*uiSelectConfig.resetSearchInput = true;*/
 
     $stateProvider
