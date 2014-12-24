@@ -20,6 +20,10 @@
  *  - wizardCtrl
  *  - CalendarCtrl
  *  - chartJsCtrl
+ *  - ngGridCtrl
+ *  - GoogleMaps
+ *  - codeEditorCtrl
+ *  - nestableCtrl
  *
  */
 
@@ -3040,6 +3044,92 @@ function mailComposeController($scope,$state,$stateParams,$translate,$translateP
         console.log($scope.to);
         console.log($scope.subject);
         console.log($scope.mensaje);
+
+    }
+	
+	/**
+ * GoogleMaps - Controller for data google maps
+ */
+function GoogleMaps($scope) {
+    $scope.mapOptions = {
+        zoom: 11,
+        center: new google.maps.LatLng(40.6700, -73.9400),
+        // Style for Google Maps
+        styles: [{"featureType":"water","stylers":[{"saturation":43},{"lightness":-11},{"hue":"#0088ff"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"hue":"#ff0000"},{"saturation":-100},{"lightness":99}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"color":"#808080"},{"lightness":54}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"color":"#ece2d9"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#ccdca1"}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"color":"#767676"}]},{"featureType":"road","elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#b8cb93"}]},{"featureType":"poi.park","stylers":[{"visibility":"on"}]},{"featureType":"poi.sports_complex","stylers":[{"visibility":"on"}]},{"featureType":"poi.medical","stylers":[{"visibility":"on"}]},{"featureType":"poi.business","stylers":[{"visibility":"simplified"}]}],
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+	
+	/**
+ * ngGridCtrl - Controller for code ngGrid
+ */
+function ngGridCtrl($scope) {
+    $scope.ngData = [
+        {Name: "Moroni", Age: 50, Position: 'PR Menager', Status: 'active', Date: '12.12.2014'},
+        {Name: "Teancum", Age: 43, Position: 'CEO/CFO', Status: 'deactive', Date: '10.10.2014'},
+        {Name: "Jacob", Age: 27, Position: 'UI Designer', Status: 'active', Date: '09.11.2013'},
+        {Name: "Nephi", Age: 29, Position: 'Java programmer', Status: 'deactive', Date: '22.10.2014'},
+        {Name: "Joseph", Age: 22, Position: 'Marketing manager', Status: 'active', Date: '24.08.2013'},
+        {Name: "Monica", Age: 43, Position: 'President', Status: 'active', Date: '11.12.2014'},
+        {Name: "Arnold", Age: 12, Position: 'CEO', Status: 'active', Date: '07.10.2013'},
+        {Name: "Mark", Age: 54, Position: 'Analyst', Status: 'deactive', Date: '03.03.2014'},
+        {Name: "Amelia", Age: 33, Position: 'Sales manager', Status: 'deactive', Date: '26.09.2013'},
+        {Name: "Jesica", Age: 41, Position: 'Ruby programmer', Status: 'active', Date: '22.12.2013'},
+        {Name: "John", Age: 48, Position: 'Marketing manager', Status: 'deactive', Date: '09.10.2014'},
+        {Name: "Berg", Age: 19, Position: 'UI/UX Designer', Status: 'active', Date: '12.11.2013'}
+    ];
+
+
+
+
+
+
+
+
+
+    $scope.ngOptions = { data: 'ngData' };
+    $scope.ngOptions2 = {
+        data: 'ngData',
+        showGroupPanel: true,
+        jqueryUIDraggable: true
+    };
+}
+
+
+
+
+
+
+
+
+
+function notifyCtrl($scope, notify) {
+    $scope.msg = 'Hello! This is a sample message!';
+    $scope.demo = function () {
+        notify({
+            message: $scope.msg,
+            classes: $scope.classes,
+            templateUrl: $scope.template,
+        });
+
+
+
+    };
+    $scope.closeAll = function () {
+        notify.closeAll();
+    };
+
+    $scope.inspiniaTemplate = 'views/common/notify.html';
+    $scope.inspiniaDemo1 = function(){
+        notify({ message: 'Info - This is a Inspinia info notification', classes: 'alert-info', templateUrl: $scope.inspiniaTemplate});
+    }
+    $scope.inspiniaDemo2 = function(){
+        notify({ message: 'Success - This is a Inspinia success notification', classes: 'alert-success', templateUrl: $scope.inspiniaTemplate});
+    }
+    $scope.inspiniaDemo3 = function(){
+        notify({ message: 'Warning - This is a Inspinia warning notification', classes: 'alert-warning', templateUrl: $scope.inspiniaTemplate});
+    }
+    $scope.inspiniaDemo4 = function(){
+        notify({ message: 'Danger - This is a Inspinia danger notification', classes: 'alert-danger', templateUrl: $scope.inspiniaTemplate});
     }
 }
 
@@ -3056,6 +3146,11 @@ angular
     .controller('flotChartCtrl', flotChartCtrl)
     .controller('morrisChartCtrl', morrisChartCtrl)
     .controller('rickshawChartCtrl', rickshawChartCtrl)
+	.controller('GoogleMaps', GoogleMaps)	
+    .controller('ngGridCtrl', ngGridCtrl)
+    .controller('codeEditorCtrl', codeEditorCtrl)
+    .controller('nestableCtrl', nestableCtrl)
+    .controller('notifyCtrl', notifyCtrl)
     .controller('widgetFlotChart', widgetFlotChart)
     .controller('modalDemoCtrl', modalDemoCtrl)
     .controller('ionSlider', ionSlider)
