@@ -67,10 +67,20 @@ function config($stateProvider, $urlRouterProvider, uiSelectConfig) {
             templateUrl: "views/mail_compose.html",
             data: { pageTitle: 'Mail compose' }
         })
+		.state('mailbox.email_template', {
+            url: "/email_template",
+            templateUrl: "views/email_template.html",
+            data: { pageTitle: 'Mail compose' }
+        })
         .state('widgets', {
             url: "/widgets",
             templateUrl: "views/widgets.html",
             data: { pageTitle: 'Widhets' }
+        })
+		.state('forms', {
+            abstract: true,
+            url: "/forms",
+            templateUrl: "views/common/content.html",
         })
         .state('basic_form', {
             url: "/basic_form",
@@ -163,6 +173,11 @@ function config($stateProvider, $urlRouterProvider, uiSelectConfig) {
             templateUrl: "views/invoice.html",
             data: { pageTitle: 'Invoice' }
         })
+		.state('pages', {
+            abstract: true,
+            url: "/pages",
+            templateUrl: "views/common/content.html",
+        })
         .state('search_results', {
             url: "/search_results",
             templateUrl: "views/search_results.html",
@@ -217,6 +232,56 @@ function config($stateProvider, $urlRouterProvider, uiSelectConfig) {
             url: "/grid_options",
             templateUrl: "views/grid_options.html",
             data: { pageTitle: 'Grid options' }
+        })
+		.state('miscellaneous', {
+            abstract: true,
+            url: "/miscellaneous",
+            templateUrl: "views/common/content.html",
+        })
+        .state('miscellaneous.google_maps', {
+            url: "/google_maps",
+            templateUrl: "views/google_maps.html",
+            data: { pageTitle: 'Google maps' }
+        })
+        .state('miscellaneous.code_editor', {
+            url: "/code_editor",
+            templateUrl: "views/code_editor.html",
+            data: { pageTitle: 'Code Editor' }
+        })
+        .state('miscellaneous.modal_window', {
+            url: "/modal_window",
+            templateUrl: "views/modal_window.html",
+            data: { pageTitle: 'Modal window' }
+        })
+        .state('miscellaneous.nestable_list', {
+            url: "/nestable_list",
+            templateUrl: "views/nestable_list.html",
+            data: { pageTitle: 'Nestable List' }
+        })
+        .state('miscellaneous.notify', {
+            url: "/notify",
+            templateUrl: "views/notify.html",
+            data: { pageTitle: 'Notifications for angularJS' }
+        })
+        .state('miscellaneous.timeline_2', {
+            url: "/timeline_2",
+            templateUrl: "views/timeline_2.html",
+            data: { pageTitle: 'Timeline version 2' }
+        })
+        .state('miscellaneous.forum_view', {
+            url: "/forum_view",
+            templateUrl: "views/forum_view.html",
+            data: { pageTitle: 'Forum - general view' }
+        })
+        .state('miscellaneous.forum_post_view', {
+            url: "/forum_post_view",
+            templateUrl: "views/forum_post_view.html",
+            data: { pageTitle: 'Forum - post view' }
+        })
+		.state('tables.nggrid', {
+            url: "/nggrid",
+            templateUrl: "views/nggrid.html",
+            data: { pageTitle: 'ng Grid' }
         })
         .state('static_table', {
             url: "/static_table",
