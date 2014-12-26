@@ -2989,11 +2989,11 @@ function mailComposeController($scope,$state,$stateParams,$translate,$translateP
      *  Guardo los datos del borrador cada segundo despues de que cambie el cuerpo del mensaje
      */
     var SaveBorrador = function(){
-        
+
         files=[];
         var mensaje = $scope.mensaje;
         //Guardanmos el borrador
-        utilsWebmail.EnviarMail($scope.subject,encodeURIComponent(mensaje) ,$scope.from, files, 1, $scope.draft).success(function (response) { 
+        utilsWebmail.EnviarMail($scope.subject,encodeURIComponent(mensaje) ,$scope.from, files, 1, $scope.draft).success(function (response) {
             //if(response.error>0) $state.go('webmail' , $stateParams,{reload: true});
             $scope.draft=response.draft;
         });
@@ -3017,7 +3017,7 @@ function mailComposeController($scope,$state,$stateParams,$translate,$translateP
     //$scope.$watch('mensaje', debounceSaveUpdates);
 
 
-    
+
     /*
      * Envio el mail
      */
@@ -3034,19 +3034,20 @@ function mailComposeController($scope,$state,$stateParams,$translate,$translateP
 
         //console.log($scope.mensaje);
         //
-      
+
         var mensaje = $scope.mensaje;
-        utilsWebmail.EnviarMail($scope.subject,mensaje ,$scope.to, files,0,$scope.draft).success(function (response) { 
+        utilsWebmail.EnviarMail($scope.subject,mensaje ,$scope.to, files,0,$scope.draft).success(function (response) {
 
            // if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
-            
+
         });
         console.log($scope.to);
         console.log($scope.subject);
         console.log($scope.mensaje);
 
     }
-	
+}
+
 	/**
  * GoogleMaps - Controller for data google maps
  */
@@ -3058,7 +3059,8 @@ function GoogleMaps($scope) {
         styles: [{"featureType":"water","stylers":[{"saturation":43},{"lightness":-11},{"hue":"#0088ff"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"hue":"#ff0000"},{"saturation":-100},{"lightness":99}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"color":"#808080"},{"lightness":54}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"color":"#ece2d9"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#ccdca1"}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"color":"#767676"}]},{"featureType":"road","elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#b8cb93"}]},{"featureType":"poi.park","stylers":[{"visibility":"on"}]},{"featureType":"poi.sports_complex","stylers":[{"visibility":"on"}]},{"featureType":"poi.medical","stylers":[{"visibility":"on"}]},{"featureType":"poi.business","stylers":[{"visibility":"simplified"}]}],
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-	
+}
+
 	/**
  * ngGridCtrl - Controller for code ngGrid
  */
@@ -3146,7 +3148,7 @@ angular
     .controller('flotChartCtrl', flotChartCtrl)
     .controller('morrisChartCtrl', morrisChartCtrl)
     .controller('rickshawChartCtrl', rickshawChartCtrl)
-	.controller('GoogleMaps', GoogleMaps)	
+	.controller('GoogleMaps', GoogleMaps)
     .controller('ngGridCtrl', ngGridCtrl)
     .controller('codeEditorCtrl', codeEditorCtrl)
     .controller('nestableCtrl', nestableCtrl)
