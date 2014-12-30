@@ -278,7 +278,7 @@ function config($stateProvider, $urlRouterProvider, uiSelectConfig) {
             templateUrl: "views/forum_post_view.html",
             data: { pageTitle: 'Forum - post view' }
         })
-		.state('tables.nggrid', {
+		.state('nggrid_tables', {
             url: "/nggrid",
             templateUrl: "views/nggrid.html",
             data: { pageTitle: 'ng Grid' }
