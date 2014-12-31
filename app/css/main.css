@@ -2,7 +2,8 @@ body{ background: #111!important; }
 .mTop0{ margin-top: 0;}.mTop15{ margin-top: 15px;}
 .mBottom0{ margin-bottom: 0;}
 .btn-white .text-muted { color: #999}
-.ng-invalid {   border: 1px solid red;}
+.ng-invalid {   border: 1px solid #c0392b;}
+.ng-pristine    {  border: 1px solid #ccc;}
 form.ng-invalid {   border: none;}
 .borderA{ border-left: 5px solid #3498db;}
 .borderB{ border-left: 5px solid #2c3e50;}
