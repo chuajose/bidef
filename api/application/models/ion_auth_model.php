@@ -1533,7 +1533,7 @@ class Ion_auth_model extends CI_Model
 
 		$this->response = $this->db->get($this->tables['groups']);
 
-		return $this;
+		return $this;		
 	}
 
 	/**
