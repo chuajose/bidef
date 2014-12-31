@@ -5,13 +5,13 @@ var utilsDelegation = function ($http) {
     ListarDelegations: function ListarDelegations()
     {
       //console.log('entra service delegation');
-      return $http({ method: 'GET', url: '../api/index.php/delegation/get_delegations/'});
+      return $http({ method: 'GET', url: APIURL+'delegation/get_delegations/'});
     },
 
     ListarProvincias: function ListarProvincias()
     {
       //console.log('entra service delegation');
-      return $http({ method: 'GET', url: '../api/index.php/delegation/list_provincias/'});
+      return $http({ method: 'GET', url: APIURL+'delegation/list_provincias/'});
     },
 
     InsertDelegation: function InsertDelegation(delegation, color)
@@ -19,7 +19,7 @@ var utilsDelegation = function ($http) {
       //console.log('entra service delegation');
       return $http({
                       method: 'POST',
-                      url: '../api/index.php/delegation/insert_delegation/',
+                      url: APIURL+'delegation/insert_delegation/',
                       data: "delegation_name="+delegation+"&color="+color,
                       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     });
@@ -30,7 +30,7 @@ var utilsDelegation = function ($http) {
       //console.log('entra service delegation');
       return $http({
                       method: 'POST',
-                      url: '../api/index.php/delegation/delete_delegations/',
+                      url: APIURL+'delegation/delete_delegations/',
                       data: "id="+id_delegation+"",
                       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     });
@@ -41,7 +41,7 @@ var utilsDelegation = function ($http) {
       //console.log('entra service delegation');
       return $http({
                       method: 'GET',
-                      url: '../api/index.php/delegation/get_delegation/?id='+id_delegation,
+                      url: APIURL+'delegation/get_delegation/?id='+id_delegation,
                       //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     });
     },
@@ -50,7 +50,7 @@ var utilsDelegation = function ($http) {
     {
       return $http({
                       method: 'GET',
-                      url: '../api/index.php/delegation/check_color_delegation/?color='+color,
+                      url: APIURL+'delegation/check_color_delegation/?color='+color,
                       //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     });
     },
@@ -61,7 +61,7 @@ var utilsDelegation = function ($http) {
       if(color) data_string += "&color="+color;
       return $http({
                       method: 'POST',
-                      url: '../api/index.php/delegation/update_delegation',
+                      url: APIURL+'delegation/update_delegation',
                       data: data_string,
                       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     });
@@ -70,14 +70,14 @@ var utilsDelegation = function ($http) {
     {
       return $http({
                       method: 'GET',
-                      url: '../api/index.php/delegation/delegation_map_provincias'
+                      url: APIURL+'delegation/delegation_map_provincias'
                     });
     },
     UpdateMapaDelegacionProvincias: function UpdateMapaDelegacionProvincias(id_delegation, vectormap_code)
     {
       return $http({
                       method: 'POST',
-                      url: '../api/index.php/delegation/update_delegation_map_provincias',
+                      url: APIURL+'delegation/update_delegation_map_provincias',
                       data: 'delegation_id='+id_delegation+'&vectormap_code='+vectormap_code,
                       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 
@@ -87,7 +87,7 @@ var utilsDelegation = function ($http) {
     {
       return $http({
                       method: 'POST',
-                      url: '../api/index.php/delegation/update_delete_delegation_map_provincias',
+                      url: APIURL+'delegation/update_delete_delegation_map_provincias',
                       data: 'vectormap_code='+vectormap_code,
                       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 
