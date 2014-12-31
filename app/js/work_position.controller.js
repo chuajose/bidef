@@ -1,4 +1,4 @@
-var WorkpositionCtrl = function($scope, $http, $state, $stateParams, utilsWorkposition, $translatePartialLoader, $translate){
+var WorkpositionCtrl = function($scope, $http, $state, $stateParams, utilsWorkposition, $translatePartialLoader, $translate, utilsDelegation){
     console.log('entra');
     $translatePartialLoader.addPart('work_position');
     $translate.refresh();
@@ -6,12 +6,12 @@ var WorkpositionCtrl = function($scope, $http, $state, $stateParams, utilsWorkpo
     $scope.new_wokposition       = [];
     $scope.new_wokposition.group = [];
     $scope.new_wokposition.delegations = [];
-    
+
 	$scope.ListWorkpositions = function(){
-        utilsWorkposition.ListarWorkpositions('').success(function (response) {            
+        utilsWorkposition.ListarWorkpositions('').success(function (response) {
                 $scope.workpositions      = response.users;
                 $scope.countWorkpositions = response.users.length;
-            
+
 	   });
     }
 
@@ -22,11 +22,11 @@ var WorkpositionCtrl = function($scope, $http, $state, $stateParams, utilsWorkpo
         });
     }
     $scope.addWorkPosition = function(){
-        //console.dir($scope.new_wokposition);        
+        //console.dir($scope.new_wokposition);
         $scope.new_wokposition.group_str = '';
         $.each($scope.new_wokposition.group, function(index, val)
         {
-            $scope.new_wokposition.group_str += '&group[]='+val; 
+            $scope.new_wokposition.group_str += '&group[]='+val;
         });
 
         utilsWorkposition.AddNewWorkPosition($scope.new_wokposition).success(function (response) {
@@ -35,10 +35,10 @@ var WorkpositionCtrl = function($scope, $http, $state, $stateParams, utilsWorkpo
             $scope.showform = false;
         });
     }
-    utilsWorkposition.ListarDelegations('').success(function (response) {
+    $scope.ListWorkpositions();
+    utilsDelegation.ListarDelegations().success(function (response){
         $scope.delegations = response;
     });
-    $scope.ListWorkpositions();
 }
 
 
@@ -52,7 +52,7 @@ var WorkpositionProfileCtrl = function($scope, $http, $state, $stateParams, util
         utilsWorkposition.GetWorkposition($stateParams.id).success(function (response){
            // console.log(response[0].id_delegation);
            $scope.name = response[0].username;
-           
+
         });*/
 }
 

@@ -1,6 +1,7 @@
 angular.module('bidef.work_position', [
   'ui.router',
   'bidef.work_position.service',
+  'bidef.delegation.service',
 ])
 .config(
   [          '$stateProvider', '$urlRouterProvider',

@@ -21,11 +21,6 @@ var utilsWorkposition = function ($http) {
                      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                    });
     },
-    ListarDelegations: function ListarDelegations()
-    {
-      //console.log('entra service delegation');
-      return $http({ method: 'GET', url: APIURL+'delegation/get_delegations/'});
-    },
     /*InsertDelegation: function InsertDelegation(delegation, color)
     {
       //console.log('entra service delegation');
@@ -35,8 +30,8 @@ var utilsWorkposition = function ($http) {
                       data: "delegation_name="+delegation+"&color="+color,
                       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     });
-    },*/   
-  } 
+    },*/
+  }
 };
 
 //Definimos los servicios
