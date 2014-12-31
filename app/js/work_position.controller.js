@@ -2,15 +2,42 @@ var WorkpositionCtrl = function($scope, $http, $state, $stateParams, utilsWorkpo
     console.log('entra');
     $translatePartialLoader.addPart('work_position');
     $translate.refresh();
+    $scope.showform              = false;
+    $scope.new_wokposition       = [];
+    $scope.new_wokposition.group = [];
+    $scope.new_wokposition.delegations = [];
     
 	$scope.ListWorkpositions = function(){
-        utilsWorkposition.ListarWorkpositions('').success(function (response) {
-            
-                $scope.workpositions = response.users;
+        utilsWorkposition.ListarWorkpositions('').success(function (response) {            
+                $scope.workpositions      = response.users;
                 $scope.countWorkpositions = response.users.length;
             
 	   });
     }
+
+    $scope.ListarPermisos = function(){
+        utilsWorkposition.ListarPermisos('').success(function (response) {
+            //console.log(response);
+            $scope.permissions = response.respuesta;
+        });
+    }
+    $scope.addWorkPosition = function(){
+        //console.dir($scope.new_wokposition);        
+        $scope.new_wokposition.group_str = '';
+        $.each($scope.new_wokposition.group, function(index, val)
+        {
+            $scope.new_wokposition.group_str += '&group[]='+val; 
+        });
+
+        utilsWorkposition.AddNewWorkPosition($scope.new_wokposition).success(function (response) {
+            $scope.workpositions.push({username:$scope.new_wokposition.username});
+            $scope.countWorkpositions++;
+            $scope.showform = false;
+        });
+    }
+    utilsWorkposition.ListarDelegations('').success(function (response) {
+        $scope.delegations = response;
+    });
     $scope.ListWorkpositions();
 }
 

@@ -7,7 +7,25 @@ var utilsWorkposition = function ($http) {
       //console.log('entra service delegation');
       return $http({ method: 'GET', url: '../api/index.php/auth/get_users/'});
     },
-
+    ListarPermisos: function ListarPermisos()
+    {
+      return $http({ method: 'GET', url: '../api/index.php/auth/list_groups/'});
+    },
+    AddNewWorkPosition: function AddNewWorkPosition(data)
+    {
+      console.log("email="+data.email+"&password="+data.password+"&username="+data.username+data.group_str);
+      return $http({
+                     method: 'POST',
+                     url: APIURL+'auth/create_user/',
+                     data: "email="+data.email+"&password="+data.password+"&username="+data.username+"&delegation="+data.delegation+data.group_str,
+                     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                   });
+    },
+    ListarDelegations: function ListarDelegations()
+    {
+      //console.log('entra service delegation');
+      return $http({ method: 'GET', url: APIURL+'delegation/get_delegations/'});
+    },
     /*InsertDelegation: function InsertDelegation(delegation, color)
     {
       //console.log('entra service delegation');
