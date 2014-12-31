@@ -1,14 +1,14 @@
 body{ background: #111!important; }
 .mTop0{ margin-top: 0;}.mTop15{ margin-top: 15px;}
 .mBottom0{ margin-bottom: 0;}
-
 .btn-white .text-muted { color: #999}
-
+.ng-invalid {   border: 1px solid red;}
+form.ng-invalid {   border: none;}
 .borderA{ border-left: 5px solid #3498db;}
 .borderB{ border-left: 5px solid #2c3e50;}
 .borderC{ border-left: 5px solid #e67e22;}
 .borderD{ border-left: 5px solid #7f8c8d;}
-li.borderA{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
+li.borderA{ margin-left: -30px;padding-left: 10px; margin-bottom: 5px}
 li.borderB{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
 li.borderC{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
 li.borderD{ margin-left: -30px; padding-left: 10px; margin-bottom: 5px}
