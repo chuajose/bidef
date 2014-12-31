@@ -299,25 +299,30 @@ class Auth extends REST_Controller {
 		$tables = $this->config->item('tables','ion_auth');
 
 		//validate form input
-		$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required|xss_clean');
-		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required|xss_clean');
+		$this->form_validation->set_rules('username', $this->lang->line('create_user_validation_fname_label'), 'required|xss_clean');
+		//$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'xss_clean');
+		//$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'xss_clean');
 		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique['.$tables['users'].'.email]');
-		$this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'required|xss_clean');
-		$this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'required|xss_clean');
-		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+		//$this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'xss_clean');
+		//$this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'xss_clean');
+		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']');		
+
+		//$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
 		if ($this->form_validation->run() == true)
 		{
-			$username = strtolower($this->post('first_name')) . ' ' . strtolower($this->post('last_name'));
+			//$username = strtolower($this->post('first_name')) . ' ' . strtolower($this->post('last_name'));
+			$username = $this->post('username');
 			$email    = strtolower($this->post('email'));
 			$password = $this->post('password');
+			$groups   = $this->post('group');
 
 			$additional_data = array(
 				'first_name' => $this->post('first_name'),
 				'last_name'  => $this->post('last_name'),
 				'company'    => $this->post('company'),
 				'phone'      => $this->post('phone'),
+				'fid_delegation' => $this->post('delegation'),
 			);
 		}
 		else
@@ -328,11 +333,11 @@ class Auth extends REST_Controller {
 								'email'            => $this->form_validation->error('email'),
 								'phone'            => $this->form_validation->error('phone'),
 								'password'         => $this->form_validation->error('password'),
-								'password_confirm' => $this->form_validation->error('password_confirm')
+								//'password_confirm' => $this->form_validation->error('password_confirm')
                             );
 			return $this->response($error, 200);
 		}
-		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $additional_data))
+		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $additional_data, $groups))
 		{
 			return $this->response(array('respuesta' => 0), 200);
 		}
@@ -525,6 +530,12 @@ class Auth extends REST_Controller {
 		{
 			return FALSE;
 		}
+	}
+
+	function list_groups_get()
+	{
+		$groups = $this->ion_auth->groups()->result();
+		return $this->response(array('respuesta' => $groups), 200);
 	}
 
 }
