@@ -2,7 +2,65 @@
 <ul class="list-group clear-list m-t" >
     <!-- | filter:{delegation_name:nuevaDelegation.delegation_name}  -->
     <li class="list-group-item"  ng-repeat="workposition in workpositions | orderBy:'workposition_username'" id="{{workposition.id}}">
-        <a ui-sref="work_position.profile({id:workposition.id})">{{workposition.username}}</a>        
+        <a ui-sref="work_position.profile({id:workposition.id})">{{workposition.username}}</a>         
     </li>
 </ul>
-<button class="btn btn-success">Añadir un puesto</button>
+<button btn-checkbox-false="0" btn-checkbox-true="1" btn-checkbox="" ng-model="showform" class="btn btn-success btn-outline" type="button" ng-click="ListarPermisos()"><span class="fa fa-plus"></span> Añadir un puesto</button>
+<div class="ibox float-e-margins animated bounceInUp" ng-show="showform">
+	<div class="ibox-title">
+	    Rellena el siguiente formulario (campos con * son obligatorios)
+	</div>
+	<div class="ibox-content">		
+		<form class="form-horizontal" ng-submit="addWorkPosition();">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Puesto *</label>
+			    <div class="col-sm-10"><input type="text" ng-model="new_wokposition.username" class="form-control" placeholder="Consultor N" required></div>
+			</div>
+			<div class="hr-line-dashed"></div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Email *</label>
+			    <div class="col-sm-10"><input type="email" ng-model="new_wokposition.email" class="form-control" placeholder="consultoa.noroeste@bidef.com" required> <span class="help-block m-b-none">No insertes un mail personal, si no tienes un mail con la terminación bidef.com, pídelo.</span>
+			</div>
+			</div>
+			<div class="hr-line-dashed"></div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Contraseña *</label>
+			    <div class="col-sm-10"><input ng-model="new_wokposition.password" type="password" class="form-control" ng-minlength="8" required></div>
+			    <span class="help-block m-b-none col-sm-10 col-sm-offset-2">Mínimo 6, máximo 20 caracteres</span>
+			</div>
+			<div class="hr-line-dashed"></div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Permisos</label>
+			    <div class="col-lg-4 m-l-n">
+			    	<ui-select multiple ng-model="new_wokposition.group" theme="bootstrap" class="">
+	                    <ui-select-match placeholder="Seleccionar permisos...">{{$item.name}}</ui-select-match>
+	                    <ui-select-choices repeat="item.id as item in permissions | filter: $select.search">
+	                      <span ng-bind-html="item.name | highlight: $select.search"></span>
+	                    </ui-select-choices>
+	                </ui-select>
+	                <span class="help-block m-b-none">Si no se selecciona ningún permiso, se supondrá que es un consultor</span>
+			    </div>
+			</div>
+			<div class="hr-line-dashed"></div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Delegación</label>
+			    <div class="col-lg-4 m-l-n">
+			    	<ui-select ng-model="new_wokposition.delegation" theme="bootstrap" class="">
+	                    <ui-select-match placeholder="Seleccionar delegación...">{{$select.selected.delegation_name}}</ui-select-match>
+	                    <ui-select-choices repeat="item.id_delegation as item in delegations | filter: $select.search">
+	                      <span ng-bind-html="item.delegation_name | highlight: $select.search"></span>
+	                    </ui-select-choices>
+	                </ui-select>
+	                <span class="help-block m-b-none">Si no se selecciona ningún permiso, se supondrá que es un consultor</span>
+			    </div>
+			</div>		
+			<div class="hr-line-dashed"></div>
+			<div class="form-group">
+			    <div class="col-sm-4 col-sm-offset-2">
+			        
+			        <button class="btn btn-success" type="submit">Guardar</button>
+			    </div>
+			</div>
+		</form>
+	</div>
+</div>
