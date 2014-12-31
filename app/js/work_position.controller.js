@@ -22,7 +22,7 @@ var WorkpositionCtrl = function($scope, $http, $state, $stateParams, utilsWorkpo
         });
     }
     $scope.addWorkPosition = function(){
-        //console.dir($scope.new_wokposition);
+        console.dir($scope.new_wokposition);
         $scope.new_wokposition.group_str = '';
         $.each($scope.new_wokposition.group, function(index, val)
         {
