@@ -5,11 +5,11 @@ var utilsWorkposition = function ($http) {
     ListarWorkpositions: function ListarWorkpositions()
     {
       //console.log('entra service delegation');
-      return $http({ method: 'GET', url: '../api/index.php/auth/get_users/'});
+      return $http({ method: 'GET', url: APIURL+'auth/get_users/'});
     },
     ListarPermisos: function ListarPermisos()
     {
-      return $http({ method: 'GET', url: '../api/index.php/auth/list_groups/'});
+      return $http({ method: 'GET', url: APIURL+'auth/list_groups/'});
     },
     AddNewWorkPosition: function AddNewWorkPosition(data)
     {
