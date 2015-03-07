@@ -41,7 +41,7 @@
                                 Seleccionar Fechas
                             </a>
                             <!--<span>
-                                Selected date: {{searchStart}} - {{(searchEnd|date)}}
+                                Selected date: {{searchStart}} - {{(searchEnd)}}
                             </span>-->
 
                             <div class="dropdown-menu" ng-click="$event.preventDefault();$event.stopPropagation()">
@@ -71,8 +71,8 @@
                 Acciones <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a ng-click="check_read()" href=""><i class="fa fa-eye-slash"></i> Marcar como no leído</a></li>
-                <li><a ng-click="check_unread()" href=""><i class="fa fa-eye"></i> Marcar como leído</a></li>
+                <li><a ng-click="checkRead()" href=""><i class="fa fa-eye-slash"></i> Marcar como no leído</a></li>
+                <li><a ng-click="checkUnread()" href=""><i class="fa fa-eye"></i> Marcar como leído</a></li>
                 <li class="divider"></li>
                 <li><a ng-click="checkImportant()" href=""><i class="fa fa-exclamation"></i> Marcar como importante</a></li>
                 <li class="divider"></li>
@@ -83,7 +83,7 @@
                     </ul>
 
                 </li>
-                <li><a ng-click="checkImportant()" href=""><i class="fa fa-trash-o"></i>  Eliminar</a></li>
+                <li><a ng-click="checkDelete()" href=""><i class="fa fa-trash-o"></i>  Eliminar</a></li>
 
             </ul>
         </div>
@@ -93,9 +93,9 @@
 <progressbar ng-show="hasPendingRequests()" value="loading" type="danger" class="progress-striped active"><b>Cargando {{loading}}%</b></progressbar>
     <table class="table table-hover table-mail">
         <tbody>
-        <tr  ng-repeat="(key, mensaje) in mensajes"   ng-class="{'read': mensaje.seen, 'unread': !mensaje.seen}">
+        <tr  ng-repeat="mensaje in mensajes"    ng-class="{'read': mensaje.seen, 'unread': !mensaje.seen}">
             <td class="check-mail">
-                <input icheck type="checkbox" ng-model="select[key]" value="{{mensaje.uid}}">
+               <input icheck type="checkbox" ng-model="select[$index]"  ng-true-value="{{mensaje}}">
             </td>
             <td class="mail-ontact"><a ui-sref="webmail.ver({id:mensaje.uid,mailbox:mailbox})"><span ng-show="mailbox == 'Sent'">{{mensaje.to}}</span><span ng-show="mailbox != 'Sent'"> {{mensaje.from}}</span></a></td>
             <td class="mail-subject"><a ui-sref="webmail.ver({id:mensaje.uid,mailbox:mailbox})">{{mensaje.subject}}</a></td>

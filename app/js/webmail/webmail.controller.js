@@ -3,7 +3,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
 	$translatePartialLoader.addPart('webmail');
   	$translate.refresh();
 
-	$scope.mensajes       = "";
+	$scope.mensajes       = [];
 	$scope.maxSize        = 5;
 	$scope.bigCurrentPage = 1;
 	$scope.bandejas       = false;
@@ -27,12 +27,11 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
   	}
   	
 	utilsWebmail.ListarWebmail(1,$stateParams.mailbox).success(function (response) { 
-
 		$scope.bandejas = response.bandejas;
 		$scope.mensajes = response.emails;
 		$scope.bigTotalItems = response.total
-
-		//console.log(response);
+		$scope.order="-date";
+		console.log(response.emails);
 	});
 
 	
@@ -63,7 +62,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
     	$.each($scope.select, function(index, val) {
     		//
     		//console.log(val);
-    		if(val===true) {
+    		//if(val===true) {
 
     			//console.log($scope.mensajes[index]);
     		//	console.log($scope.mensajes[index].uid);
@@ -71,7 +70,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
     			console.log(index);
     			indices.push(index);
     			
-    		}
+    		//}
     		//$scope.mensajes[index].data.push({flagged : true});   
     	});
 
@@ -89,14 +88,14 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
 
 
 
-    $scope.check_read = function() {
+    $scope.checkRead = function() {
     	//console.log($scope.mensajes);
     	var id=[];
     	var indices=[];
     	$.each($scope.select, function(index, val) {
     		//
     		//console.log(val);
-    		if(val===true) {
+    		//if(val===true) {
 
     			//console.log($scope.mensajes[index]);
     		//	console.log($scope.mensajes[index].uid);
@@ -104,7 +103,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
     			console.log(index);
     			indices.push(index);
     			
-    		}
+    	//	}
     		//$scope.mensajes[index].data.push({flagged : true});   
     	});
 
@@ -121,14 +120,14 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
     }
 
 
-    $scope.check_unread = function() {
+    $scope.checkUnread = function() {
 		//console.log($scope.mensajes);
 		var id=[];
 		var indices=[];
 		$.each($scope.select, function(index, val) {
 			//
 			//console.log(val);
-			if(val===true) {
+			//if(val===true) {
 
 				//console.log($scope.mensajes[index]);
 			//	console.log($scope.mensajes[index].uid);
@@ -136,7 +135,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
 				console.log(index);
 				indices.push(index);
 				
-			}
+			//}
 			//$scope.mensajes[index].data.push({flagged : true});   
 		});
 
@@ -150,6 +149,42 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
 			
 		});
     }
+    $scope.item = [];
+
+    $scope.checkDelete = function(obj) {
+    	
+		var id=[];
+		var indices=[];
+
+		$.each($scope.select, function(index, val) {
+
+
+
+			//if(val===true) {
+
+				console.log($scope.mensajes[index]);
+			//	console.log($scope.mensajes[index].uid);
+				id.push($scope.mensajes[index].uid);
+				$scope.mensajes.splice(index, 1);
+				indices.push(index);
+
+
+				
+			//}
+			//$scope.mensajes[index].data.push({flagged : true});   
+		});
+
+
+		utilsWebmail.UpdateMail(id,'move', $scope.mailbox, 'Papelera').success(function (response) { 
+		
+			$.each(indices, function(key, indice) {
+				//console.log(indice);
+			   	$scope.bigTotalItems = $scope.bigTotalItems - 1;
+
+			});
+			
+		});
+    }
 
 
     
@@ -157,8 +192,8 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
 	$scope.buscar = function () {
 		var search = [];
 		search.useen   = $scope.searchUseen;
-		search.start   = $scope.searchStart;
-		search.end     = $scope.searchEnd;
+		search.start   = $scope.searchStart.getTime();
+		search.end     = $scope.searchEnd.getTime();
 		search.body    = $scope.searchBody;
 		search.subject = $scope.searchSubject;
 		search.to      = $scope.searchTo;
@@ -278,15 +313,15 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 	$scope.draft      = 0;
 	$scope.files      = null;
 	var mensajeorig = "";
-
+	console.log($stateParams.all);
 	/*
 	 *  Si existe id para componer el mail, adjunto informacion para el envio del email
 	 */
 	if($stateParams.id) {
-		
-		utilsWebmail.VerMail($stateParams.id).success(function (response) { 
+		$scope.mailbox = $stateParams.mailbox;
+		utilsWebmail.VerMail($stateParams.id,$stateParams.mailbox).success(function (response) { 
 				if(response) {
-
+					console.log(response);
 					$scope.mensajeorig      = response.view;
 					//$scope.mensaje      = response.view;
 					$scope.subject	= "Re: "+response.header.subject;

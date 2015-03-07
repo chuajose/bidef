@@ -1,9 +1,12 @@
 
             <div class="mail-box-header">
                 <div class="pull-right tooltip-demo">
-                    <a ui-sref="webmail.compose({id:uid})" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Reply"><i class="fa fa-reply"></i> Responder</a>
-                    <a href="" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Print email"><i class="fa fa-print"></i> </a>
-                    <a ng-click="DeleteMail({id:uid})" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </a>
+                     <a ui-sref="webmail.compose({mailbox:mailbox,id:uid,all:1})" class="btn btn-sm btn-white" ui-sref="email_compose"><i class="fa fa-mail-reply-all"></i> Responder a todos</a>
+                    <a ui-sref="webmail.compose({mailbox:mailbox,id:uid})" class="btn btn-sm btn-white" ui-sref="email_compose"><i class="fa fa-reply"></i> Responder</a>
+                    <a class="btn btn-sm btn-white" ui-sref="email_compose"><i class="fa fa-arrow-right"></i> Reenviar</a>
+                    <button title="" data-placement="top" data-toggle="tooltip" type="button" data-original-title="Print" class="btn btn-sm btn-white"><i class="fa fa-print"></i> Imprimir</button>
+                    <button ng-click="DeleteMail({id:uid})" title="" data-placement="top" data-toggle="tooltip" data-original-title="Trash" class="btn btn-sm btn-white"><i class="fa fa-trash-o"></i> Eliminar</button>
+                    <!--<a ng-click="DeleteMail({id:uid})" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </a>-->
                 </div>
                 <h2>
                     <a ng-click="BackPage()" class="btn btn-sm btn-white" ><i class="fa fa-arrow-left"></i> Volver</a>
@@ -97,6 +100,7 @@
                     </div>
                 </div>
                 <div class="mail-body text-right tooltip-demo">
+                    <a ui-sref="webmail.compose({id:uid})" class="btn btn-sm btn-white" ui-sref="email_compose"><i class="fa fa-mail-reply-all"></i> Responder a todos</a>
                     <a ui-sref="webmail.compose({id:uid})" class="btn btn-sm btn-white" ui-sref="email_compose"><i class="fa fa-reply"></i> Responder</a>
                     <a class="btn btn-sm btn-white" ui-sref="email_compose"><i class="fa fa-arrow-right"></i> Reenviar</a>
                     <button title="" data-placement="top" data-toggle="tooltip" type="button" data-original-title="Print" class="btn btn-sm btn-white"><i class="fa fa-print"></i> Imprimir</button>

@@ -1,0 +1,16 @@
+<div class="modal-body">
+    <div class="row">
+        <h3 class="m-t-none m-b">Renombrar {{mailbox}}</h3>
+
+            <form role="form">
+                <div class="form-group">
+                <input type="text" ng-model="$parent.newmailbox" placeholder="Nueva Carpeta" class="form-control">
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs"  ng-click="ok()"><strong>Guardar </strong></button>
+                    <button class="btn btn-sm btn-primary pull-left m-t-n-xs"  ng-click="salir()"><strong>Salir </strong></button>
+
+                </div>
+            </form>
+    </div>
+</div>

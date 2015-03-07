@@ -33,7 +33,8 @@
         </div>
         <div class="clearfix"></div>
     </div>
-    <form action="" class="dropzone" drop-zone="" id="file-dropzone"></form>
+    <a ng-click="showAttach = ! showAttach"><i class="fa fa-paperclip"></i> Añadir adjuntos</a>
+    <form ng-show="showAttach" action="" class="dropzone" drop-zone="" id="file-dropzone"></form>
        
     
     <div class="mail-body text-right tooltip-demo">

@@ -70,7 +70,7 @@ angular.module('bidef.webmail', [
 
         .state('webmail.compose', {
 
-          url: '/compose/:id',
+          url: '/compose/:mailbox/:id/:all',
 
          views: {
 

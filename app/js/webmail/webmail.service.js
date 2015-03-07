@@ -22,24 +22,24 @@ var utilsWebmail = function ($http) {
          }); 
     },   
 
-    UpdateMail: function UpdateMail(id,action,mailbox) {
+    UpdateMail: function UpdateMail(id,action,mailbox,mailbox_dest) {
     //  console.log(id);
       return $http({ 
         method: 'PUT', 
         url: APIURL+'email/mail',
-        data: {id: id, action:action, mailbox:mailbox}
+        data: {id: id, action:action, mailbox:mailbox, mailbox_dest:mailbox_dest}
          }); 
     },   
 
 
-    DeleteMail: function DeleteMail(id,action,mailbox) {
+    DeleteMail: function DeleteMail(id,mailbox,mailbox_dest) {
     //  console.log(id);
       return $http({ 
         method: 'DELETE', 
         url: APIURL+'email/mail',
         //data: {id: id},
         //headers : {'Content-Type': 'application/x-www-form-urlencoded'}
-        params: {id: id}
+        params: {id: id, mailbox:mailbox, mailbox_dest:mailbox_dest}
          }); 
     },   
 
@@ -164,3 +164,17 @@ angular.module('bidef.webmail.services', [
 
 ])
 .factory('utilsWebmail', utilsWebmail)
+
+.filter('orderObjectBy', function() {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+      filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+      return (a[field] > b[field] ? 1 : -1);
+    });
+    if(reverse) filtered.reverse();
+    return filtered;
+  };
+});
