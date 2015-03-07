@@ -24,6 +24,13 @@ class Imap_model extends CI_Model {
     	return $query;
     }    
 
+    function delete_draft($id)
+    {
+        $this->db->where('id_webmail_msg',$id);
+        return $this->db->delete('webmail_msg');
+    }
+
+
     function get_draft($user_id)
     {
         $this->db->where($this->field_usuario, $user_id);

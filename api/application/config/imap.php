@@ -10,7 +10,7 @@
 |	imap.example.com/
 |
 */
-$config['server']	= 'vigiliam.com';
+$config['server']	= 'imap.1and1.es';
 
 
 /*

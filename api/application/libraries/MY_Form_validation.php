@@ -55,7 +55,6 @@ class MY_Form_validation extends CI_Form_validation{
 	    return strtoupper($letter) === $map[((int) $number) % 23];
 	}
 }
-// END MY Form Validation Class
 
 /* End of file MY_Form_validation.php */
 /* Location: ./application/libraries/MY_Form_validation.php */

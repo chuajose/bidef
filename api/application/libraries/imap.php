@@ -404,7 +404,7 @@ class Imap {
 
 		if(!in_array($mailbox, $this->mailboxes)){
 
-		  	$this->create_mailbox($mailbox);
+		  	//$this->create_mailbox($mailbox);
 
 		}
 
@@ -503,9 +503,19 @@ class Imap {
 
 		$mailsIds = array_chunk($mailsIds, $this->per_page);
 
-		$mailsIds = $mailsIds[$page-1];
+		if(is_array($mailsIds) && !empty($mailsIds)){
 
-		$res = $this->get_mails_info($mailsIds);
+			$mailsIds = $mailsIds[$page-1];
+
+			rsort($mailsIds);
+
+			$res = $this->get_mails_info($mailsIds);
+
+		} else {
+
+			$res         = array();
+			$this->total = 0;
+		}
 
 	    return array($res,$this->total);
 
@@ -537,7 +547,7 @@ class Imap {
 	public function get_mails_info(array $mailsIds) {
 
 		$mails = imap_fetch_overview($this->imap_stream, implode(',', $mailsIds), FT_UID);
-		rsort($mails );
+		//var_dump($mails);
 		if(is_array($mails) && count($mails))
 		{
 			foreach($mails as &$mail)

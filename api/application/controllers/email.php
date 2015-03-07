@@ -241,7 +241,7 @@ class Email extends REST_Controller
             
         } else {
 
-            $mailbox = 'inbox';
+            $mailbox = 'INBOX';
         }
 
         if($mailbox=="borradores") {
@@ -267,7 +267,7 @@ class Email extends REST_Controller
                 foreach ($list as $value) {
                     $this->load->model('imap_model');
                         //Recorro los mensajes sin leer
-                      // if(!$value->seen){
+                       if(!$value->seen){
                             preg_match('/<?([-!#$%&\'*+\.\/0-9=?A-Z^_`a-z{|}~]+@[-!#$%&\'*+\/0-9=?A-Z^_`a-z{|}~]+\.[-!#$%&\'*+\.\/0-9=?A-Z^_`a-z{|}~]+)>?/',$value->from,$mail_dest);
                             $rules = $this->imap_model->get_rules(0,$mail_dest[1]);
                             if($rules && $rules->destination != $mailbox){
@@ -278,15 +278,14 @@ class Email extends REST_Controller
                             if(!$this->imap->scan_mailbox('Clientes'.$this->seperador.$rules->destination))$this->imap->create_mailbox('Clientes'.$this->seperador.$rules->destination);
                             $this->imap->move_mail($value->uid,'Clientes.'.$rules->destination);
                             unset($list[$i]);
-                        //}
+                        }
                     }
                     $i++;
                 }
+                rsort($list);
             }
         }
 
-       
-        
         $this->data['emails'] = $list;
 
         $this->data['total'] = $total;
@@ -316,8 +315,8 @@ class Email extends REST_Controller
 
         if($this->post('to') && $this->post('to')       !=="") $string .=' FROM "'.$this->post('to').'"';
         if($this->post('useen') && $this->post('useen') =="true") $string .=' UNSEEN '; 
-        if($this->post('start') && $this->post('start') !=="") $string .=' SINCE "'.$this->post('start').'"';
-        if($this->post('end') && $this->post('end')     !=="") $string .=' BEFORE "'.$this->post('end').'"';
+        if($this->post('start') && $this->post('start') !=="") $string .=' SINCE "'.date ( "d M Y",($this->post('start')/1000)).'"';
+        if($this->post('end') && $this->post('end')     !=="") $string .=' BEFORE "'.date ( "d M Y",($this->post('end')/1000)+86400).'"';
         if($this->post('word')) {
 
             $criteria[] =  'SUBJECT "'.$this->post('word').'"' .$string;
@@ -330,7 +329,7 @@ class Email extends REST_Controller
             $criteria[] = $string;
         }
 
-
+        //var_dump($criteria);
         if($this->post('mailbox'))
             $mailbox = $this->post('mailbox');
         else $mailbox = "INBOX";
@@ -422,8 +421,17 @@ class Email extends REST_Controller
 
         } elseif ($this->put('action') === "move" && $this->put('mailbox')) {
 
-            if(!$this->imap->move_mail($this->put('id'),$this->put('mailbox'))){
-                $this->data['error'] = 3;
+            if(is_array( $this->put('id') )) {
+
+                foreach ($this->put('id') as $value) {
+
+                    if(!$this->imap->move_mail($value,$this->put('mailbox_dest'))){
+                        $this->data['error'] = 3;
+                    }
+            
+                    # code...
+                }
+
             }
             
         }
@@ -441,19 +449,30 @@ class Email extends REST_Controller
      */
     function mail_delete()
     {
-       // $this->delete('id')= $_GET['id'];
+        //$this->delete('id') = $_GET['id'];
 
-        if(!$this->delete('id'))
+        if(!$_GET['id'])
         {
-            //$this->response($this->data, 400);
+            $this->response($this->data, 400);
         }
-        if($this->delete('mailbox'))$this->imap->change_imap_stream($this->delete('mailbox'));//Si exsite mailbox selecciono el mail de esa carpeta
+        if($_GET['id'])$this->imap->change_imap_stream($_GET['mailbox']);//Si exsite mailbox selecciono el mail de esa carpeta
 
-        if(!$this->imap->delete_mail($_GET['id']))
-        {
-            $this->data['error'] = 2;
+        if(is_array( $_GET['id'] )){
+
+            foreach ( $_GET['id'] as $key) {
+                
+                $this->imap->delete_mail($key);
+            }
+
+        } else {
+
+            if(!$this->imap->delete_mail( $_GET['id'] ))
+            {
+                $this->data['error'] = 2;
+            }
+
         }
-
+        
         $this->response($this->data, 200);
     }
 
@@ -566,7 +585,7 @@ class Email extends REST_Controller
 
                 $mail= imap_mail_compose($envelope, $body);
 
-                $this->imap->move_sent_mail('Sent', $mail);
+                $this->imap->move_sent_mail('Enviados', $mail);
             }
            // echo $this->email->print_debugger();
 
@@ -580,7 +599,6 @@ class Email extends REST_Controller
 
     function attachment_post()
     {
-    	//die('asdfsdf');
         $this->load->helper('fichero_helper');
 
         $fichero = new fichero();
@@ -594,7 +612,7 @@ class Email extends REST_Controller
     function attachment_delete()
     {
         $this->load->helper('fichero_helper');
-        //echo $this->delete('name');
+
         $fichero = new fichero();
         $fichero->carpeta="adjuntos";
         $fichero->borrar_ficheros($this->delete('name'));
