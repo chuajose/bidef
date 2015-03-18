@@ -373,7 +373,10 @@ class Email extends REST_Controller
         //Mostramos la vista
         if(!is_null($this->data['header']->textHtml)){
 
-            $this->data['view'] = $email->replace_internal_links(base_url().'adjuntos');
+            $contenido = $email->replace_internal_links(base_url().'adjuntos');
+
+            $this->data['view'] = $contenido;
+            
         } else {
 
             $this->data['view'] = "<pre>".$this->data['header']->textPlain."</pre>";
