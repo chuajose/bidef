@@ -4,7 +4,9 @@
  * @see https://github.com/chuajose
  * @author Jose Suarez Bravo
  */
-class Imap {
+require_once APPPATH.'libraries/imap_mime.php';
+
+class Imap  extends Imap_mime{
 	/**
      * Codificacion del servidor
      *
@@ -99,6 +101,7 @@ class Imap {
 			if(!is_dir($this->attachments_dir)) {
 				throw new Exception('Directory "' . $this->attachments_dir . '" not found');
 			}
+			$this->attachments_url = $this->attachments_dir;
 			$this->attachments_dir = rtrim(realpath($this->attachments_dir), '\\/');
 		}
 		
@@ -115,6 +118,7 @@ class Imap {
 	protected function init_imap_stream() {
 		$this->imap_stream = @imap_open($this->imap_path, $this->login, $this->password);
 		if(!$this->imap_stream) {
+			echo imap_last_error();
 			throw new Imap_mailbox_exception('Connection error: ' . imap_last_error());
 		}
 
@@ -317,20 +321,27 @@ class Imap {
 
 			$mailsIds = array();
 			foreach ($criteria as $key => $value) {
+
 				$ids = imap_search($this->imap_stream, $value, SE_UID, $this->server_encoding);
-				$mailsIds = array_merge($ids,$mailsIds);
+
+				if(!empty($ids))$mailsIds = array_merge($ids,$mailsIds);
 			}
 
 		}
 
-		//var_dump($mailsIds);
-		if(!$mailsIds) return false;
+		//var_dump($mailsIds);die();
 
 		$this->total = count($mailsIds);
 
-		$mailsIds = array_chunk($mailsIds, $this->per_page);
+		if(!$mailsIds || $this->total==0) return false;
 
-		$mailsIds = $mailsIds[$page-1];
+		//Si el total es mayor a el limite por pagina 
+		if($this->total > $this->per_page ) 
+		{
+			$mailsIds = array_chunk($mailsIds, $this->per_page);
+
+			$mailsIds = $mailsIds[$page-1];
+		}
 		
 		//return $mailsIds ? $mailsIds : array();
 	    $res = $this->get_mails_info($mailsIds);
@@ -404,7 +415,7 @@ class Imap {
 
 		if(!in_array($mailbox, $this->mailboxes)){
 
-		  	//$this->create_mailbox($mailbox);
+		  	$this->create_mailbox($mailbox);
 
 		}
 
@@ -503,23 +514,14 @@ class Imap {
 
 		$mailsIds = array_chunk($mailsIds, $this->per_page);
 
-		if(is_array($mailsIds) && !empty($mailsIds)){
+		$mailsIds = $mailsIds[$page-1];
 
-			$mailsIds = $mailsIds[$page-1];
-
-			rsort($mailsIds);
-
-			$res = $this->get_mails_info($mailsIds);
-
-		} else {
-
-			$res         = array();
-			$this->total = 0;
-		}
+		$res = $this->get_mails_info($mailsIds);
 
 	    return array($res,$this->total);
 
 	}
+
 	/**
 	 * Deveulve las cabeceras de email de la lista de emails
 	 *
@@ -547,11 +549,13 @@ class Imap {
 	public function get_mails_info(array $mailsIds) {
 
 		$mails = imap_fetch_overview($this->imap_stream, implode(',', $mailsIds), FT_UID);
-		//var_dump($mails);
+		rsort($mails );
 		if(is_array($mails) && count($mails))
 		{
 			foreach($mails as &$mail)
 			{
+
+
 				if(isset($mail->subject)) {
 					$mail->subject = $this->decode_mime_str($mail->subject, $this->server_encoding);
 				}
@@ -561,10 +565,9 @@ class Imap {
 				if(isset($mail->to)) {
 					$mail->to = $this->decode_mime_str($mail->to, $this->server_encoding);
 				}
-
 				if(isset($mail->date)){
 					$this->ci->load->helper('date');
-					$mail->date=strtotime($mail->date,0)*1000;
+					//$mail->date=strtotime($mail->date,0)*1000;
 				}
 
 				if($this->has_attachment($mail->uid)) {
@@ -812,23 +815,30 @@ class Imap {
 		$mail->replace_internal_links(base_url());
 		return $mail;
 	}
+	
 
 	protected function init_mail_part(Incoming_mail $mail, $partStructure, $partNum) {
 		$data = $partNum ? imap_fetchbody($this->imap_stream, $mail->id, $partNum, FT_UID) : imap_body($this->imap_stream, $mail->id, FT_UID);
 
 		if($partStructure->encoding == 1) {
-			$data = imap_utf8($data);
+			$data = imap_8bit($data);
+            $data = quoted_printable_decode($data);
+			//$data = imap_utf8($data);
 		}
 		elseif($partStructure->encoding == 2) {
 			$data = imap_binary($data);
+            $data = imap_base64($data);
 		}
 		elseif($partStructure->encoding == 3) {
 			$data = imap_base64($data);
 		}
 		elseif($partStructure->encoding == 4) {
-			$data = imap_qprint($data);
+			$data = quoted_printable_decode($data);
+			
+    		//$data = utf8_encode($data);
+    		//$data = imap_qprint($data);
 		}
-
+		//echo $partStructure->encoding;die();
 		$params = array();
 		if(!empty($partStructure->parameters)) {
 			foreach($partStructure->parameters as $param) {
@@ -879,7 +889,7 @@ class Imap {
 				$attachment->filePath = $this->attachments_dir . DIRECTORY_SEPARATOR . $fileSysName;
 				//$attachment->size = filesize($this->attachments_dir . DIRECTORY_SEPARATOR . $fileSysName);
 				file_put_contents($attachment->filePath, $data);
-				$attachment->filePath = base_url()."adjuntos". DIRECTORY_SEPARATOR . $fileSysName;
+				$attachment->filePath = base_url().$this->attachments_url. DIRECTORY_SEPARATOR . $fileSysName;
 			}
 
 			$mail->add_attachment($attachment);
@@ -891,33 +901,52 @@ class Imap {
 			
 
 			if(strtolower($partStructure->subtype) == 'plain') {
+
 				$mail->textPlain .= $data;
+				
+			} else {
 
-
-			}
-			else {
-				/*
-				 * if data is html checked all links and add target="_blank"
-				 */
-				libxml_use_internal_errors(true);//user ignore errors  in data
-				$dom = new DOMDocument();
-				$dom->loadHTML($data);
-
-				$links = array();
-				$arr = $dom->getElementsByTagName("a"); // DOMNodeList Object 
-				foreach($arr as $item) { 
-				    if(!$item->getAttribute('target'))$item->setAttribute('target','_blank');
-				}
-				$data=$dom->saveHTML();
-				/*
-				 * fin check html
-				 */
-				//echo $data;
+				$data = $this->magicHTML($mail->id,$data);//Le paso el corrector de Squirrelmail
 				$mail->textHtml .= ($data);
 			}
 		}
 		elseif($partStructure->type == 2 && $data) {
+
 			$mail->textPlain .= trim($data);
+
+
+				$data_mail = imap_rfc822_parse_headers($data);
+				$data_text = "<pre>".(imap_qprint($data))."</pre>";
+				//echo "<pre>";var_dump( $partStructure);echo "<pre>";
+				$attachmentId=spl_object_hash($data_mail).rand(1,50);
+				$fileName = str_replace(':', '', $data_mail->subject).'.html';
+				$attachment = new Incoming_mail_attachment();
+				$attachment->id = $attachmentId;
+				$attachment->name = $fileName;
+				if($this->attachments_dir) {
+					$replace = array(
+						'/\s/' => '_',
+						'/[^0-9a-zA-Z_\.]/' => '',
+						'/_+/' => '_',
+						'/(^_)|(_$)/' => '',
+						//'/:/' => '_',
+					);
+					$fileSysName = preg_replace('~[\\\\/]~', '', $mail->id . '_' . $attachmentId . '_' . preg_replace(array_keys($replace), $replace, $fileName));
+					//$this->attachments_dir="http://localhost/php-imap-master/example/attachments";//cambio para que use la de web
+					$attachment->filePath = $this->attachments_dir . DIRECTORY_SEPARATOR . $fileSysName;
+					//$attachment->size = filesize($this->attachments_dir . DIRECTORY_SEPARATOR . $fileSysName);
+					
+					//echo "<pre>";var_dump($data);echo "<pre>";
+					file_put_contents($attachment->filePath, $data_text);
+					$attachment->filePath = base_url().$this->attachments_dir. DIRECTORY_SEPARATOR . $fileSysName;
+
+					//print_r($attachment);
+					
+				}
+			//}
+			$mail->add_attachment($attachment);
+
+
 		}
 		if(!empty($partStructure->parts)) {
 			//die('si parte type');
@@ -964,6 +993,7 @@ class Imap {
 	public function __destruct() {
 		$this->disconnect();
 	}
+
 }
 
 class Incoming_mail {
