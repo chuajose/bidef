@@ -31,15 +31,17 @@ class Email extends REST_Controller
 
         $this->load->config('imap',TRUE);
 
-        $user = $this->imap_model->get(1);
+        $this->user = $this->imap_model->get(1);
 
-        $this->login = $this->imap->connect( $user->user, $user->password);//usuario y password
+        $this->login = $this->imap->connect( $this->user->user, $this->user->password);//usuario y password
         
         $this->data['error'] = 0;
 
         $this->load->helper(array('form', 'url'));
 
         $this->load->library('form_validation');
+
+        $this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
         
     }
 
@@ -50,7 +52,17 @@ class Email extends REST_Controller
      */
     function mailbox_get()
     {
-        $bandejas      = $this->imap->get_listing_folders();
+        if ( ! $bandejas = $this->cache->get('mailbox_'.$this->user->fid_usuario)) {
+            echo "entro en ";
+            $bandejas = $this->imap->get_listing_folders();
+            $this->cache->save('mailbox_'.$this->user->fid_usuario, $bandejas, 300);
+
+        } else {
+
+            $bandejas      = $this->cache->get('mailbox_'.$this->user->fid_usuario);
+        }
+
+
         $folder_config = $this->config->item('folders','imap');
         $folders       = array();
         $clients       = array();
@@ -138,6 +150,8 @@ class Email extends REST_Controller
                 
                 $this->data['mailbox'] = $this->imap->rename_mailbox($mailbox, $mailbox_new);
 
+                $this->cache->delete('mailbox_'.$this->user->fid_usuario);
+
 
             } else {
 
@@ -168,6 +182,8 @@ class Email extends REST_Controller
             
             $this->data['mailbox'] = $this->imap->delete_mailbox($this->delete('mailbox'));
 
+            $this->cache->delete('mailbox_'.$this->user->fid_usuario);
+
         }
 
         $this->response($this->data, 200);
@@ -196,10 +212,12 @@ class Email extends REST_Controller
                                 
                 if( $this->imap->create_mailbox($mailbox) ) {
 
+                    $this->cache->delete('mailbox_'.$this->user->fid_usuario);
 
                 } else {
 
                     $this->data['msg'] = imap_last_error();
+
                 }
 
             } else {
@@ -491,7 +509,7 @@ class Email extends REST_Controller
 
         if($this->post('borrador')==1) {
 
-            /*$datos = array(
+            $datos = array(
 
             'dest' => $this->post('to'),
             'subject' => $this->post('subject'),
@@ -506,7 +524,7 @@ class Email extends REST_Controller
                 $draft=$this->imap_model->add_draft($datos);
             }
 
-            $this->data['draft']= $draft;*/
+            $this->data['draft']= $draft;
 
         } else {
 
