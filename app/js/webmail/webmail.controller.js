@@ -49,11 +49,11 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
     };
 
   
-	/*$scope.hasPendingRequests = function () {
+	$scope.hasPendingRequests = function () {
 			$scope.loading = parseInt(100)-($http.pendingRequests.length*parseInt(10));
 			//console.log($scope.loading);
         return $http.pendingRequests.length > 0;
-    };*/
+    };
 
     $scope.checkImportant = function() {
     	//console.log($scope.mensajes);
@@ -185,9 +185,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
 			
 		});
     }
-
-
-    
+  
 
 	$scope.buscar = function () {
 		var search = [];
@@ -237,6 +235,91 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
         });
 
     }
+
+    $scope.openListFolder = function() {
+    	var id=[];
+		var indices=[];
+		$.each($scope.select, function(index, val) {
+			//
+			//console.log(val);
+			//if(val===true) {
+
+				//console.log($scope.mensajes[index]);
+			//	console.log($scope.mensajes[index].uid);
+				id.push($scope.mensajes[index].uid);
+				console.log(index);
+				indices.push(index);
+				
+			//}
+			//$scope.mensajes[index].data.push({flagged : true});   
+		});
+		console.log($scope.mensajes);
+		var mensajes = $scope.mensajes;
+
+    	var modalInstance = $modal.open({
+            templateUrl: 'views/webmail/modal_list_folder.html',
+            controller: function($scope){
+
+            
+            	$scope.salir=function(){
+            		    modalInstance.close();
+            	}
+
+            	$scope.ok=function(mailbox_destino){
+
+            		console.log(id);
+            		console.log($stateParams.mailbox);
+            		//console.log($scope.mensajes[indice]);
+		
+
+            		utilsWebmail.UpdateMail(id,'move',$stateParams.mailbox,mailbox_destino).success(function (response) { 
+		
+						$.each(indices, function(key, indice) {
+							//console.log(indice);
+						   mensajes[indice].seen=true;
+						   mensajes.splice(key, 1);
+						});
+						
+					})
+					
+            		modalInstance.close();
+            	}
+            },
+        });
+
+
+    }
+
+    $scope.moveFolder = function() {
+		//console.log($scope.mensajes);
+		var id=[];
+		var indices=[];
+		$.each($scope.select, function(index, val) {
+			//
+			//console.log(val);
+			//if(val===true) {
+
+				//console.log($scope.mensajes[index]);
+			//	console.log($scope.mensajes[index].uid);
+				id.push($scope.mensajes[index].uid);
+				console.log(index);
+				indices.push(index);
+				
+			//}
+			//$scope.mensajes[index].data.push({flagged : true});   
+		});
+
+
+		/*utilsWebmail.UpdateMail(id,'read',$stateParams.mailbox).success(function (response) { 
+		
+			$.each(indices, function(key, indice) {
+				//console.log(indice);
+			   $scope.mensajes[indice].seen=true;
+			});
+			
+		});*/
+    }
+
     $scope.refresh = function() {
 
     	$state.go('webmail.bandeja' , $stateParams,{reload: true});
@@ -312,7 +395,7 @@ var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 }
 
 //Vista de creación de mensaje
-var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebmail, $timeout){
+var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebmail, $timeout,$sce){
 	$scope.subject  = "";
 	$scope.mensaje  = "";
 	$scope.from     = "";
@@ -328,8 +411,11 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 		$scope.mailbox = $stateParams.mailbox;
 		utilsWebmail.VerMail($stateParams.id,$stateParams.mailbox).success(function (response) { 
 				if(response) {
+					$scope.mensajeorig = function() {
+			            return $sce.trustAsHtml(response.view);//envio el html a la vista 
+			        };
 					console.log(response);
-					$scope.mensajeorig      = response.view;
+					$scope.mensaje      = "<p></p><hr>"+response.view;
 					//$scope.mensaje      = response.view;
 					$scope.subject	= "Re: "+response.header.subject;
 					$scope.from	= response.header.fromAddress;
@@ -338,7 +424,7 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 					$scope.adjuntoslength = response.adjuntos.length;
 					$scope.uid	= $stateParams.id;
 
-					document.getElementById('iframe').contentWindow.updatedata($scope.mensajeorig );
+					//document.getElementById('iframe').contentWindow.updatedata($scope.mensajeorig );
 //
 				}
 				
@@ -353,7 +439,7 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 	var SaveBorrador = function(){
 		
 		files=[];
-		var mensaje = $scope.mensaje+"<blockquote>"+$scope.mensajeorig+"</blockquote>";
+		var mensaje = $scope.mensaje;
 		//Guardanmos el borrador
 		utilsWebmail.EnviarMail($scope.subject,encodeURIComponent(mensaje) ,$scope.from, files, 1, $scope.draft).success(function (response) { 
 			//if(response.error>0) $state.go('webmail' , $stateParams,{reload: true});
@@ -392,11 +478,11 @@ var WebmailComposeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 				files.push(val.nameserver);
 			});
 		}
-		if($scope.mensajeorig && $scope.mensajeorig!=""){
+		/*if($scope.mensajeorig && $scope.mensajeorig!=""){
 			var mensaje = $scope.mensaje+"<blockquote>"+$scope.mensajeorig+"</blockquote>";
-		} else {
+		} else {*/
 			var mensaje = $scope.mensaje;
-		}
+		//}
 		utilsWebmail.EnviarMail($scope.subject,mensaje ,$scope.from, files,0,$scope.draft).success(function (response) { 
 
 			if(response.error==0) $state.go('webmail' , $stateParams,{reload: true});
