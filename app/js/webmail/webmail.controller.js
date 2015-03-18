@@ -244,7 +244,7 @@ var WebmailCtrl = function($modal, $scope, $http, $state, $stateParams, utilsWeb
 
 }
 //Vista de mensaje
-var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebmail,utilsGeneral){
+var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebmail,utilsGeneral,$sce){
 
 	$scope.mensaje="";
 	
@@ -254,8 +254,12 @@ var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 	}
 	$scope.mailbox = $stateParams.mailbox;
 	utilsWebmail.VerMail($stateParams.id,$stateParams.mailbox).success(function (response) { 
-	
-		$scope.mensaje = response.view;
+
+		$scope.mensaje = function() {
+            return $sce.trustAsHtml(response.view);//envio el html a la vista 
+        };
+        console.log($scope.mensaje);
+		//$scope.mensaje = response.view;
 		$scope.subject = response.header.subject;
 		$scope.from    = response.header.fromAddress;
 		$scope.fecha   = response.header.date;
@@ -265,14 +269,17 @@ var WebmailMensajeCtrl = function($scope, $http, $state, $stateParams,utilsWebma
 
 			ext     = val.filePath.substr((~-val.filePath.lastIndexOf(".") >>> 0) + 2);
 			val.ext = utilsGeneral.GetTextIcon(ext);
+			val.filePath = val.filePath;
 
 			adjuntos.push(val);
 		});
+		console.log('adjuntos');
+		console.log(adjuntos);
 		$scope.adjuntos       = adjuntos;
 		$scope.adjuntoslength = response.adjuntos.length;
 		$scope.uid            = $stateParams.id;
 	
-		document.getElementById('iframe').contentWindow.updatedata($scope.mensaje);
+		//document.getElementById('iframe').contentWindow.updatedata($scope.mensaje);
 		
 	});
 
